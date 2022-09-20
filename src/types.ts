@@ -1,9 +1,11 @@
+import { CHAINS_ENUM } from '@debank/common';
+
 export interface Chain {
   id: number;
   name: string;
   hex: string;
   logo: string;
-  enum: Record<string, string>;
+  enum: CHAINS_ENUM;
   serverId: string;
   network: string;
   nativeTokenSymbol: string;

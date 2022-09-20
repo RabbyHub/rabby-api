@@ -1,7 +1,10 @@
 {
   "name": "@debank/rabby-api",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "dependencies": {
     "@debank/common": "^0.2.10",
@@ -27,7 +30,8 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "rimraf dist && tsc"
+    "build": "rimraf dist && tsc",
+    "publish": "npm run build"
   },
   "author": "",
   "description": ""

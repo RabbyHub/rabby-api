@@ -20,7 +20,7 @@ import {
   TxHistoryResult,
   TokenApproval,
   NFTApprovalResponse
-} from './type';
+} from './types';
 
 global.__rb_is = () => true;
 
