@@ -30,7 +30,7 @@
   "scripts": {
     "test": "jest",
     "build": "rimraf dist && tsc",
-    "prepublish": "npm run build"
+    "preversion": "npm run build"
   },
   "author": "",
   "description": ""
