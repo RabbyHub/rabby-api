@@ -1,7 +1,7 @@
 import axios from 'axios';
 import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import { ethErrors } from 'eth-rpc-errors';
-import { getChain, INITIAL_OPENAPI_URL, CHAINS } from './utils';
+import { getChain, INITIAL_OPENAPI_URL, CHAINS, SIGN_HDS } from './utils';
 import * as sign from '@debank/isomorphic/es/sign-wasm-rabby';
 import {
   RPCResponse,
@@ -89,10 +89,10 @@ export class OpenApiService {
       );
 
       config.headers = config.headers || {};
-      config.headers['x-api-ver'] = res.version;
-      config.headers['x-api-sign'] = res.signature;
-      config.headers['x-api-nonce'] = res.nonce;
-      config.headers['x-api-ts'] = res.ts;
+      config.headers[SIGN_HDS[0]] = res.ts;
+      config.headers[SIGN_HDS[1]] = res.nonce;
+      config.headers[SIGN_HDS[2]] = res.version;
+      config.headers[SIGN_HDS[3]] = res.signature;
 
       return config;
     });
