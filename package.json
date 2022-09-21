@@ -36,5 +36,6 @@
     "preversion": "npm run build"
   },
   "author": "",
-  "description": ""
+  "description": "",
+  "license": "GPL"
 }
