@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosAdapter } from 'axios';
 import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import { ethErrors } from 'eth-rpc-errors';
 import { getChain, INITIAL_OPENAPI_URL, CHAINS, SIGN_HDS } from './utils';
@@ -32,6 +32,11 @@ interface OpenApiStore {
   host: string;
 }
 
+interface Options {
+  store: OpenApiStore;
+  adapter?: AxiosAdapter;
+}
+
 const maxRPS = 100;
 
 export class OpenApiService {
@@ -56,9 +61,11 @@ export class OpenApiService {
     | (() => Promise<never>) = async () => {
     throw ethErrors.provider.disconnected();
   };
+  adapter?: AxiosAdapter;
 
-  constructor({ store }: { store: OpenApiStore }) {
+  constructor({ store, adapter }: Options) {
     this.store = store;
+    this.adapter = adapter;
   }
 
   init = async () => {
@@ -71,6 +78,7 @@ export class OpenApiService {
     this.request = rateLimit(
       axios.create({
         baseURL: this.store.host,
+        adapter: this.adapter,
         headers: {
           'X-Client': 'Rabby',
           'X-Version': process.env.release ?? '0.0.0'

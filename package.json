@@ -5,6 +5,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "restricted"
+  },
   "dependencies": {
     "@debank/common": "^0.2.10",
     "@debank/isomorphic": "^0.3.0",
