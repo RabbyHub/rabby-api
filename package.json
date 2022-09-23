@@ -9,7 +9,6 @@
     "access": "restricted"
   },
   "dependencies": {
-    "@debank/common": "^0.2.x",
     "@debank/isomorphic": "^0.3.0",
     "axios": "^0.27.2",
     "axios-rate-limit": "^1.3.0",
@@ -19,6 +18,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.19.1",
+    "@debank/common": "^0.2.12",
     "@types/jest": "^29.0.3",
     "@types/lodash": "^4.14.185",
     "@types/node": "^18.7.18",
@@ -35,6 +35,9 @@
     "test": "jest",
     "build": "rimraf dist && tsc",
     "preversion": "npm run build"
+  },
+  "peerDependencies": {
+    "@debank/common": "^0.2.x"
   },
   "author": "",
   "description": "",

@@ -1,5 +1,11 @@
 # rabby-api
 
+## Install
+
+```bash
+npm install rabby-api @debank/common
+```
+
 ## Usage
 
 ```ts
