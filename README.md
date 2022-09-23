@@ -10,4 +10,10 @@ const service = new OpenApiService({
     host: 'https://api.rabby.io'
   }
 });
+
+// init service
+await service.init();
+
+// call api
+await service.getTotalBalance('0x1234');
 ```
