@@ -955,10 +955,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@debank/common@^0.2.10":
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/@debank/common/-/common-0.2.10.tgz#e557b3d95f35bb6289d786aae9fc9473806eb4d4"
-  integrity sha512-vL1qcitknH5kHaAzuJgQfcDvFTwMnziOTUf1GUhW/5BjdFqO4/MqZfpIBS1LYVcyEIEWMqWB5XVFifCPVf+ulw==
+"@debank/common@^0.2.x":
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/@debank/common/-/common-0.2.12.tgz#dfb97fbd45756798c7ded34b0c18be6e26a16af4"
+  integrity sha512-+NAzrckSUW1YFOKBwL/EoSV9MdM+KDQok19/5GNghD5Mpws7ESSLeQ9/QFjk5zjtD0JucGD5IDn0B0L4MrYU3w==
 
 "@debank/isomorphic@^0.3.0":
   version "0.3.0"
