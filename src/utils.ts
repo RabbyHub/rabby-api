@@ -1,5 +1,7 @@
-import { keyBy } from 'lodash';
+import { isNil, keyBy, omitBy } from 'lodash';
 import { CHAINS } from '@debank/common';
+import { AxiosRequestConfig } from 'axios';
+import { decode } from 'qss';
 
 const chainsDict = keyBy(CHAINS, 'serverId');
 export const getChain = (chainId?: string) => {
@@ -30,3 +32,29 @@ export const SIGN_HDS = [
   /* 'x-api-ver' */ shorthex2ascii('782d6170692d766572'),
   /* 'x-api-sign' */ shorthex2ascii('782d6170692d7369676e')
 ] as const;
+
+export function genSignParams(config: AxiosRequestConfig) {
+  let params = omitBy(config.params ?? {}, isNil);
+  const method = (config.method ?? 'GET').toUpperCase() as any;
+  let url = decodeURIComponent(config.url ?? '');
+  const options = {
+    timestamp: Date.now() / 1e3
+  };
+
+  if (url.search(/\?/) > 0) {
+    const [_url, qs] = url.split('?');
+    const query = decode(qs);
+    params = {
+      ...params,
+      ...query
+    };
+    url = _url;
+  }
+
+  return {
+    method,
+    url,
+    params,
+    options
+  };
+}

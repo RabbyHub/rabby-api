@@ -1,7 +1,13 @@
 import axios, { AxiosAdapter } from 'axios';
 import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import { ethErrors } from 'eth-rpc-errors';
-import { getChain, INITIAL_OPENAPI_URL, CHAINS, SIGN_HDS } from './utils';
+import {
+  getChain,
+  INITIAL_OPENAPI_URL,
+  CHAINS,
+  SIGN_HDS,
+  genSignParams
+} from './utils';
 import * as sign from '@debank/isomorphic/es/sign-wasm-rabby';
 import {
   RPCResponse,
@@ -87,14 +93,9 @@ export class OpenApiService {
       { maxRPS }
     );
     this.request.interceptors.request.use((config) => {
-      const res = sign.cattleGsW(
-        config.params ?? {},
-        (config.method ?? 'GET').toUpperCase() as any,
-        config.url ?? '',
-        {
-          timestamp: Date.now() / 1e3
-        }
-      );
+      const { method, url, params, options } = genSignParams(config);
+
+      const res = sign.cattleGsW(params, method, url, options);
 
       config.headers = config.headers || {};
       config.headers[SIGN_HDS[0]] = res.ts;
