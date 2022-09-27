@@ -42,7 +42,7 @@ describe('rabby-api', () => {
       }
     });
 
-    const req = mockAxios.lastReqGet() as any;
+    const req = (await mockAxios.lastReqGet()) as any;
     expect(req.headers).toMatchObject({
       'x-api-nonce': expect.any(String),
       'x-api-sign': expect.any(String),
@@ -75,7 +75,7 @@ describe('rabby-api', () => {
       }
     );
 
-    const req = mockAxios.lastReqGet() as any;
+    const req = (await mockAxios.lastReqGet()) as any;
     expect(req.headers).toMatchObject({
       'x-api-nonce': expect.any(String),
       'x-api-sign': expect.any(String),

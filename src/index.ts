@@ -75,18 +75,17 @@ export class OpenApiService {
       this.store.host = INITIAL_OPENAPI_URL;
     }
 
-    this.request = rateLimit(
-      axios.create({
-        baseURL: this.store.host,
-        adapter: this.adapter,
-        headers: {
-          'X-Client': 'Rabby',
-          'X-Version': process.env.release ?? '0.0.0'
-        }
-      }),
-      { maxRPS }
-    );
-    this.request.interceptors.request.use((config) => {
+    const request = axios.create({
+      baseURL: this.store.host,
+      adapter: this.adapter,
+      headers: {
+        'X-Client': 'Rabby',
+        'X-Version': process.env.release ?? '0.0.0'
+      }
+    });
+
+    // rateLimit 之后再签名，此时 timestamp 才是最新的
+    request.interceptors.request.use((config) => {
       const { method, url, params } = genSignParams(config);
 
       const res = sign.cattleGsW(params, method, url);
@@ -99,6 +98,8 @@ export class OpenApiService {
 
       return config;
     });
+    this.request = rateLimit(request, { maxRPS });
+
     this.request.interceptors.response.use((response) => {
       const code = response.data?.err_code || response.data?.error_code;
       const msg = response.data?.err_msg || response.data?.error_msg;
