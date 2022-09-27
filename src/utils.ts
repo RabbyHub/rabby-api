@@ -37,9 +37,6 @@ export function genSignParams(config: AxiosRequestConfig) {
   let params = omitBy(config.params ?? {}, isNil);
   const method = (config.method ?? 'GET').toUpperCase() as any;
   let url = decodeURIComponent(config.url ?? '');
-  const options = {
-    timestamp: Date.now() / 1e3
-  };
 
   if (url.search(/\?/) > 0) {
     const [_url, qs] = url.split('?');
@@ -54,7 +51,6 @@ export function genSignParams(config: AxiosRequestConfig) {
   return {
     method,
     url,
-    params,
-    options
+    params
   };
 }

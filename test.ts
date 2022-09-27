@@ -22,10 +22,6 @@ describe('rabby-api', () => {
     mockAxios.reset();
   });
 
-  it(' should be defined "__rb_is"', () => {
-    expect(global.__rb_is()).toEqual(true);
-  });
-
   it('init', async () => {
     await service.init();
     expect(service.ethRpc).toBeDefined();
@@ -115,9 +111,6 @@ describe('utils', () => {
       params: {
         origin: 'https://google.com',
         user_addr: '0x'
-      },
-      options: {
-        timestamp: expect.any(Number)
       }
     });
   });
@@ -139,9 +132,6 @@ describe('utils', () => {
       params: {
         origin: 'https://google.com',
         method: 'call'
-      },
-      options: {
-        timestamp: expect.any(Number)
       }
     });
   });
