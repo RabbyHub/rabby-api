@@ -87,9 +87,9 @@ export class OpenApiService {
       { maxRPS }
     );
     this.request.interceptors.request.use((config) => {
-      const { method, url, params, options } = genSignParams(config);
+      const { method, url, params } = genSignParams(config);
 
-      const res = sign.cattleGsW(params, method, url, options);
+      const res = sign.cattleGsW(params, method, url);
 
       config.headers = config.headers || {};
       config.headers[SIGN_HDS[0]] = res.ts;
