@@ -559,4 +559,41 @@ export class OpenApiService {
     );
     return data;
   };
+
+  postGasStationOrder = async (params: {
+    userAddr: string;
+    fromChainId: string;
+    fromTxId: string;
+    toChainId: string;
+    toTokenAmount: string;
+    fromTokenId: string;
+    fromTokenAmount: string;
+    fromUsdValue: number;
+  }) => {
+    const { data } = await this.request.post('/v1/wallet/gas_station_order', {
+      order: {
+        user_addr: params.userAddr,
+        from_chain_id: params.fromChainId,
+        from_tx_id: params.fromTxId,
+        from_token_id: params.fromTokenId,
+        from_token_amount: params.fromTokenAmount,
+        to_chain_id: params.toChainId,
+        to_token_amount: params.toTokenAmount,
+        from_usd_value: params.fromUsdValue,
+      },
+    });
+    return data;
+  };
+
+  getGasStationChainBalance = async (chain_id: string) => {
+    const { data } = await this.request.get<{ usd_value: number }>(
+      '/v1/wallet/gas_station_chain_balance',
+      {
+        params: {
+          chain_id,
+        },
+      }
+    );
+    return data;
+  };
 }
