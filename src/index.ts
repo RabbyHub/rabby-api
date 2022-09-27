@@ -28,12 +28,6 @@ import {
   NFTApprovalResponse
 } from './types';
 
-global.__rb_is = () => true;
-
-declare global {
-  function __rb_is(): boolean;
-}
-
 interface OpenApiStore {
   host: string;
 }
@@ -579,8 +573,8 @@ export class OpenApiService {
         from_token_amount: params.fromTokenAmount,
         to_chain_id: params.toChainId,
         to_token_amount: params.toTokenAmount,
-        from_usd_value: params.fromUsdValue,
-      },
+        from_usd_value: params.fromUsdValue
+      }
     });
     return data;
   };
@@ -590,8 +584,8 @@ export class OpenApiService {
       '/v1/wallet/gas_station_chain_balance',
       {
         params: {
-          chain_id,
-        },
+          chain_id
+        }
       }
     );
     return data;
