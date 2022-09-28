@@ -582,7 +582,7 @@ export class OpenApiService {
 
   getGasStationChainBalance = async (chain_id: string) => {
     const { data } = await this.request.get<{ usd_value: number }>(
-      '/v1/wallet/gas_station_chain_balance',
+      '/v1/wallet/gas_station_usd_value',
       {
         params: {
           chain_id
