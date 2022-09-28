@@ -592,14 +592,9 @@ export class OpenApiService {
     return data;
   };
 
-  getGasStationTokenList = async (chainId: string) => {
+  getGasStationTokenList = async () => {
     const { data } = await this.request.get<TokenItem[]>(
-      "/v1/wallet/gas_station_token_list",
-      {
-        params: {
-          chain_id: chainId,
-        },
-      }
+      "/v1/wallet/gas_station_token_list"
     );
     return data;
   };
