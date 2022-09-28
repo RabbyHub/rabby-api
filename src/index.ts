@@ -591,4 +591,16 @@ export class OpenApiService {
     );
     return data;
   };
+
+  getGasStationTokenList = async (chainId: string) => {
+    const { data } = await this.request.get<TokenItem[]>(
+      "/v1/wallet/gas_station_token_list",
+      {
+        params: {
+          chain_id: chainId,
+        },
+      }
+    );
+    return data;
+  };
 }
