@@ -960,10 +960,10 @@
   resolved "https://registry.yarnpkg.com/@debank/common/-/common-0.2.12.tgz#dfb97fbd45756798c7ded34b0c18be6e26a16af4"
   integrity sha512-+NAzrckSUW1YFOKBwL/EoSV9MdM+KDQok19/5GNghD5Mpws7ESSLeQ9/QFjk5zjtD0JucGD5IDn0B0L4MrYU3w==
 
-"@debank/isomorphic@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@debank/isomorphic/-/isomorphic-0.3.0.tgz#3f75f5cbff253caaf169a32fd5fc44440478fbf5"
-  integrity sha512-aYvHSYlB/LYEouHMrX0/JxoN33EYiEpzvs8OMYfxdDYuFthejhuC9wGplowzvBiS9zuY87HIJuoJZVmVbM/f+g==
+"@debank/isomorphic@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@debank/isomorphic/-/isomorphic-0.3.1.tgz#5f6005177c1c3740e0766e4a3385105ccd0dd5ae"
+  integrity sha512-Rsc9K4SwscbNx4W2OyH+diqo/MaCUkshjVN3xWFT4tmOdN2YOYWhqRdtPCm/tTXJ55PSaGXCu4XppH82MW59yQ==
   dependencies:
     fast-deep-equal "^3.1.3"
     lodash.clonedeep "^4.5.0"
