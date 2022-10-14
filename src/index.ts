@@ -598,4 +598,16 @@ export class OpenApiService {
     );
     return data;
   };
+
+  explainTypedData = async (user_addr: string, origin: string, data: any) => {
+    const { data: resData } = await this.request.post<{}>(
+      '/v1/wallet/explain_typed_data',
+      {
+        user_addr,
+        origin,
+        data,
+      }
+    );
+    return resData;
+  };
 }
