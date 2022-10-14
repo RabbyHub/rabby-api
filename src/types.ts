@@ -1,4 +1,4 @@
-import { CHAINS_ENUM } from '@debank/common';
+import { CHAINS_ENUM } from "@debank/common";
 
 export interface Chain {
   id: number;
@@ -38,12 +38,12 @@ export interface ChainWithPendingCount extends ServerChain {
 }
 
 export type SecurityCheckDecision =
-  | 'pass'
-  | 'warning'
-  | 'danger'
-  | 'forbidden'
-  | 'loading'
-  | 'pending';
+  | "pass"
+  | "warning"
+  | "danger"
+  | "forbidden"
+  | "loading"
+  | "pending";
 
 export interface SecurityCheckItem {
   alert: string;
@@ -101,7 +101,7 @@ export interface TotalBalanceResponse {
 }
 
 export interface TokenItem {
-  content_type?: 'image' | 'image_url' | 'video_url' | 'audio_url' | undefined;
+  content_type?: "image" | "image_url" | "video_url" | "audio_url" | undefined;
   content?: string | undefined;
   inner_id?: any;
   amount: number;
@@ -133,7 +133,7 @@ export interface TransferingNFTItem {
     chains: string[];
   };
   content: string;
-  content_type: NFTItem['content_type'];
+  content_type: NFTItem["content_type"];
   contract_id: string;
   description: string | null;
   detail_url: string;
@@ -178,7 +178,7 @@ export interface NFTApproval {
   name: null;
   symbol: string;
   description: null;
-  content_type: 'image' | 'image_url' | 'video_url' | 'audio_url' | undefined;
+  content_type: "image" | "image_url" | "video_url" | "audio_url" | undefined;
   content: string;
   total_supply: number;
   detail_url: string;
@@ -266,7 +266,7 @@ export interface NFTItem {
     date_at?: string;
     price?: number;
   };
-  content_type: 'image' | 'image_url' | 'video_url' | 'audio_url';
+  content_type: "image" | "image_url" | "video_url" | "audio_url";
   content: string;
   detail_url: string;
   total_supply?: string;
@@ -286,9 +286,9 @@ export interface Collection {
 }
 
 export interface TxDisplayItem extends TxHistoryItem {
-  projectDict: TxHistoryResult['project_dict'];
-  cateDict: TxHistoryResult['cate_dict'];
-  tokenDict: TxHistoryResult['token_dict'];
+  projectDict: TxHistoryResult["project_dict"];
+  cateDict: TxHistoryResult["cate_dict"];
+  tokenDict: TxHistoryResult["token_dict"];
 }
 export interface TxHistoryItem {
   cate_id: string | null;
@@ -383,7 +383,7 @@ interface NFTContractItem {
   };
 }
 export interface ExplainTxResponse {
-  pre_exec_version: 'v0' | 'v1' | 'v2';
+  pre_exec_version: "v0" | "v1" | "v2";
   abi?: {
     func: string;
     params: Array<string[] | number | string>;
@@ -494,6 +494,20 @@ export interface ExplainTxResponse {
     is_infinity: boolean;
     is_nft: boolean;
     nft: NFTItem;
+  };
+  type_list_nft?: {
+    action: string;
+    contract: string;
+    contract_protocol_logo_url: string;
+    contract_protocol_name: string;
+    offerer: string;
+    total_usd_value: number;
+    offer_list: {
+      item_type: number;
+      amount: number;
+      nft: NFTItem;
+    }[];
+    buyer_list: { id: string }[];
   };
 }
 
