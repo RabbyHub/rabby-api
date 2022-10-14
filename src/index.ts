@@ -6,7 +6,7 @@ import {
   INITIAL_OPENAPI_URL,
   CHAINS,
   SIGN_HDS,
-  genSignParams
+  genSignParams,
 } from './utils';
 import * as sign from '@debank/isomorphic/es/sign-wasm-rabby';
 import {
@@ -25,7 +25,7 @@ import {
   Collection,
   TxHistoryResult,
   TokenApproval,
-  NFTApprovalResponse
+  NFTApprovalResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -80,8 +80,8 @@ export class OpenApiService {
       adapter: this.adapter,
       headers: {
         'X-Client': 'Rabby',
-        'X-Version': process.env.release ?? '0.0.0'
-      }
+        'X-Version': process.env.release ?? '0.0.0',
+      },
     });
 
     // rateLimit 之后再签名，此时 timestamp 才是最新的
@@ -127,7 +127,7 @@ export class OpenApiService {
         .post(`/v1/wallet/eth_rpc?origin=${origin}&method=${method}`, {
           chain_id,
           method,
-          params
+          params,
         })
         .then(({ data }: { data: RPCResponse<any> }) => {
           if (data?.error) {
@@ -146,8 +146,8 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/wallet/recommend_chains', {
       params: {
         user_addr: address,
-        origin
-      }
+        origin,
+      },
     });
     return data;
   };
@@ -155,15 +155,15 @@ export class OpenApiService {
   getTotalBalance = async (address: string): Promise<TotalBalanceResponse> => {
     const { data } = await this.request.get('/v1/user/total_balance', {
       params: {
-        id: address
-      }
+        id: address,
+      },
     });
     return {
       ...data,
       chain_list: data.chain_list.filter(
         (item: { id: string }) =>
           !!Object.values(CHAINS).find((chain) => chain.serverId === item.id)
-      )
+      ),
     };
   };
 
@@ -172,8 +172,8 @@ export class OpenApiService {
   ): Promise<{ total_count: number; chains: ChainWithPendingCount[] }> => {
     const { data } = await this.request.get('/v1/wallet/pending_tx_count', {
       params: {
-        user_addr: address
-      }
+        user_addr: address,
+      },
     });
     return data;
   };
@@ -185,8 +185,8 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/wallet/check_origin', {
       params: {
         user_addr: address,
-        origin
-      }
+        origin,
+      },
     });
 
     return data;
@@ -200,7 +200,7 @@ export class OpenApiService {
     const { data } = await this.request.post('/v1/wallet/check_text', {
       user_addr: address,
       origin,
-      text
+      text,
     });
     return data;
   };
@@ -215,7 +215,7 @@ export class OpenApiService {
       user_addr: address,
       origin,
       tx,
-      update_nonce
+      update_nonce,
     });
 
     return data;
@@ -226,7 +226,7 @@ export class OpenApiService {
     origin,
     address,
     updateNonce = false,
-    pending_tx_list = []
+    pending_tx_list = [],
   }: {
     tx: Tx;
     origin: string;
@@ -239,7 +239,7 @@ export class OpenApiService {
       user_addr: address,
       origin,
       update_nonce: updateNonce,
-      pending_tx_list
+      pending_tx_list,
     });
 
     return data;
@@ -252,7 +252,7 @@ export class OpenApiService {
     gas_used: number;
   }> => {
     const { data } = await this.request.post('/v1/wallet/history_tx_used_gas', {
-      ...params
+      ...params,
     });
 
     return data;
@@ -268,7 +268,7 @@ export class OpenApiService {
       tx,
       user_addr: address,
       origin,
-      update_nonce
+      update_nonce,
     });
 
     return data;
@@ -277,7 +277,7 @@ export class OpenApiService {
   pushTx = async (tx: Tx, traceId?: string) => {
     const { data } = await this.request.post('/v1/wallet/push_tx', {
       tx,
-      traceId
+      traceId,
     });
 
     return data;
@@ -291,7 +291,7 @@ export class OpenApiService {
     const { data } = await this.request.post('/v1/wallet/explain_text', {
       user_addr: address,
       origin,
-      text
+      text,
     });
 
     return data;
@@ -304,8 +304,8 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/wallet/gas_market', {
       params: {
         chain_id: chainId,
-        custom_price: customGas
-      }
+        custom_price: customGas,
+      },
     });
 
     return data;
@@ -320,8 +320,8 @@ export class OpenApiService {
       params: {
         chain_id: chainId,
         gas_price: gasPrice,
-        tx_id: hash
-      }
+        tx_id: hash,
+      },
     });
 
     return data;
@@ -332,8 +332,8 @@ export class OpenApiService {
   ): Promise<{ addr: string; name: string }> => {
     const { data } = await this.request.get('/v1/wallet/ens', {
       params: {
-        text: name
-      }
+        text: name,
+      },
     });
 
     return data;
@@ -344,8 +344,8 @@ export class OpenApiService {
       params: {
         id,
         q,
-        has_balance: false
-      }
+        has_balance: false,
+      },
     });
 
     return data?.filter((token: { chain: string | undefined }) =>
@@ -364,8 +364,8 @@ export class OpenApiService {
         id,
         chain_id: chainId,
         q,
-        is_all
-      }
+        is_all,
+      },
     });
     return data;
   };
@@ -379,8 +379,8 @@ export class OpenApiService {
       params: {
         id,
         chain_id: chainId,
-        token_id: tokenId
-      }
+        token_id: tokenId,
+      },
     });
 
     return data;
@@ -391,8 +391,8 @@ export class OpenApiService {
       params: {
         id,
         is_all: false,
-        chain_id: chainId
-      }
+        chain_id: chainId,
+      },
     });
 
     return data?.filter((token: { chain: string | undefined }) =>
@@ -406,7 +406,7 @@ export class OpenApiService {
   ): Promise<TokenItem[]> => {
     const { data } = await this.request.post('/v1/user/specific_token_list', {
       id,
-      uuids
+      uuids,
     });
 
     return data?.filter((token: { chain: string | undefined }) =>
@@ -417,8 +417,8 @@ export class OpenApiService {
   listChainAssets = async (id: string): Promise<AssetItem[]> => {
     const { data } = await this.request.get('/v1/user/simple_protocol_list', {
       params: {
-        id
-      }
+        id,
+      },
     });
     return data;
   };
@@ -427,8 +427,8 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/user/nft_list', {
       params: {
         id,
-        is_all: isAll
-      }
+        is_all: isAll,
+      },
     });
     return data?.filter((nft: { chain: string | undefined }) =>
       getChain(nft.chain)
@@ -439,7 +439,7 @@ export class OpenApiService {
     collection_ids: string;
   }): Promise<Collection[]> => {
     const { data } = await this.request.get('/v1/nft/collections', {
-      params
+      params,
     });
     return data;
   };
@@ -453,7 +453,7 @@ export class OpenApiService {
     page_count?: number;
   }): Promise<TxHistoryResult> => {
     const { data } = await this.request.get('/v1/user/history_list', {
-      params
+      params,
     });
     return data;
   };
@@ -461,8 +461,8 @@ export class OpenApiService {
   tokenPrice = async (tokenName: string): Promise<string> => {
     const { data } = await this.request.get('/v1/token/price_change', {
       params: {
-        token: tokenName
-      }
+        token: tokenName,
+      },
     });
 
     return data;
@@ -475,8 +475,8 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/user/token_authorized_list', {
       params: {
         id,
-        chain_id
-      }
+        chain_id,
+      },
     });
 
     return data;
@@ -489,8 +489,8 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/user/nft_authorized_list', {
       params: {
         id,
-        chain_id
-      }
+        chain_id,
+      },
     });
 
     return data;
@@ -507,8 +507,8 @@ export class OpenApiService {
       }[]
     >('/v1/wallet/swap_dex_list', {
       params: {
-        chain_id
-      }
+        chain_id,
+      },
     });
     return data;
   };
@@ -536,7 +536,7 @@ export class OpenApiService {
       pay_token: TokenItem;
       receive_token: TokenItem;
     }>('/v1/wallet/swap_quote', {
-      params
+      params,
     });
     return data;
   };
@@ -548,8 +548,8 @@ export class OpenApiService {
         params: {
           id,
           chain_id: chainId,
-          is_all: false
-        }
+          is_all: false,
+        },
       }
     );
     return data;
@@ -574,8 +574,8 @@ export class OpenApiService {
         from_token_amount: params.fromTokenAmount,
         to_chain_id: params.toChainId,
         to_token_amount: params.toTokenAmount,
-        from_usd_value: params.fromUsdValue
-      }
+        from_usd_value: params.fromUsdValue,
+      },
     });
     return data;
   };
@@ -585,8 +585,8 @@ export class OpenApiService {
       '/v1/wallet/gas_station_usd_value',
       {
         params: {
-          chain_id
-        }
+          chain_id,
+        },
       }
     );
     return data;
@@ -594,7 +594,7 @@ export class OpenApiService {
 
   getGasStationTokenList = async () => {
     const { data } = await this.request.get<TokenItem[]>(
-      "/v1/wallet/gas_station_token_list"
+      '/v1/wallet/gas_station_token_list'
     );
     return data;
   };

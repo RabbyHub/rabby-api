@@ -30,7 +30,7 @@ export const SIGN_HDS = [
   /* 'x-api-ts' */ shorthex2ascii('782d6170692d7473'),
   /* 'x-api-nonce' */ shorthex2ascii('782d6170692d6e6f6e6365'),
   /* 'x-api-ver' */ shorthex2ascii('782d6170692d766572'),
-  /* 'x-api-sign' */ shorthex2ascii('782d6170692d7369676e')
+  /* 'x-api-sign' */ shorthex2ascii('782d6170692d7369676e'),
 ] as const;
 
 export function genSignParams(config: AxiosRequestConfig) {
@@ -43,7 +43,7 @@ export function genSignParams(config: AxiosRequestConfig) {
     const query = decode(qs);
     params = {
       ...params,
-      ...query
+      ...query,
     };
     url = _url;
   }
@@ -51,6 +51,6 @@ export function genSignParams(config: AxiosRequestConfig) {
   return {
     method,
     url,
-    params
+    params,
   };
 }
