@@ -599,9 +599,31 @@ export class OpenApiService {
     return data;
   };
 
-  explainTypedData = async (user_addr: string, origin: string, data: any) => {
-    const { data: resData } = await this.request.post<{}>(
+  explainTypedData = async (
+    user_addr: string,
+    origin: string,
+    data: any
+  ): Promise<{
+    type_list_nft: ExplainTxResponse['type_list_nft'];
+  }> => {
+    const { data: resData } = await this.request.post(
       '/v1/wallet/explain_typed_data',
+      {
+        user_addr,
+        origin,
+        data,
+      }
+    );
+    return resData;
+  };
+
+  checkTypedData = async (
+    user_addr: string,
+    origin: string,
+    data: any
+  ): Promise<SecurityCheckResponse> => {
+    const { data: resData } = await this.request.post(
+      '/v1/wallet/check_typed_data',
       {
         user_addr,
         origin,
