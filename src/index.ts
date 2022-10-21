@@ -641,7 +641,7 @@ export class OpenApiService {
   };
 
   approvalStatus = async (id: string): Promise<ApprovalStatus[]> => {
-    const { data } = await this.request.get('/v1/user/used_chain_list', {
+    const { data } = await this.request.get('/v1/user/approval_status', {
       params: {
         id,
       },
