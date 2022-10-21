@@ -1,4 +1,4 @@
-import { CHAINS_ENUM } from "@debank/common";
+import { CHAINS_ENUM } from '@debank/common';
 
 export interface Chain {
   id: number;
@@ -38,12 +38,12 @@ export interface ChainWithPendingCount extends ServerChain {
 }
 
 export type SecurityCheckDecision =
-  | "pass"
-  | "warning"
-  | "danger"
-  | "forbidden"
-  | "loading"
-  | "pending";
+  | 'pass'
+  | 'warning'
+  | 'danger'
+  | 'forbidden'
+  | 'loading'
+  | 'pending';
 
 export interface SecurityCheckItem {
   alert: string;
@@ -101,7 +101,7 @@ export interface TotalBalanceResponse {
 }
 
 export interface TokenItem {
-  content_type?: "image" | "image_url" | "video_url" | "audio_url" | undefined;
+  content_type?: 'image' | 'image_url' | 'video_url' | 'audio_url' | undefined;
   content?: string | undefined;
   inner_id?: any;
   amount: number;
@@ -133,7 +133,7 @@ export interface TransferingNFTItem {
     chains: string[];
   };
   content: string;
-  content_type: NFTItem["content_type"];
+  content_type: NFTItem['content_type'];
   contract_id: string;
   description: string | null;
   detail_url: string;
@@ -178,7 +178,7 @@ export interface NFTApproval {
   name: null;
   symbol: string;
   description: null;
-  content_type: "image" | "image_url" | "video_url" | "audio_url" | undefined;
+  content_type: 'image' | 'image_url' | 'video_url' | 'audio_url' | undefined;
   content: string;
   total_supply: number;
   detail_url: string;
@@ -216,6 +216,8 @@ export interface Spender {
   is_open_source: boolean;
   is_hacked: boolean;
   is_abandoned: boolean;
+  risk_alert: string;
+  risk_level: string;
 }
 
 export interface AssetItem {
@@ -266,7 +268,7 @@ export interface NFTItem {
     date_at?: string;
     price?: number;
   };
-  content_type: "image" | "image_url" | "video_url" | "audio_url";
+  content_type: 'image' | 'image_url' | 'video_url' | 'audio_url';
   content: string;
   detail_url: string;
   total_supply?: string;
@@ -286,9 +288,9 @@ export interface Collection {
 }
 
 export interface TxDisplayItem extends TxHistoryItem {
-  projectDict: TxHistoryResult["project_dict"];
-  cateDict: TxHistoryResult["cate_dict"];
-  tokenDict: TxHistoryResult["token_dict"];
+  projectDict: TxHistoryResult['project_dict'];
+  cateDict: TxHistoryResult['cate_dict'];
+  tokenDict: TxHistoryResult['token_dict'];
 }
 export interface TxHistoryItem {
   cate_id: string | null;
@@ -383,7 +385,7 @@ interface NFTContractItem {
   };
 }
 export interface ExplainTxResponse {
-  pre_exec_version: "v0" | "v1" | "v2";
+  pre_exec_version: 'v0' | 'v1' | 'v2';
   abi?: {
     func: string;
     params: Array<string[] | number | string>;
@@ -542,4 +544,19 @@ export interface GetTxResponse {
   status: -1 | 0 | 1; // -1: failed, 0: pending, 1: success
   gas_used: number;
   token: TokenItem;
+}
+
+export interface ApprovalStatus {
+  chain: string;
+  token_approval_danger_cnt: number;
+  nft_approval_danger_cnt: number;
+}
+
+export interface UsedChain {
+  id: string;
+  community_id: number;
+  name: string;
+  native_token_id: string;
+  logo_url: string;
+  wrapped_token_id: string;
 }
