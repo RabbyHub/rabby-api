@@ -26,6 +26,8 @@ import {
   TxHistoryResult,
   TokenApproval,
   NFTApprovalResponse,
+  ApprovalStatus,
+  UsedChain,
 } from './types';
 
 interface OpenApiStore {
@@ -458,7 +460,12 @@ export class OpenApiService {
     return data;
   };
 
-  tokenPrice = async (tokenName: string): Promise<string> => {
+  tokenPrice = async (
+    tokenName: string
+  ): Promise<{
+    change_percent: number;
+    last_price: number;
+  }> => {
     const { data } = await this.request.get('/v1/token/price_change', {
       params: {
         token: tokenName,
@@ -631,5 +638,23 @@ export class OpenApiService {
       }
     );
     return resData;
+  };
+
+  approvalStatus = async (id: string): Promise<ApprovalStatus[]> => {
+    const { data } = await this.request.get('/v1/user/used_chain_list', {
+      params: {
+        id,
+      },
+    });
+    return data;
+  };
+
+  usedChainList = async (id: string): Promise<UsedChain[]> => {
+    const { data } = await this.request.get('/v1/user/used_chain_list', {
+      params: {
+        id,
+      },
+    });
+    return data;
   };
 }
