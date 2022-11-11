@@ -657,4 +657,9 @@ export class OpenApiService {
     });
     return data;
   };
+
+  getLatestVersion = async (): Promise<{ version: string }> => {
+    const { data } = await this.request.get('/v1/wallet/version');
+    return data;
+  };
 }
