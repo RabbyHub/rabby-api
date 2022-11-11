@@ -658,7 +658,7 @@ export class OpenApiService {
     return data;
   };
 
-  getLatestVersion = async (): Promise<{ version: string }> => {
+  getLatestVersion = async (): Promise<{ version_tag: string }> => {
     const { data } = await this.request.get('/v1/wallet/version');
     return data;
   };
