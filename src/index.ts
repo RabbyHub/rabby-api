@@ -611,7 +611,8 @@ export class OpenApiService {
     origin: string,
     data: any
   ): Promise<{
-    type_list_nft: ExplainTxResponse['type_list_nft'];
+    type_list_nft?: ExplainTxResponse['type_list_nft'];
+    type_token_approval?: ExplainTxResponse['type_token_approval'];
   }> => {
     const { data: resData } = await this.request.post(
       '/v1/wallet/explain_typed_data',
