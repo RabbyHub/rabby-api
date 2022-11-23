@@ -50,6 +50,7 @@ export interface SecurityCheckItem {
   description: string;
   is_alert: boolean;
   decision: SecurityCheckDecision;
+  id: number;
 }
 
 export interface SecurityCheckResponse {
