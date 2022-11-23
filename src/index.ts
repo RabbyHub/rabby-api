@@ -184,11 +184,9 @@ export class OpenApiService {
     address: string,
     origin: string
   ): Promise<SecurityCheckResponse> => {
-    const { data } = await this.request.get('/v1/wallet/check_origin', {
-      params: {
-        user_addr: address,
-        origin,
-      },
+    const { data } = await this.request.post('/v1/wallet/check_origin', {
+      user_addr: address,
+      origin,
     });
 
     return data;

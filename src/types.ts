@@ -47,7 +47,9 @@ export type SecurityCheckDecision =
 
 export interface SecurityCheckItem {
   alert: string;
-  id: number;
+  description: string;
+  is_alert: boolean;
+  decision: SecurityCheckDecision;
 }
 
 export interface SecurityCheckResponse {
@@ -56,6 +58,10 @@ export interface SecurityCheckResponse {
   danger_list: SecurityCheckItem[];
   warning_list: SecurityCheckItem[];
   forbidden_list: SecurityCheckItem[];
+  forbidden_count: number;
+  warning_count: number;
+  danger_count: number;
+  alert_count: number;
   trace_id: string;
   error?: {
     code: number;
