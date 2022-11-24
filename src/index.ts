@@ -661,4 +661,17 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/wallet/version');
     return data;
   };
+
+  addOriginFeedback = async (params: {
+    user_addr: string;
+    origin: string;
+    is_safe: boolean;
+  }): Promise<{ is_success: boolean }> => {
+    const { data } = await this.request.post('/v1/wallet/add_origin_feedback', {
+      user_addr: params.user_addr,
+      origin: params.origin,
+      is_safe: params.is_safe,
+    });
+    return data;
+  };
 }
