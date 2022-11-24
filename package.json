@@ -1,6 +1,6 @@
 {
   "name": "@debank/rabby-api",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "main": "dist/index.js",
   "files": [
     "dist"
