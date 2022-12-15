@@ -274,6 +274,15 @@ export class OpenApiService {
     return data;
   };
 
+  traceTx = async (txId: string, traceId: string, chainId: string): Promise<void> => {
+    const { data } = await this.request.post('/v1/wallet/trace_tx', {
+      tx_id: txId,
+      trace_id: traceId,
+      chain_id: chainId,
+    });
+    return data;
+  };
+
   pushTx = async (tx: Tx, traceId?: string) => {
     const { data } = await this.request.post('/v1/wallet/push_tx', {
       tx,
