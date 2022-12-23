@@ -290,7 +290,7 @@ export class OpenApiService {
   pushTx = async (tx: Tx, traceId?: string) => {
     const { data } = await this.request.post('/v1/wallet/push_tx', {
       tx,
-      traceId,
+      trace_id: traceId,
     });
 
     return data;
