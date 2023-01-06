@@ -28,6 +28,8 @@ import {
   NFTApprovalResponse,
   ApprovalStatus,
   UsedChain,
+  Protocol,
+  ComplexProtocol,
 } from './types';
 
 interface OpenApiStore {
@@ -685,6 +687,81 @@ export class OpenApiService {
       user_addr: params.user_addr,
       origin: params.origin,
       is_safe: params.is_safe,
+    });
+    return data;
+  };
+
+  getProtocolList = async (addr: string): Promise<Protocol[]> => {
+    const { data } = await this.request.get('/v1/user/protocol_list', {
+      params: {
+        id: addr,
+      },
+    });
+    return data;
+  };
+
+  getProtocol = async ({
+    addr,
+    id,
+  }: {
+    addr: string;
+    id: string;
+  }): Promise<ComplexProtocol> => {
+    const { data } = await this.request.get('/v1/user/protocol', {
+      params: {
+        id: addr,
+        protocol_id: id,
+      },
+    });
+    return data;
+  };
+
+  getHistoryProtocol = async ({
+    addr,
+    id,
+    timeAt,
+    dateAt,
+  }: {
+    addr: string;
+    id: string;
+    timeAt?: number;
+    dateAt?: number;
+  }): Promise<ComplexProtocol> => {
+    const { data } = await this.request.get('/v1/user/history_protocol', {
+      params: {
+        id: addr,
+        protocol_id: id,
+      },
+    });
+    return data;
+  };
+
+  getTokenHistoryPrice = async ({
+    chainId,
+    id,
+    timeAt,
+  }: {
+    chainId: string;
+    id: string;
+    timeAt: number;
+  }): Promise<{ price: number }> => {
+    const { data } = await this.request.get('/v1/token/history_price', {
+      params: {
+        chain_id: chainId,
+        id,
+        time_at: timeAt,
+      },
+    });
+    return data;
+  };
+
+  getNetCurve = async (
+    addr: string
+  ): Promise<{ timestamp: number; use_value: number }[]> => {
+    const { data } = await this.request.get('/v1/user/total_net_curve', {
+      params: {
+        id: addr,
+      },
     });
     return data;
   };
