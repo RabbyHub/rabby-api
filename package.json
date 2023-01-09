@@ -1,6 +1,6 @@
 {
   "name": "@debank/rabby-api",
-  "version": "0.5.15",
+  "version": "0.5.16",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.19.1",
-    "@debank/common": "^0.2.12",
+    "@debank/common": "^0.2.23",
     "@types/jest": "^29.0.3",
     "@types/lodash": "^4.14.185",
     "@types/node": "^18.7.18",
