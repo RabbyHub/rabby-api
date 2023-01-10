@@ -757,7 +757,7 @@ export class OpenApiService {
 
   getNetCurve = async (
     addr: string
-  ): Promise<{ timestamp: number; use_value: number }[]> => {
+  ): Promise<{ timestamp: number; usd_value: number }[]> => {
     const { data } = await this.request.get('/v1/user/total_net_curve', {
       params: {
         id: addr,
