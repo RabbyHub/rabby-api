@@ -567,3 +567,67 @@ export interface UsedChain {
   logo_url: string;
   wrapped_token_id: string;
 }
+
+export interface ProjectItem {
+  id: string;
+  name: string;
+  site_url: string;
+  logo_url: string;
+}
+
+export interface PoolItem {
+  id: string;
+  chain: string;
+  project_id: string;
+  adapter_id: string;
+  controller: string;
+  time_at: number;
+}
+
+export interface PortfolioItem {
+  stats: {
+    asset_usd_value: number;
+    debt_usd_value: number;
+    net_usd_value: number;
+  };
+  asset_dict: Record<string, number>;
+  update_at: number;
+  name: number;
+  detail_types: string[];
+  detail: {
+    supply_token_list: TokenItem[];
+    reward_token_list: TokenItem[];
+    borrow_token_list: TokenItem[];
+  };
+  proxy_detail: {
+    project: ProjectItem;
+    proxy_contract_id: string;
+  };
+  pool: PoolItem;
+  position_index: string;
+}
+
+export interface Protocol {
+  chain: string;
+  dao_id: null | string;
+  has_supported_portfolio: boolean;
+  id: string;
+  is_tvl: boolean;
+  logo_url: string;
+  name: string;
+  platform_token_id: string;
+  site_url: string;
+  tag_ids: string[];
+  tvl: number;
+}
+
+export interface ComplexProtocol {
+  id: string;
+  chain: string;
+  name: string;
+  site_url: string;
+  logo_url: string;
+  has_supported_portfolio: boolean;
+  tvl: number;
+  portfolio_item_list: PortfolioItem[];
+}
