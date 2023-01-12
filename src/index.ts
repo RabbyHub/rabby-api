@@ -415,6 +415,26 @@ export class OpenApiService {
     );
   };
 
+  getHistoryTokenList = async (params: {
+    id: string;
+    chainId?: string;
+    timeAt?: number;
+    dateAt?: string;
+  }): Promise<TokenItem[]> => {
+    const { data } = await this.request.get('/v1/user/history_token_list', {
+      params: {
+        id: params.id,
+        chain_id: params.chainId,
+        time_at: params.timeAt,
+        date_at: params.dateAt,
+      },
+    });
+
+    return data?.filter((token: { chain: string | undefined }) =>
+      getChain(token.chain)
+    );
+  };
+
   customListToken = async (
     uuids: string[],
     id: string
@@ -700,6 +720,15 @@ export class OpenApiService {
     return data;
   };
 
+  getComplexProtocolList = async (addr: string): Promise<ComplexProtocol[]> => {
+    const { data } = await this.request.get('/v1/user/complex_protocol_list', {
+      params: {
+        id: addr,
+      },
+    });
+    return data;
+  };
+
   getProtocol = async ({
     addr,
     id,
@@ -731,6 +760,8 @@ export class OpenApiService {
       params: {
         id: addr,
         protocol_id: id,
+        time_at: timeAt,
+        date_at: dateAt,
       },
     });
     return data;
