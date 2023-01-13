@@ -95,10 +95,10 @@ export class OpenApiService {
       const res = sign.cattleGsW(params, method, url);
 
       config.headers = config.headers || {};
-      config.headers[SIGN_HDS[0]] = res.ts;
-      config.headers[SIGN_HDS[1]] = res.nonce;
-      config.headers[SIGN_HDS[2]] = res.version;
-      config.headers[SIGN_HDS[3]] = res.signature;
+      config.headers[SIGN_HDS[0]] = encodeURIComponent(res.ts);
+      config.headers[SIGN_HDS[1]] = encodeURIComponent(res.nonce);
+      config.headers[SIGN_HDS[2]] = encodeURIComponent(res.version);
+      config.headers[SIGN_HDS[3]] = encodeURIComponent(res.signature);
 
       return config;
     });
