@@ -786,6 +786,25 @@ export class OpenApiService {
     return data;
   };
 
+  getTokenHistoryDict = async ({
+    chainId,
+    ids,
+    timeAt,
+  }: {
+    chainId: string;
+    ids: string;
+    timeAt: number;
+  }): Promise<Record<string, number>> => {
+    const { data } = await this.request.get('/v1/history_price_dict', {
+      params: {
+        chain_id: chainId,
+        ids,
+        time_at: timeAt,
+      },
+    });
+    return data;
+  };
+
   getNetCurve = async (
     addr: string
   ): Promise<{ timestamp: number; usd_value: number }[]> => {

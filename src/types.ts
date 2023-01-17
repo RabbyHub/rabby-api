@@ -585,6 +585,7 @@ export interface PoolItem {
 }
 
 export interface PortfolioItem {
+  asset_token_list: TokenItem[];
   stats: {
     asset_usd_value: number;
     debt_usd_value: number;
