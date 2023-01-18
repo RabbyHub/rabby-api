@@ -795,7 +795,7 @@ export class OpenApiService {
     ids: string;
     timeAt: number;
   }): Promise<Record<string, number>> => {
-    const { data } = await this.request.get('/v1/history_price_dict', {
+    const { data } = await this.request.get('/v1/token/history_price_dict', {
       params: {
         chain_id: chainId,
         ids,
