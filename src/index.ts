@@ -401,6 +401,15 @@ export class OpenApiService {
     return data;
   };
 
+  getCachedTokenList = async (id: string): Promise<TokenItem[]> => {
+    const { data } = await this.request.get('/v1/user/cache_token_list', {
+      params: {
+        id,
+      },
+    });
+    return data;
+  };
+
   listToken = async (id: string, chainId?: string): Promise<TokenItem[]> => {
     const { data } = await this.request.get('/v1/user/token_list', {
       params: {
@@ -813,6 +822,11 @@ export class OpenApiService {
         id: addr,
       },
     });
+    return data;
+  };
+
+  getChainList = async (): Promise<ServerChain[]> => {
+    const { data } = await this.request.get('/v1/chain/list');
     return data;
   };
 }
