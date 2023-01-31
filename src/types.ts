@@ -27,6 +27,7 @@ export interface ServerChain {
   logo_url: string;
   wrapped_token_id: string;
   symbol: string;
+  is_support_history: boolean;
 }
 
 export interface ChainWithBalance extends ServerChain {
