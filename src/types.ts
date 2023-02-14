@@ -13,7 +13,6 @@ export interface Chain {
   nativeTokenLogo: string;
   nativeTokenAddress: string;
   scanLink: string;
-  thridPartyRPC: string;
   nativeTokenDecimals: number;
   selectChainLogo?: string;
   eip: Record<string, boolean>;
