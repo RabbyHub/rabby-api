@@ -30,6 +30,7 @@ import {
   UsedChain,
   Protocol,
   ComplexProtocol,
+  ExplainTypedDataResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -653,10 +654,7 @@ export class OpenApiService {
     user_addr: string,
     origin: string,
     data: any
-  ): Promise<{
-    type_list_nft?: ExplainTxResponse['type_list_nft'];
-    type_token_approval?: ExplainTxResponse['type_token_approval'];
-  }> => {
+  ): Promise<ExplainTypedDataResponse> => {
     const { data: resData } = await this.request.post(
       '/v1/wallet/explain_typed_data',
       {
