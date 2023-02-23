@@ -632,3 +632,13 @@ export interface ComplexProtocol {
   tvl: number;
   portfolio_item_list: PortfolioItem[];
 }
+
+export interface ExplainTypedDataResponse {
+  type_list_nft?: ExplainTxResponse['type_list_nft'];
+  type_token_approval?: ExplainTxResponse['type_token_approval'];
+  type_common_sign?: {
+    contract: string;
+    contract_protocol_logo_url?: string;
+    contract_protocol_name?: string;
+  };
+}
