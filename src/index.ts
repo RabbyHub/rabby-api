@@ -138,7 +138,9 @@ export class OpenApiService {
           if (data?.error) {
             throw data.error;
           }
-
+          if (data?.id === -1 && data?.result === null) {
+            return data;
+          }
           return data?.result;
         });
     };

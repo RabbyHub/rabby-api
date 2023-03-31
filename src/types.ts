@@ -547,7 +547,7 @@ export interface GetTxResponse {
   r: string;
   s: string;
   front_tx_count: number;
-  code: 0 | -1; // 0: success, -1: failed
+  code: 0 | -1 | -2; // 0: success, -1: failed, -2: chain not support
   status: -1 | 0 | 1; // -1: failed, 0: pending, 1: success
   gas_used: number;
   token: TokenItem;
