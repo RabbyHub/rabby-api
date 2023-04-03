@@ -31,6 +31,9 @@ import {
   Protocol,
   ComplexProtocol,
   ExplainTypedDataResponse,
+  SwapTradeList,
+  SlippageStatus,
+  CEXQuote,
 } from './types';
 
 interface OpenApiStore {
@@ -827,4 +830,45 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/chain/list');
     return data;
   };
+
+  getCEXSwapQuote = async (params: {
+    cex_id: string;
+    pay_token_id: string;
+    pay_token_amount: string;
+    receive_token_id: string;
+    chain_id: string;
+  }): Promise<CEXQuote> =>
+    this.request.get('/v1/wallet/cex_swap_quote', {
+      params,
+    });
+
+  getSwapTradeList = async (params: {
+    user_addr: string;
+    start: string;
+    limit: string;
+  }): Promise<SwapTradeList> =>
+    this.request.get('/v1/wallet/swap_trade_list', {
+      params,
+    });
+
+  postSwap = async (params: {
+    quote: {
+      pay_token_id: string;
+      pay_token_amount: number;
+      receive_token_id: string;
+      receive_token_amount: number;
+      slippage: number;
+    };
+    dex_id: string;
+    tx_id: string;
+    tx: Tx;
+  }) => this.request.post('/v1/wallet/swap_trade', params);
+
+  checkSlippage = async (params: {
+    chain_id: string;
+    slippage: string;
+    from_token_id: string;
+    to_token_id: string;
+  }): Promise<SlippageStatus> =>
+    this.request.get('/v1/wallet/check_slippage', { params });
 }
