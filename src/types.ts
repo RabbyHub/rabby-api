@@ -652,6 +652,7 @@ export interface SwapItem {
   create_at: number;
   finished_at: number;
   status: 'Pending' | 'Completed' | 'Finished';
+  dex_id: string;
   pay_token: TokenItem;
   receive_token: TokenItem;
   gas: {
@@ -674,6 +675,7 @@ export interface SwapItem {
 
 export interface SwapTradeList {
   history_list: SwapItem[];
+  total_cnt: number;
 }
 
 export interface SlippageStatus {
