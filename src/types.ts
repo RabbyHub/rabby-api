@@ -642,3 +642,43 @@ export interface ExplainTypedDataResponse {
     contract_protocol_name?: string;
   };
 }
+export interface CEXQuote {
+  pay_token: TokenItem;
+  receive_token: TokenItem;
+}
+export interface SwapItem {
+  chain: string;
+  tx_id: string;
+  create_at: number;
+  finished_at: number;
+  status: 'Pending' | 'Completed' | 'Finished';
+  dex_id: string;
+  pay_token: TokenItem;
+  receive_token: TokenItem;
+  gas: {
+    native_token: TokenItem;
+    native_gas_fee: number;
+    usd_gas_fee: number;
+    gas_price: number;
+  };
+  quote: {
+    pay_token_amount: number;
+    receive_token_amount: number;
+    slippage: number;
+  };
+  actual: {
+    pay_token_amount: number;
+    receive_token_amount: number;
+    slippage: number;
+  };
+}
+
+export interface SwapTradeList {
+  history_list: SwapItem[];
+  total_cnt: number;
+}
+
+export interface SlippageStatus {
+  is_valid: boolean;
+  suggest_slippage: number;
+}
