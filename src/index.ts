@@ -837,19 +837,23 @@ export class OpenApiService {
     pay_token_amount: string;
     receive_token_id: string;
     chain_id: string;
-  }): Promise<CEXQuote> =>
-    this.request.get('/v1/wallet/cex_swap_quote', {
+  }): Promise<CEXQuote> => {
+    const { data } = await this.request.get('/v1/wallet/cex_swap_quote', {
       params,
     });
+    return data;
+  };
 
   getSwapTradeList = async (params: {
     user_addr: string;
     start: string;
     limit: string;
-  }): Promise<SwapTradeList> =>
-    this.request.get('/v1/wallet/swap_trade_list', {
+  }): Promise<SwapTradeList> => {
+    const { data } = await this.request.get('/v1/wallet/swap_trade_list', {
       params,
     });
+    return data;
+  };
 
   postSwap = async (params: {
     quote: {
@@ -862,13 +866,20 @@ export class OpenApiService {
     dex_id: string;
     tx_id: string;
     tx: Tx;
-  }) => this.request.post('/v1/wallet/swap_trade', params);
+  }) => {
+    const { data } = await this.request.post('/v1/wallet/swap_trade', params);
+    return data;
+  };
 
   checkSlippage = async (params: {
     chain_id: string;
     slippage: string;
     from_token_id: string;
     to_token_id: string;
-  }): Promise<SlippageStatus> =>
-    this.request.get('/v1/wallet/check_slippage', { params });
+  }): Promise<SlippageStatus> => {
+    const { data } = await this.request.get('/v1/wallet/check_slippage', {
+      params,
+    });
+    return data;
+  };
 }
