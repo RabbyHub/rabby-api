@@ -45,7 +45,7 @@ interface Options {
   adapter?: AxiosAdapter;
 }
 
-const maxRPS = 100;
+const maxRPS = 500;
 
 export class OpenApiService {
   store!: OpenApiStore;
