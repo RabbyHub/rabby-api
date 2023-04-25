@@ -885,7 +885,7 @@ export class OpenApiService {
 
   getOriginPopularityLevel = async (
     origin: string
-  ): Promise<{ level: 'very_low' | 'low' | 'average' | 'high' }> => {
+  ): Promise<{ level: 'very_low' | 'low' | 'medium' | 'high' }> => {
     const { data } = await this.request.get(
       '/v1/engine/origin/popularity_level',
       {
