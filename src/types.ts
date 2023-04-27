@@ -304,6 +304,7 @@ export interface TxHistoryItem {
   chain: string;
   debt_liquidated: null;
   id: string;
+  is_scam: boolean;
   other_addr: string;
   project_id: null | string;
   receives: {
