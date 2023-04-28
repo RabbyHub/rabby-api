@@ -882,4 +882,45 @@ export class OpenApiService {
     });
     return data;
   };
+
+  getOriginPopularityLevel = async (
+    origin: string
+  ): Promise<{ level: 'very_low' | 'low' | 'medium' | 'high' }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/origin/popularity_level',
+      {
+        params: {
+          origin,
+        },
+      }
+    );
+    return data;
+  };
+
+  getOriginIsScam = async (
+    origin: string,
+    source: string
+  ): Promise<{ is_scam: boolean }> => {
+    const { data } = await this.request.get('/v1/engine/origin/is_scam', {
+      params: {
+        origin,
+        source,
+      },
+    });
+    return data;
+  };
+
+  getOriginThirdPartyCollectList = async (
+    origin: string
+  ): Promise<{ collect_list: { name: string; logo_url: string }[] }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/origin/third_party_collect_list',
+      {
+        params: {
+          origin,
+        },
+      }
+    );
+    return data;
+  };
 }
