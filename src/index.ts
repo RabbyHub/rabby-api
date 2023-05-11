@@ -34,7 +34,7 @@ import {
   SwapTradeList,
   SlippageStatus,
   CEXQuote,
-  SummaryToken,
+  Summary,
 } from './types';
 
 interface OpenApiStore {
@@ -927,7 +927,7 @@ export class OpenApiService {
   getSummarizedAssetList = async (
     id: string,
     chain_id?: string
-  ): Promise<SummaryToken> => {
+  ): Promise<Summary> => {
     const { data } = await this.request.get('/v1/user/summarized_asset_list', {
       params: {
         id,
