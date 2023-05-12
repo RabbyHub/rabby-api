@@ -684,3 +684,39 @@ export interface SlippageStatus {
   is_valid: boolean;
   suggest_slippage: number;
 }
+
+export interface SummaryToken {
+  id: string;
+  chain: string;
+  name: string;
+  symbol: string;
+  display_symbol?: string;
+  optimized_symbol: string;
+  decimals: number;
+  logo_url?: string;
+  protocol_id: string;
+  price: number;
+  is_verified: boolean;
+  is_core: boolean;
+  is_wallet: boolean;
+  time_at?: number;
+  amount: number;
+}
+
+export interface SummaryCoin {
+  id: string;
+  symbol: string;
+  logo_url: string;
+  parent_coin_id?: string;
+  token_uuids: string[];
+  peg_token_uuids: string[];
+  circulating_supply: number;
+  total_supply: number;
+  price: number;
+  amount: number;
+}
+
+export interface Summary {
+  token_list: SummaryToken[];
+  coin_list: SummaryCoin[];
+}
