@@ -39,6 +39,7 @@ import {
   ContractCredit,
   AddrDescResponse,
   ParseTxResponse,
+  CollectionWithFloorPrice,
 } from './types';
 
 interface OpenApiStore {
@@ -962,11 +963,11 @@ export class OpenApiService {
     return data;
   };
 
-  isScamToken = async (
+  isSuspiciousToken = async (
     id: string,
     chainId: string
-  ): Promise<{ is_scam: boolean }> => {
-    const { data } = await this.request.get('/v1/engine/token/is_scam', {
+  ): Promise<{ is_suspicious: boolean }> => {
+    const { data } = await this.request.get('/v1/engine/token/is_suspicious', {
       params: {
         chain_id: chainId,
         id,
@@ -1082,9 +1083,45 @@ export class OpenApiService {
   };
 
   addrUsedChainList = async (id: string): Promise<UsedChain[]> => {
-    const { data } = await this.request('/v1/engine/addr/used_chain_list', {
+    const { data } = await this.request.get('/v1/engine/addr/used_chain_list', {
       params: { id },
     });
+    return data;
+  };
+
+  getTokenNFTExposure = async (
+    chainId: string,
+    id: string
+  ): Promise<{ usd_value: number }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/contract/top_nft_approval_exposure',
+      {
+        params: { chain_id: chainId, id },
+      }
+    );
+    return data;
+  };
+
+  getCollection = async (
+    chainId: string,
+    id: string
+  ): Promise<{ collection: CollectionWithFloorPrice }> => {
+    const { data } = await this.request.get('/v1/engine/collection', {
+      params: { chain_id: chainId, id },
+    });
+    return data;
+  };
+
+  isSuspiciousCollection = async (
+    chainId: string,
+    id: string
+  ): Promise<{ is_suspicious: boolean }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/collection/is_suspicious',
+      {
+        params: { chain_id: chainId, id },
+      }
+    );
     return data;
   };
 }

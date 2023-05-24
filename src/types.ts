@@ -793,3 +793,9 @@ export interface ParseTxResponse {
     };
   };
 }
+
+export interface CollectionWithFloorPrice {
+  id: string;
+  name: string;
+  floor_price: number;
+}
