@@ -120,6 +120,7 @@ export interface TokenItem {
   is_verified: boolean;
   is_wallet: boolean;
   is_scam?: boolean;
+  is_suspicious?: boolean;
   is_infinity?: boolean;
   logo_url: string;
   name: string;
@@ -248,6 +249,10 @@ export interface NFTCollection {
   price: number;
   chain: string;
   tokens: NFTItem[];
+  floor_price: number;
+  is_scam: boolean;
+  is_suspicious: boolean;
+  is_verified: boolean;
 }
 
 export interface UserCollection {
