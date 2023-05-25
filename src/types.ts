@@ -121,6 +121,7 @@ export interface TokenItem {
   is_wallet: boolean;
   is_scam?: boolean;
   is_infinity?: boolean;
+  is_suspicious?: boolean;
   logo_url: string;
   name: string;
   optimized_symbol: string;
@@ -139,6 +140,8 @@ export interface TransferingNFTItem {
     name: string;
     create_at: number;
     chains: string[];
+    is_suspicious?: boolean;
+    is_verified?: boolean;
   };
   content: string;
   content_type: NFTItem['content_type'];
@@ -291,6 +294,8 @@ export interface Collection {
   description: null | string;
   logo_url: string;
   is_core: boolean;
+  is_suspicious?: boolean;
+  is_verified?: boolean;
   contract_uuids: string[];
   create_at: number;
 }
