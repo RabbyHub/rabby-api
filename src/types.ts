@@ -298,6 +298,10 @@ export interface Collection {
   is_core: boolean;
   contract_uuids: string[];
   create_at: number;
+  floor_price: number;
+  is_scam: boolean;
+  is_suspicious: boolean;
+  is_verified: boolean;
 }
 
 export interface TxDisplayItem extends TxHistoryItem {
