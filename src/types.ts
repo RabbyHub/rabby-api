@@ -776,13 +776,39 @@ export interface SwapAction {
   receive_token: SwapReceiveToken;
   receiver: string;
 }
+export interface SendNFTAction {
+  to: string;
+  nft: NFTItem;
+}
 
+export interface ApproveNFTAction {
+  spender: string;
+  nft: NFTItem;
+}
+
+export type RevokeNFTAction = ApproveNFTAction;
+
+export interface ApproveNFTCollectionAction {
+  spender: string;
+  collection: NFTCollection;
+}
+
+export type RevokeNFTCollectionAction = ApproveNFTCollectionAction;
 export interface ParseTxResponse {
   action: {
     type: string;
-    data: SwapAction | ApproveAction | SendAction;
+    data:
+      | SwapAction
+      | ApproveAction
+      | SendAction
+      | SendNFTAction
+      | ApproveNFTAction
+      | RevokeNFTAction
+      | ApproveNFTCollectionAction
+      | RevokeNFTCollectionAction
+      | null;
   };
-  contract_call: {
+  contract_call?: {
     func: string;
     contract: {
       id: string;
