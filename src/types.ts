@@ -120,7 +120,6 @@ export interface TokenItem {
   is_verified: boolean;
   is_wallet: boolean;
   is_scam?: boolean;
-  is_suspicious?: boolean;
   is_infinity?: boolean;
   is_suspicious?: boolean;
   logo_url: string;
@@ -305,8 +304,6 @@ export interface Collection {
   create_at: number;
   floor_price: number;
   is_scam: boolean;
-  is_suspicious: boolean;
-  is_verified: boolean;
 }
 
 export interface TxDisplayItem extends TxHistoryItem {
