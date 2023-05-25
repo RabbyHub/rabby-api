@@ -120,6 +120,7 @@ export interface TokenItem {
   is_verified: boolean;
   is_wallet: boolean;
   is_scam?: boolean;
+  is_suspicious?: boolean;
   is_infinity?: boolean;
   is_suspicious?: boolean;
   logo_url: string;
@@ -251,6 +252,10 @@ export interface NFTCollection {
   price: number;
   chain: string;
   tokens: NFTItem[];
+  floor_price: number;
+  is_scam: boolean;
+  is_suspicious: boolean;
+  is_verified: boolean;
 }
 
 export interface UserCollection {
@@ -298,6 +303,10 @@ export interface Collection {
   is_verified?: boolean;
   contract_uuids: string[];
   create_at: number;
+  floor_price: number;
+  is_scam: boolean;
+  is_suspicious: boolean;
+  is_verified: boolean;
 }
 
 export interface TxDisplayItem extends TxHistoryItem {
@@ -781,13 +790,39 @@ export interface SwapAction {
   receive_token: SwapReceiveToken;
   receiver: string;
 }
+export interface SendNFTAction {
+  to: string;
+  nft: NFTItem;
+}
 
+export interface ApproveNFTAction {
+  spender: string;
+  nft: NFTItem;
+}
+
+export type RevokeNFTAction = ApproveNFTAction;
+
+export interface ApproveNFTCollectionAction {
+  spender: string;
+  collection: NFTCollection;
+}
+
+export type RevokeNFTCollectionAction = ApproveNFTCollectionAction;
 export interface ParseTxResponse {
   action: {
     type: string;
-    data: SwapAction | ApproveAction | SendAction;
+    data:
+      | SwapAction
+      | ApproveAction
+      | SendAction
+      | SendNFTAction
+      | ApproveNFTAction
+      | RevokeNFTAction
+      | ApproveNFTCollectionAction
+      | RevokeNFTCollectionAction
+      | null;
   };
-  contract_call: {
+  contract_call?: {
     func: string;
     contract: {
       id: string;
