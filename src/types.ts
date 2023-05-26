@@ -129,7 +129,7 @@ export interface TokenItem {
   symbol: string;
   time_at: number;
   usd_value?: number;
-  raw_amount?: number;
+  raw_amount?: string;
   raw_amount_hex_str?: string;
 }
 
@@ -773,6 +773,21 @@ export interface SendAction {
   token: TokenItem;
 }
 
+export interface RevokeTokenApproveAction {
+  spender: string;
+  token: TokenItem;
+}
+
+export interface WrapTokenAction {
+  pay_token: TokenItem;
+  receive_token: SwapReceiveToken;
+}
+
+export interface UnWrapTokenAction {
+  pay_token: TokenItem;
+  receive_token: SwapReceiveToken;
+}
+
 export interface ApproveAction {
   spender: string;
   token: TokenItem;
@@ -780,6 +795,7 @@ export interface ApproveAction {
 
 export interface SwapReceiveToken extends TokenItem {
   min_amount: number;
+  min_raw_amount: string;
 }
 
 export interface SwapAction {
@@ -817,6 +833,9 @@ export interface ParseTxResponse {
       | RevokeNFTAction
       | ApproveNFTCollectionAction
       | RevokeNFTCollectionAction
+      | RevokeTokenApproveAction
+      | WrapTokenAction
+      | UnWrapTokenAction
       | null;
   };
   contract_call?: {
