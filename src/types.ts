@@ -142,6 +142,7 @@ export interface TransferingNFTItem {
     chains: string[];
     is_suspicious?: boolean;
     is_verified?: boolean;
+    floor_price?: number | null;
   };
   content: string;
   content_type: NFTItem['content_type'];
