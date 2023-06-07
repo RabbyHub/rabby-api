@@ -821,6 +821,10 @@ export interface ApproveNFTCollectionAction {
   collection: NFTCollection;
 }
 
+export interface PushMultiSigAction {
+  multisig_id: string;
+}
+
 export type RevokeNFTCollectionAction = ApproveNFTCollectionAction;
 export interface ParseTxResponse {
   action: {
@@ -837,6 +841,7 @@ export interface ParseTxResponse {
       | RevokeTokenApproveAction
       | WrapTokenAction
       | UnWrapTokenAction
+      | PushMultiSigAction
       | null;
   };
   contract_call?: {
