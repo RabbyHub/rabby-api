@@ -1124,4 +1124,13 @@ export class OpenApiService {
     );
     return data;
   };
+
+  isOriginVerified = async (
+    origin: string
+  ): Promise<{ is_verified: boolean | null }> => {
+    const { data } = await this.request.get('/v1/engine/origin/is_verified', {
+      params: { origin },
+    });
+    return data;
+  };
 }
