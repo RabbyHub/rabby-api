@@ -35,6 +35,11 @@ import {
   SlippageStatus,
   CEXQuote,
   Summary,
+  Cex,
+  ContractCredit,
+  AddrDescResponse,
+  ParseTxResponse,
+  CollectionWithFloorPrice,
 } from './types';
 
 interface OpenApiStore {
@@ -924,6 +929,7 @@ export class OpenApiService {
     );
     return data;
   };
+
   getSummarizedAssetList = async (
     id: string,
     chain_id?: string
@@ -934,6 +940,188 @@ export class OpenApiService {
         chain_id,
       },
     });
+    return data;
+  };
+
+  parseTx = async ({
+    chainId,
+    tx,
+    origin,
+    addr,
+  }: {
+    chainId: string;
+    tx: Tx;
+    origin: string;
+    addr: string;
+  }): Promise<ParseTxResponse> => {
+    const { data } = await this.request.post('/v1/engine/action/parse_tx', {
+      chain_id: chainId,
+      tx,
+      origin,
+      user_addr: addr,
+    });
+    return data;
+  };
+
+  isSuspiciousToken = async (
+    id: string,
+    chainId: string
+  ): Promise<{ is_suspicious: boolean }> => {
+    const { data } = await this.request.get('/v1/engine/token/is_suspicious', {
+      params: {
+        chain_id: chainId,
+        id,
+      },
+    });
+    return data;
+  };
+
+  // Token 可充值的 CEX 列表
+  depositCexList = async (
+    id: string,
+    chainId: string
+  ): Promise<{ cex_list: Cex[] }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/token/deposit_cex_list',
+      {
+        params: {
+          chain_id: chainId,
+          id,
+        },
+      }
+    );
+    return data;
+  };
+
+  // 合约信用分
+  getContractCredit = async (
+    id: string,
+    chainId: string
+  ): Promise<ContractCredit> => {
+    const { data } = await this.request.get('/v1/engine/contract/credit', {
+      params: {
+        chain_id: chainId,
+        id,
+      },
+    });
+    return data;
+  };
+
+  // 是否跟地址交互过
+  hasInteraction = async (
+    addr: string,
+    chainId: string,
+    contractId: string
+  ): Promise<{ has_interaction: boolean }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/contract/has_interaction',
+      {
+        params: {
+          chain_id: chainId,
+          user_addr: addr,
+          contract_id: contractId,
+        },
+      }
+    );
+    return data;
+  };
+
+  // 授权风险敞口
+  tokenApproveExposure = async (
+    id: string,
+    chainId: string
+  ): Promise<{ usd_value: number }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/contract/token_approval_exposure',
+      {
+        params: {
+          chain_id: chainId,
+          id,
+        },
+      }
+    );
+    return data;
+  };
+
+  // 地址描述
+  addrDesc = async (id: string): Promise<AddrDescResponse> => {
+    const { data } = await this.request.get('/v1/engine/addr/desc', {
+      params: {
+        id,
+      },
+    });
+    return data;
+  };
+
+  // 两个地址是否发生过转账
+  hasTransfer = async (
+    chainId: string,
+    from: string,
+    to: string
+  ): Promise<{ has_transfer: boolean }> => {
+    const { data } = await this.request.get('/v1/engine/addr/has_transfer', {
+      params: {
+        chain_id: chainId,
+        from_addr: from,
+        to_addr: to,
+      },
+    });
+    return data;
+  };
+
+  isTokenContract = async (
+    chainId: string,
+    id: string
+  ): Promise<{ is_token: boolean }> => {
+    const { data } = await this.request.get('/v1/engine/contract/is_token', {
+      params: {
+        id,
+        chain_id: chainId,
+      },
+    });
+    return data;
+  };
+
+  addrUsedChainList = async (id: string): Promise<UsedChain[]> => {
+    const { data } = await this.request.get('/v1/engine/addr/used_chain_list', {
+      params: { id },
+    });
+    return data;
+  };
+
+  getTokenNFTExposure = async (
+    chainId: string,
+    id: string
+  ): Promise<{ usd_value: number }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/contract/top_nft_approval_exposure',
+      {
+        params: { chain_id: chainId, id },
+      }
+    );
+    return data;
+  };
+
+  getCollection = async (
+    chainId: string,
+    id: string
+  ): Promise<{ collection: CollectionWithFloorPrice }> => {
+    const { data } = await this.request.get('/v1/engine/collection', {
+      params: { chain_id: chainId, id },
+    });
+    return data;
+  };
+
+  isSuspiciousCollection = async (
+    chainId: string,
+    id: string
+  ): Promise<{ is_suspicious: boolean }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/collection/is_suspicious',
+      {
+        params: { chain_id: chainId, id },
+      }
+    );
     return data;
   };
 }

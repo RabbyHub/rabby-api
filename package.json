@@ -1,6 +1,6 @@
 {
   "name": "@debank/rabby-api",
-  "version": "0.5.31",
+  "version": "0.5.33",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -38,6 +38,7 @@
     "test": "jest",
     "build": "rimraf dist && tsc",
     "preversion": "npm run build",
+    "prepublishOnly": "npm run build",
     "prepare": "husky install"
   },
   "peerDependencies": {

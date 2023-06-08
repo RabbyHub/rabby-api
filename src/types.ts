@@ -119,7 +119,9 @@ export interface TokenItem {
   is_core: boolean;
   is_verified: boolean;
   is_wallet: boolean;
+  is_scam?: boolean;
   is_infinity?: boolean;
+  is_suspicious?: boolean;
   logo_url: string;
   name: string;
   optimized_symbol: string;
@@ -127,7 +129,7 @@ export interface TokenItem {
   symbol: string;
   time_at: number;
   usd_value?: number;
-  raw_amount?: number;
+  raw_amount?: string;
   raw_amount_hex_str?: string;
 }
 
@@ -138,6 +140,9 @@ export interface TransferingNFTItem {
     name: string;
     create_at: number;
     chains: string[];
+    is_suspicious?: boolean;
+    is_verified?: boolean;
+    floor_price?: number | null;
   };
   content: string;
   content_type: NFTItem['content_type'];
@@ -247,6 +252,10 @@ export interface NFTCollection {
   price: number;
   chain: string;
   tokens: NFTItem[];
+  floor_price: number;
+  is_scam: boolean;
+  is_suspicious: boolean;
+  is_verified: boolean;
 }
 
 export interface UserCollection {
@@ -290,8 +299,12 @@ export interface Collection {
   description: null | string;
   logo_url: string;
   is_core: boolean;
+  is_suspicious?: boolean;
+  is_verified?: boolean;
   contract_uuids: string[];
   create_at: number;
+  floor_price: number;
+  is_scam: boolean;
 }
 
 export interface TxDisplayItem extends TxHistoryItem {
@@ -719,4 +732,132 @@ export interface SummaryCoin {
 export interface Summary {
   token_list: SummaryToken[];
   coin_list: SummaryCoin[];
+}
+
+export interface Cex {
+  id: string;
+  logo_url: string;
+  name: string;
+  is_deposit: boolean;
+}
+
+export interface ContractCredit {
+  value: null | number;
+  popularity_level: 'very_low' | 'low' | 'medium' | 'high';
+  rank_at: number | null;
+}
+
+export interface ContractDesc {
+  multisig?: {
+    id: string;
+    logo_url: string;
+    name: string;
+  };
+  create_at: number;
+}
+
+export interface AddrDescResponse {
+  desc: {
+    cex?: Cex;
+    contract?: Record<string, ContractDesc>;
+    usd_value: number;
+    protocol?: Record<string, { id: string; logo_url: string; name: string }>;
+    born_at: number;
+    is_danger: boolean | null;
+    is_spam: boolean | null;
+    name: string;
+  };
+}
+
+export interface SendAction {
+  to: string;
+  token: TokenItem;
+}
+
+export interface RevokeTokenApproveAction {
+  spender: string;
+  token: TokenItem;
+}
+
+export interface WrapTokenAction {
+  pay_token: TokenItem;
+  receive_token: SwapReceiveToken;
+}
+
+export interface UnWrapTokenAction {
+  pay_token: TokenItem;
+  receive_token: SwapReceiveToken;
+}
+
+export interface ApproveAction {
+  spender: string;
+  token: TokenItem;
+}
+
+export interface SwapReceiveToken extends TokenItem {
+  min_amount: number;
+  min_raw_amount: string;
+}
+
+export interface SwapAction {
+  pay_token: TokenItem;
+  receive_token: SwapReceiveToken;
+  receiver: string;
+}
+export interface SendNFTAction {
+  to: string;
+  nft: NFTItem;
+}
+
+export interface ApproveNFTAction {
+  spender: string;
+  nft: NFTItem;
+}
+
+export type RevokeNFTAction = ApproveNFTAction;
+
+export interface ApproveNFTCollectionAction {
+  spender: string;
+  collection: NFTCollection;
+}
+
+export interface PushMultiSigAction {
+  multisig_id: string;
+}
+
+export type RevokeNFTCollectionAction = ApproveNFTCollectionAction;
+export interface ParseTxResponse {
+  action: {
+    type: string;
+    data:
+      | SwapAction
+      | ApproveAction
+      | SendAction
+      | SendNFTAction
+      | ApproveNFTAction
+      | RevokeNFTAction
+      | ApproveNFTCollectionAction
+      | RevokeNFTCollectionAction
+      | RevokeTokenApproveAction
+      | WrapTokenAction
+      | UnWrapTokenAction
+      | PushMultiSigAction
+      | null;
+  };
+  contract_call?: {
+    func: string;
+    contract: {
+      id: string;
+      protocol: {
+        name: string;
+        logo_url: string;
+      };
+    };
+  };
+}
+
+export interface CollectionWithFloorPrice {
+  id: string;
+  name: string;
+  floor_price: number;
 }
