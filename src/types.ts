@@ -782,11 +782,13 @@ export interface RevokeTokenApproveAction {
 export interface WrapTokenAction {
   pay_token: TokenItem;
   receive_token: SwapReceiveToken;
+  receiver: string;
 }
 
 export interface UnWrapTokenAction {
   pay_token: TokenItem;
   receive_token: SwapReceiveToken;
+  receiver: string;
 }
 
 export interface ApproveAction {
@@ -797,6 +799,23 @@ export interface ApproveAction {
 export interface SwapReceiveToken extends TokenItem {
   min_amount: number;
   min_raw_amount: string;
+}
+
+export interface CrossSwapAction {
+  pay_token: TokenItem;
+  receive_token: SwapReceiveToken;
+  receiver: string;
+}
+
+export interface CrossTokenAction {
+  pay_token: TokenItem;
+  receive_token: SwapReceiveToken;
+  receiver: string;
+}
+
+export interface RevokePermit2Action {
+  spender: string;
+  token: TokenItem;
 }
 
 export interface SwapAction {
@@ -842,6 +861,9 @@ export interface ParseTxResponse {
       | WrapTokenAction
       | UnWrapTokenAction
       | PushMultiSigAction
+      | CrossSwapAction
+      | CrossTokenAction
+      | RevokePermit2Action
       | null;
   };
   contract_call?: {
@@ -860,4 +882,104 @@ export interface CollectionWithFloorPrice {
   id: string;
   name: string;
   floor_price: number;
+}
+
+export type TypedDataActionName =
+  | 'permit1_approve_token'
+  | 'swap_token_order'
+  | 'permit2_approve_token'
+  | 'sell_nft_order'
+  | 'sign_multisig'
+  | 'buy_nft_order'
+  | 'create_key'
+  | 'verify_address';
+
+export interface BuyNFTOrderAction {
+  expire_at: string;
+  pay_token: TokenItem;
+  receive_nft: NFTItem;
+  receiver: string;
+  takers: string[];
+}
+
+export interface SellNFTOrderAction {
+  pay_nft: NFTItem;
+  receive_token: TokenItem;
+  receiver: string;
+  takers: string[];
+  expire_at: string;
+}
+
+export interface SwapTokenOrderAction {
+  pay_token: TokenItem;
+  receive_token: TokenItem;
+  receiver: string;
+  takers: string[];
+  expire_at: number | null;
+}
+
+export interface PermitAction {
+  spender: string;
+  token: TokenItem;
+}
+
+export interface PermitTokenItem extends TokenItem {
+  permit2_allowance_amount: number;
+  permit2_allowance_raw_amount: string;
+}
+
+export interface Permit2Action {
+  permit2_id: string;
+  spender: string;
+  token: PermitTokenItem;
+  expire_at: number | null;
+}
+
+export interface SignMultiSigActions {
+  multisig_id: string;
+}
+
+export interface ParseTypedDataResponse {
+  action: {
+    type: TypedDataActionName;
+    expire_at?: number;
+    data:
+      | SellNFTOrderAction
+      | BuyNFTOrderAction
+      | SwapTokenOrderAction
+      | PermitAction
+      | Permit2Action
+      | SignMultiSigActions
+      | CreateKeyAction
+      | VerifyAddressAction;
+  } | null;
+}
+
+export type TextActionName = 'create_key' | 'verify_address';
+
+export interface CreateKeyAction {
+  user: string;
+  allow_origins: string[];
+  protocol: {
+    name: string;
+    logo_url: string;
+  } | null;
+  desc: string;
+}
+
+export interface VerifyAddressAction {
+  user: string;
+  allow_origins: string[];
+  protocol: {
+    name: string;
+    logo_url: string;
+  } | null;
+  desc: string;
+}
+
+export interface ParseTextResponse {
+  action: {
+    type: TextActionName;
+    data: CreateKeyAction | VerifyAddressAction;
+  } | null;
 }
