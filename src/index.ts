@@ -978,6 +978,24 @@ export class OpenApiService {
     return data;
   };
 
+  depositCexSupport = async (
+    id: string,
+    chainId: string,
+    cexId: string
+  ): Promise<{ support: boolean }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/token/deposit_cex_support',
+      {
+        params: {
+          chain_id: chainId,
+          id,
+          cex_id: cexId,
+        },
+      }
+    );
+    return data;
+  };
+
   // Token 可充值的 CEX 列表
   depositCexList = async (
     id: string,
