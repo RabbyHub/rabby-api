@@ -40,6 +40,8 @@ import {
   AddrDescResponse,
   ParseTxResponse,
   CollectionWithFloorPrice,
+  ParseTypedDataResponse,
+  ParseTextResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -976,6 +978,24 @@ export class OpenApiService {
     return data;
   };
 
+  depositCexSupport = async (
+    id: string,
+    chainId: string,
+    cexId: string
+  ): Promise<{ support: boolean }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/token/deposit_cex_support',
+      {
+        params: {
+          chain_id: chainId,
+          id,
+          cex_id: cexId,
+        },
+      }
+    );
+    return data;
+  };
+
   // Token 可充值的 CEX 列表
   depositCexList = async (
     id: string,
@@ -1130,6 +1150,43 @@ export class OpenApiService {
   ): Promise<{ is_verified: boolean | null }> => {
     const { data } = await this.request.get('/v1/engine/origin/is_verified', {
       params: { origin },
+    });
+    return data;
+  };
+
+  parseTypedData = async ({
+    typedData,
+    origin,
+    address,
+  }: {
+    typedData: Record<string, any>;
+    origin: string;
+    address: string;
+  }): Promise<ParseTypedDataResponse> => {
+    const { data } = await this.request.post(
+      '/v1/engine/action/parse_typed_data',
+      {
+        typed_data: typedData,
+        origin,
+        user_addr: address,
+      }
+    );
+    return data;
+  };
+
+  parseText = async ({
+    text,
+    origin,
+    address,
+  }: {
+    text: string;
+    origin: string;
+    address: string;
+  }): Promise<ParseTextResponse> => {
+    const { data } = await this.request.post('/v1/engine/action/parse_text', {
+      text,
+      origin,
+      user_addr: address,
     });
     return data;
   };
