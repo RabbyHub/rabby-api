@@ -15,22 +15,11 @@ export const INITIAL_OPENAPI_URL = 'https://api.rabby.io';
 
 export { CHAINS };
 
-// only valid for all char is ascii
-export function shorthex2ascii(input: string) {
-  const hexes = input.match(/.{1,2}/g) || [];
-  let back = '';
-  for (let i = 0; i < hexes.length; i++) {
-    back += String.fromCharCode(parseInt(hexes[i], 16));
-  }
-
-  return back;
-}
-
 export const SIGN_HDS = [
-  /* 'x-api-ts' */ shorthex2ascii('782d6170692d7473'),
-  /* 'x-api-nonce' */ shorthex2ascii('782d6170692d6e6f6e6365'),
-  /* 'x-api-ver' */ shorthex2ascii('782d6170692d766572'),
-  /* 'x-api-sign' */ shorthex2ascii('782d6170692d7369676e'),
+  'x-api-ts',
+  'x-api-nonce',
+  'x-api-ver',
+  'x-api-sign',
 ] as const;
 
 export function genSignParams(config: AxiosRequestConfig) {

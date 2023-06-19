@@ -1,12 +1,12 @@
 {
-  "name": "@debank/rabby-api",
-  "version": "0.5.36",
+  "name": "@rabby-wallet/rabby-api",
+  "version": "0.6.0-alpha.0",
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "dependencies": {
     "@rabby-wallet/rabby-sign": "^0.3.2",
