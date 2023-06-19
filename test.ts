@@ -3,7 +3,7 @@ import {
   genSignParams,
   INITIAL_OPENAPI_URL,
   shorthex2ascii,
-  SIGN_HDS
+  SIGN_HDS,
 } from './src/utils';
 import mockAxios from 'jest-mock-axios';
 
@@ -12,8 +12,8 @@ describe('rabby-api', () => {
   beforeEach(() => {
     service = new OpenApiService({
       store: {
-        host: INITIAL_OPENAPI_URL
-      }
+        host: INITIAL_OPENAPI_URL,
+      },
     });
   });
 
@@ -38,16 +38,16 @@ describe('rabby-api', () => {
     expect(mockAxios.get).toHaveBeenCalledWith('/v1/wallet/recommend_chains', {
       params: {
         origin: 'origin',
-        user_addr: '0x'
-      }
+        user_addr: '0x',
+      },
     });
 
     const req = (await mockAxios.lastReqGet()) as any;
     expect(req.headers).toMatchObject({
       'x-api-nonce': expect.any(String),
       'x-api-sign': expect.any(String),
-      'x-api-ts': expect.any(Number),
-      'x-api-ver': expect.any(String)
+      'x-api-ts': expect.any(String),
+      'x-api-ver': expect.any(String),
     });
   });
 
@@ -61,7 +61,7 @@ describe('rabby-api', () => {
       .ethRpc('1', {
         origin: 'https://google.com',
         method: 'call',
-        params: []
+        params: [],
       })
       .then(thenFn)
       .catch(catchFn);
@@ -71,7 +71,7 @@ describe('rabby-api', () => {
       {
         chain_id: '1',
         method: 'call',
-        params: []
+        params: [],
       }
     );
 
@@ -79,8 +79,8 @@ describe('rabby-api', () => {
     expect(req.headers).toMatchObject({
       'x-api-nonce': expect.any(String),
       'x-api-sign': expect.any(String),
-      'x-api-ts': expect.any(Number),
-      'x-api-ver': expect.any(String)
+      'x-api-ts': expect.any(String),
+      'x-api-ver': expect.any(String),
     });
   });
 });
@@ -91,7 +91,7 @@ describe('utils', () => {
       'x-api-ts',
       'x-api-nonce',
       'x-api-ver',
-      'x-api-sign'
+      'x-api-sign',
     ]);
   });
 
@@ -103,15 +103,15 @@ describe('utils', () => {
     expect(
       genSignParams({
         method: 'get',
-        url: 'https://api.rabby.io/v1/wallet/recommend_chains?origin=https%3A%2F%2Fgoogle.com&user_addr=0x'
+        url: 'https://api.rabby.io/v1/wallet/recommend_chains?origin=https%3A%2F%2Fgoogle.com&user_addr=0x',
       })
     ).toEqual({
       method: 'GET',
       url: 'https://api.rabby.io/v1/wallet/recommend_chains',
       params: {
         origin: 'https://google.com',
-        user_addr: '0x'
-      }
+        user_addr: '0x',
+      },
     });
   });
 
@@ -123,16 +123,16 @@ describe('utils', () => {
         data: {
           chain_id: '1',
           method: 'call',
-          params: []
-        }
+          params: [],
+        },
       })
     ).toEqual({
       method: 'POST',
       url: 'https://api.rabby.io/v1/wallet/eth_rpc',
       params: {
         origin: 'https://google.com',
-        method: 'call'
-      }
+        method: 'call',
+      },
     });
   });
 });

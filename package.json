@@ -38,7 +38,7 @@
     "test": "jest",
     "build": "rimraf dist && tsc",
     "preversion": "npm run build",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && npm run test",
     "prepare": "husky install"
   },
   "peerDependencies": {
