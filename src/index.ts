@@ -8,7 +8,8 @@ import {
   SIGN_HDS,
   genSignParams,
 } from './utils';
-import * as sign from '@debank/isomorphic/es/sign-wasm-rabby';
+import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
+
 import {
   RPCResponse,
   ServerChain,
@@ -62,7 +63,19 @@ export class OpenApiService {
 
   setHost = async (host: string) => {
     this.store.host = host;
-    await this.init();
+    let hf = '';
+    if (!hf) {
+      // @ts-expect-error
+      if (typeof chrome?.runtime !== 'undefined') {
+        // @ts-expect-error
+        hf = chrome?.runtime?.getURL('bridge.html') || '';
+        // @ts-expect-error
+      } else if (typeof chrome?.extension !== 'undefined') {
+        // @ts-expect-error
+        hf = chrome?.extension?.getURL('bridge.html') || '';
+      }
+    }
+    await this.init(hf);
   };
 
   getHost = () => {
@@ -84,8 +97,8 @@ export class OpenApiService {
     this.adapter = adapter;
   }
 
-  init = async () => {
-    await sign.lW();
+  init = async (hf?: string) => {
+    await sign.lW(hf);
 
     if (!process.env.DEBUG) {
       this.store.host = INITIAL_OPENAPI_URL;
