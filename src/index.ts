@@ -63,12 +63,18 @@ export class OpenApiService {
 
   setHost = async (host: string) => {
     this.store.host = host;
-    const hf =
+    let hf = '';
+    if (!hf) {
       // @ts-expect-error
-      typeof chrome?.extension?.getURL === 'function'
-        ? // @ts-expect-error
-          chrome?.extension?.getURL('bridge.html')
-        : '';
+      if (typeof chrome?.runtime !== 'undefined') {
+        // @ts-expect-error
+        hf = chrome?.runtime?.getURL('bridge.html') || '';
+        // @ts-expect-error
+      } else if (typeof chrome?.extension !== 'undefined') {
+        // @ts-expect-error
+        hf = chrome?.extension?.getURL('bridge.html') || '';
+      }
+    }
     await this.init(hf);
   };
 
