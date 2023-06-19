@@ -7,8 +7,10 @@
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "outDir": "dist",
-    "declaration": true
+    "outDir": "es",
+    "declaration": true,
+    "declarationDir": "es",
+    "baseUrl": ".",
   },
   "include": ["src"]
 }

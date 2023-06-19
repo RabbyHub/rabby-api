@@ -54,6 +54,12 @@ interface Options {
   adapter?: AxiosAdapter;
 }
 
+interface InitOptions {
+  hf?: string;
+  isDebug?: boolean;
+  releaseVersion?: string;
+}
+
 const maxRPS = 500;
 
 export class OpenApiService {
@@ -63,18 +69,13 @@ export class OpenApiService {
 
   setHost = async (host: string) => {
     this.store.host = host;
-    let hf = '';
-    if (!hf) {
+    let hf =
       // @ts-expect-error
-      if (typeof chrome?.runtime !== 'undefined') {
-        // @ts-expect-error
-        hf = chrome?.runtime?.getURL('bridge.html') || '';
-        // @ts-expect-error
-      } else if (typeof chrome?.extension !== 'undefined') {
-        // @ts-expect-error
-        hf = chrome?.extension?.getURL('bridge.html') || '';
-      }
-    }
+      chrome?.runtime?.getURL?.('bridge.html') ||
+      // @ts-expect-error
+      chrome?.extension?.getURL?.('bridge.html') ||
+      '';
+
     await this.init(hf);
   };
 
@@ -97,10 +98,12 @@ export class OpenApiService {
     this.adapter = adapter;
   }
 
-  init = async (hf?: string) => {
-    await sign.lW(hf);
+  init = async (hf?: string | InitOptions) => {
+    const initOpts = typeof hf === 'string' ? { hf } : hf || {};
 
-    if (!process.env.DEBUG) {
+    await sign.lW(initOpts?.hf || '');
+
+    if (!initOpts?.isDebug) {
       this.store.host = INITIAL_OPENAPI_URL;
     }
 
@@ -109,7 +112,7 @@ export class OpenApiService {
       adapter: this.adapter,
       headers: {
         'X-Client': 'Rabby',
-        'X-Version': process.env.release ?? '0.0.0',
+        'X-Version': initOpts?.releaseVersion ?? '0.0.0',
       },
     });
 

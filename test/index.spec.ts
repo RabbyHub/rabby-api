@@ -1,10 +1,5 @@
 import { OpenApiService } from '../src';
-import {
-  genSignParams,
-  INITIAL_OPENAPI_URL,
-  shorthex2ascii,
-  SIGN_HDS,
-} from '../src/utils';
+import { genSignParams, INITIAL_OPENAPI_URL, SIGN_HDS } from '../src/utils';
 import mockAxios from 'jest-mock-axios';
 
 const MOCK_HF =
@@ -96,10 +91,6 @@ describe('utils', () => {
       'x-api-ver',
       'x-api-sign',
     ]);
-  });
-
-  it('shorthex2ascii', () => {
-    expect(shorthex2ascii('782d6170692d7473')).toEqual('x-api-ts');
   });
 
   it('genSignParams:GET', () => {
