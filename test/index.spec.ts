@@ -1,10 +1,10 @@
-import { OpenApiService } from './src';
+import { OpenApiService } from '../src';
 import {
   genSignParams,
   INITIAL_OPENAPI_URL,
   shorthex2ascii,
   SIGN_HDS,
-} from './src/utils';
+} from '../src/utils';
 import mockAxios from 'jest-mock-axios';
 
 const MOCK_HF =

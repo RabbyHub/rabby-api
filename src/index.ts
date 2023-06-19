@@ -8,7 +8,7 @@ import {
   SIGN_HDS,
   genSignParams,
 } from './utils';
-import * as sign from '@rabby-wallet/rabby-sign/es/sign-wasm-rabby';
+import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
 
 import {
   RPCResponse,
