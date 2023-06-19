@@ -63,18 +63,13 @@ export class OpenApiService {
 
   setHost = async (host: string) => {
     this.store.host = host;
-    let hf = '';
-    if (!hf) {
+    let hf =
       // @ts-expect-error
-      if (typeof chrome?.runtime !== 'undefined') {
-        // @ts-expect-error
-        hf = chrome?.runtime?.getURL('bridge.html') || '';
-        // @ts-expect-error
-      } else if (typeof chrome?.extension !== 'undefined') {
-        // @ts-expect-error
-        hf = chrome?.extension?.getURL('bridge.html') || '';
-      }
-    }
+      chrome?.runtime?.getURL?.('bridge.html') ||
+      // @ts-expect-error
+      chrome?.extension?.getURL?.('bridge.html') ||
+      '';
+
     await this.init(hf);
   };
 
@@ -113,7 +108,7 @@ export class OpenApiService {
       },
     });
 
-    // rateLimit 之后再签名，此时 timestamp 才是最新的
+    // sign after rateLimit, timestamp is the latest
     request.interceptors.request.use((config) => {
       const { method, url, params } = genSignParams(config);
 
