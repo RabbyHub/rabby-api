@@ -7,6 +7,9 @@ import {
 } from './src/utils';
 import mockAxios from 'jest-mock-axios';
 
+const MOCK_HF =
+  'chrome-extension://obkcgnighkbncpmikckhjejibagknpee/bridge.html';
+
 describe('rabby-api', () => {
   let service: OpenApiService;
   beforeEach(() => {
@@ -23,7 +26,7 @@ describe('rabby-api', () => {
   });
 
   it('init', async () => {
-    await service.init();
+    await service.init(MOCK_HF);
     expect(service.ethRpc).toBeDefined();
   });
 
@@ -31,7 +34,7 @@ describe('rabby-api', () => {
     const catchFn = jest.fn();
     const thenFn = jest.fn();
 
-    await service.init();
+    await service.init(MOCK_HF);
 
     service.getRecommendChains('0x', 'origin').then(thenFn).catch(catchFn);
 
@@ -55,7 +58,7 @@ describe('rabby-api', () => {
     const catchFn = jest.fn();
     const thenFn = jest.fn();
 
-    await service.init();
+    await service.init(MOCK_HF);
 
     service
       .ethRpc('1', {
