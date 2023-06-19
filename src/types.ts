@@ -597,6 +597,65 @@ export interface PoolItem {
   adapter_id: string;
   controller: string;
   time_at: number;
+  index?: number;
+}
+
+export interface PortfolioItemToken extends TokenItem {
+  claimable_amount?: number;
+}
+
+export type NftCollection = {
+  chain_id: string;
+  id: string;
+  name: string;
+  symbol?: string;
+  logo_url: string;
+  is_core: boolean;
+  amount?: number;
+  floor_price_token?: PortfolioItemToken;
+};
+
+export type PortfolioItemNft = {
+  id: string;
+  contract_id: string;
+  inner_id: string;
+  name: string;
+  content_url: string;
+  thumbnail_url: string;
+  collection: NftCollection;
+  amount: number;
+};
+
+export interface PortfolioItemDetail {
+  supply_token_list?: PortfolioItemToken[];
+  borrow_token_list?: PortfolioItemToken[];
+  health_rate?: number;
+  reward_token_list?: PortfolioItemToken[];
+  collateral_token_list?: PortfolioItemToken[];
+  token_list?: PortfolioItemToken[];
+  base_token?: PortfolioItemToken;
+  position_token?: PortfolioItemToken;
+  description?: string;
+  token?: PortfolioItemToken;
+  underlying_token?: PortfolioItemToken;
+  strike_token?: PortfolioItemToken;
+  quote_token?: PortfolioItemToken;
+  margin_token?: PortfolioItemToken;
+  supply_nft_list?: PortfolioItemNft[];
+  nft_list?: PortfolioItemNft[];
+  collection?: NftCollection;
+  share_token?: PortfolioItemToken;
+  exercise_end_at?: number;
+  type?: string;
+  side?: number;
+  leverage?: number;
+  expired_at: number;
+  end_at: number;
+  unlock_at: number;
+  debt_ratio?: number;
+  usd_value?: number;
+  daily_unlock_amount: number;
+  pnl_usd_value: number;
 }
 
 export interface PortfolioItem {
@@ -608,13 +667,9 @@ export interface PortfolioItem {
   };
   asset_dict: Record<string, number>;
   update_at: number;
-  name: number;
+  name: string;
   detail_types: string[];
-  detail: {
-    supply_token_list: TokenItem[];
-    reward_token_list: TokenItem[];
-    borrow_token_list: TokenItem[];
-  };
+  detail: PortfolioItemDetail;
   proxy_detail: {
     project: ProjectItem;
     proxy_contract_id: string;
