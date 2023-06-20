@@ -8,7 +8,8 @@ import {
   SIGN_HDS,
   genSignParams,
 } from './utils';
-import * as sign from '@debank/isomorphic/es/sign-wasm-rabby';
+import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
+
 import {
   RPCResponse,
   ServerChain,
@@ -62,7 +63,14 @@ export class OpenApiService {
 
   setHost = async (host: string) => {
     this.store.host = host;
-    await this.init();
+    let hf =
+      // @ts-expect-error
+      chrome?.runtime?.getURL?.('bridge.html') ||
+      // @ts-expect-error
+      chrome?.extension?.getURL?.('bridge.html') ||
+      '';
+
+    await this.init(hf);
   };
 
   getHost = () => {
@@ -84,8 +92,8 @@ export class OpenApiService {
     this.adapter = adapter;
   }
 
-  init = async () => {
-    await sign.lW();
+  init = async (hf?: string) => {
+    await sign.lW(hf);
 
     if (!process.env.DEBUG) {
       this.store.host = INITIAL_OPENAPI_URL;
@@ -100,7 +108,7 @@ export class OpenApiService {
       },
     });
 
-    // rateLimit 之后再签名，此时 timestamp 才是最新的
+    // sign after rateLimit, timestamp is the latest
     request.interceptors.request.use((config) => {
       const { method, url, params } = genSignParams(config);
 
