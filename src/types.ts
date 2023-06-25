@@ -321,6 +321,7 @@ export interface CollectionList {
   is_core: boolean;
   floor_price: number;
   nft_list: NFTItem[];
+  native_token: TokenItem;
 }
 
 export interface TxDisplayItem extends TxHistoryItem {
