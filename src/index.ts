@@ -43,6 +43,7 @@ import {
   CollectionWithFloorPrice,
   ParseTypedDataResponse,
   ParseTextResponse,
+  CollectionList,
 } from './types';
 
 interface OpenApiStore {
@@ -1206,6 +1207,25 @@ export class OpenApiService {
       text,
       origin,
       user_addr: address,
+    });
+    return data;
+  };
+
+  collectionList = async ({
+    id,
+    chainId,
+    isAll,
+  }: {
+    id: string;
+    chainId?: string;
+    isAll: boolean;
+  }): Promise<CollectionList[]> => {
+    const { data } = await this.request.get('/v1/user/collection_list', {
+      params: {
+        id,
+        chain_id: chainId,
+        is_all: isAll,
+      },
     });
     return data;
   };

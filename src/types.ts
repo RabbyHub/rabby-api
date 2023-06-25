@@ -307,6 +307,22 @@ export interface Collection {
   is_scam: boolean;
 }
 
+export interface CollectionList {
+  id: string;
+  chain: string;
+  name: string;
+  description: string;
+  logo_url: string;
+  is_verified: boolean;
+  credit_score: number;
+  receive_addr_count: number;
+  is_scam: boolean;
+  is_suspicious: boolean;
+  is_core: boolean;
+  floor_price: number;
+  nft_list: NFTItem[];
+}
+
 export interface TxDisplayItem extends TxHistoryItem {
   projectDict: TxHistoryResult['project_dict'];
   cateDict: TxHistoryResult['cate_dict'];
