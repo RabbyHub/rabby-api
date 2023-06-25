@@ -374,12 +374,19 @@ export class OpenApiService {
     return data;
   };
 
-  searchToken = async (id: string, q: string): Promise<TokenItem[]> => {
+  searchToken = async (
+    id: string,
+    q: string,
+    chainId?: string,
+    is_all = false
+  ): Promise<TokenItem[]> => {
     const { data } = await this.request.get('/v1/user/token_search', {
       params: {
         id,
         q,
         has_balance: false,
+        is_all,
+        chain_id: chainId,
       },
     });
 
