@@ -943,10 +943,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@debank/common@^0.2.23":
-  version "0.2.23"
-  resolved "https://registry.yarnpkg.com/@debank/common/-/common-0.2.23.tgz#db3290b994af3af4f21a867fb2781c571c69dda8"
-  integrity sha512-wRBK8CPwliOnBzaosqgddqYirOUau7sFiK+bgwuePRgLMoZbqSbMS8Q0Z9Qs46RvM1URH6Z3Vsvxy6UxMrP3Lg==
+"@debank/common@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@debank/common/-/common-0.3.4.tgz#38755904636ec5039e9eaf881e81f6ce184d94af"
+  integrity sha512-diJX5anOZwx8B8p6hzuufQAPrli7y0TNX/skrzr/Z9nv8/hk67aaGXoilMQnWn7OanhTNUr8hdo32zWFXlKEtw==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
