@@ -9,7 +9,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@debank/common": "^0.3.4",
     "@rabby-wallet/rabby-sign": "^0.3.3",
     "axios": "^0.27.2",
     "axios-rate-limit": "^1.3.0",
@@ -43,7 +42,7 @@
     "prepare": "husky install"
   },
   "peerDependencies": {
-    "@debank/common": ">= 0.3.x"
+    "@debank/common": "^0.3.5"
   },
   "author": "",
   "description": "",
