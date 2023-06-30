@@ -452,6 +452,7 @@ export interface ExplainTxResponse {
       msg: string;
     } | null;
   };
+  trace_id: string;
   recommend: {
     gas: string;
     nonce: string;
