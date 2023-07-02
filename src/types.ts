@@ -988,7 +988,7 @@ export interface SellNFTOrderAction {
 
 export interface BatchSellNFTOrderAction {
   pay_nft_list: NFTItem[];
-  receive_token: TokenItem[];
+  receive_token: TokenItem;
   receiver: string;
   takers: string[];
   expire_at: string;
