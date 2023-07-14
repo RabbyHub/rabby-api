@@ -966,7 +966,9 @@ export type TypedDataActionName =
   | 'sign_multisig'
   | 'buy_nft_order'
   | 'create_key'
-  | 'verify_address';
+  | 'verify_address'
+  | 'sell_nft_list_order'
+  | 'permit2_approve_token_list';
 
 export interface BuyNFTOrderAction {
   expire_at: string;
@@ -978,6 +980,14 @@ export interface BuyNFTOrderAction {
 
 export interface SellNFTOrderAction {
   pay_nft: NFTItem;
+  receive_token: TokenItem;
+  receiver: string;
+  takers: string[];
+  expire_at: string;
+}
+
+export interface BatchSellNFTOrderAction {
+  pay_nft_list: NFTItem[];
   receive_token: TokenItem;
   receiver: string;
   takers: string[];
@@ -1009,6 +1019,13 @@ export interface Permit2Action {
   expire_at: number | null;
 }
 
+export interface BatchPermit2Action {
+  permit2_id: string;
+  spender: string;
+  token_list: PermitTokenItem[];
+  expire_at: number | null;
+}
+
 export interface SignMultiSigActions {
   multisig_id: string;
 }
@@ -1025,7 +1042,9 @@ export interface ParseTypedDataResponse {
       | Permit2Action
       | SignMultiSigActions
       | CreateKeyAction
-      | VerifyAddressAction;
+      | VerifyAddressAction
+      | BatchSellNFTOrderAction
+      | BatchPermit2Action;
   } | null;
 }
 
