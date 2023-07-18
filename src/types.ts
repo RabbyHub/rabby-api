@@ -231,6 +231,13 @@ export interface Spender {
   is_abandoned: boolean;
   risk_alert: string;
   risk_level: string;
+  // only for NFTApproval, NFTApprovalContract
+  exposure_nft_usd_value?: number | null;
+  // only for TokenApproval
+  exposure_usd_value?: number | null;
+  approve_user_count?: number | null;
+  revoke_user_count?: number | null;
+  last_approve_at: number | null;
 }
 
 export interface AssetItem {
