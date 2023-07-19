@@ -7,8 +7,10 @@ import {
   CHAINS,
   SIGN_HDS,
   genSignParams,
+  INITIAL_TESTNET_OPENAPI_URL,
 } from './utils';
 import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
+import { TESTNET_CHAINS_LIST } from '@debank/common';
 
 import {
   RPCResponse,
@@ -48,6 +50,7 @@ import {
 
 interface OpenApiStore {
   host: string;
+  testnetHost?: string;
 }
 
 interface Options {
@@ -78,6 +81,14 @@ export class OpenApiService {
     return this.store.host;
   };
 
+  setTestnetHost = async (host: string) => {
+    this.store.testnetHost = host;
+  };
+
+  getTestnetHost = () => {
+    return this.store.testnetHost;
+  };
+
   ethRpc:
     | ((
         chainId: string,
@@ -98,6 +109,7 @@ export class OpenApiService {
 
     if (!process.env.DEBUG) {
       this.store.host = INITIAL_OPENAPI_URL;
+      this.store.testnetHost = INITIAL_TESTNET_OPENAPI_URL;
     }
 
     const request = axios.create({
@@ -146,14 +158,35 @@ export class OpenApiService {
     this._mountMethods();
   };
 
+  private _getRequestOptions = (chainId?: string) => {
+    if (!chainId) {
+      return;
+    }
+    const testnetHost = this.getTestnetHost();
+    if (!testnetHost) {
+      return;
+    }
+    const chain = getChain(chainId);
+    if (!chain?.isTestnet) {
+      return;
+    }
+    return {
+      baseURL: testnetHost,
+    };
+  };
+
   private _mountMethods = () => {
     this.ethRpc = (chain_id, { origin = 'rabby', method, params }) => {
       return this.request
-        .post(`/v1/wallet/eth_rpc?origin=${origin}&method=${method}`, {
-          chain_id,
-          method,
-          params,
-        })
+        .post(
+          `/v1/wallet/eth_rpc?origin=${origin}&method=${method}`,
+          {
+            chain_id,
+            method,
+            params,
+          },
+          this._getRequestOptions(chain_id)
+        )
         .then(({ data }: { data: RPCResponse<any> }) => {
           if (data?.error) {
             throw data.error;
@@ -302,19 +335,28 @@ export class OpenApiService {
     traceId: string,
     chainId: string
   ): Promise<void> => {
-    const { data } = await this.request.post('/v1/wallet/trace_tx', {
-      tx_id: txId,
-      trace_id: traceId,
-      chain_id: chainId,
-    });
+    const { data } = await this.request.post(
+      '/v1/wallet/trace_tx',
+      {
+        tx_id: txId,
+        trace_id: traceId,
+        chain_id: chainId,
+      },
+      this._getRequestOptions(chainId)
+    );
     return data;
   };
 
   pushTx = async (tx: Tx, traceId?: string) => {
-    const { data } = await this.request.post('/v1/wallet/push_tx', {
-      tx,
-      trace_id: traceId,
-    });
+    const chain = TESTNET_CHAINS_LIST.find((item) => item.id === tx.chainId);
+    const { data } = await this.request.post(
+      '/v1/wallet/push_tx',
+      {
+        tx,
+        trace_id: traceId,
+      },
+      this._getRequestOptions(chain?.serverId)
+    );
 
     return data;
   };
@@ -342,6 +384,7 @@ export class OpenApiService {
         chain_id: chainId,
         custom_price: customGas,
       },
+      ...this._getRequestOptions(chainId),
     });
 
     return data;
@@ -358,6 +401,7 @@ export class OpenApiService {
         gas_price: gasPrice,
         tx_id: hash,
       },
+      ...this._getRequestOptions(chainId),
     });
 
     return data;
@@ -389,6 +433,7 @@ export class OpenApiService {
         is_all,
         chain_id: chainId,
       },
+      ...this._getRequestOptions(chainId),
     });
 
     return data?.filter((token: { chain: string | undefined }) =>
@@ -409,7 +454,9 @@ export class OpenApiService {
         q,
         is_all,
       },
+      ...this._getRequestOptions(chainId),
     });
+
     return data;
   };
 
@@ -424,6 +471,7 @@ export class OpenApiService {
         chain_id: chainId,
         token_id: tokenId,
       },
+      ...this._getRequestOptions(chainId),
     });
 
     return data;
@@ -449,6 +497,7 @@ export class OpenApiService {
         is_all: isAll,
         chain_id: chainId,
       },
+      ...this._getRequestOptions(chainId),
     });
 
     return data?.filter((token: { chain: string | undefined }) =>
@@ -469,6 +518,7 @@ export class OpenApiService {
         time_at: params.timeAt,
         date_at: params.dateAt,
       },
+      ...this._getRequestOptions(params.chainId),
     });
 
     return data?.filter((token: { chain: string | undefined }) =>
@@ -480,10 +530,17 @@ export class OpenApiService {
     uuids: string[],
     id: string
   ): Promise<TokenItem[]> => {
-    const { data } = await this.request.post('/v1/user/specific_token_list', {
-      id,
-      uuids,
+    const chain = TESTNET_CHAINS_LIST.find((item) => {
+      return uuids?.find((uuid) => uuid.split(':')[0] === item.serverId);
     });
+    const { data } = await this.request.post(
+      '/v1/user/specific_token_list',
+      {
+        id,
+        uuids,
+      },
+      this._getRequestOptions(chain?.serverId)
+    );
 
     return data?.filter((token: { chain: string | undefined }) =>
       getChain(token.chain)
@@ -530,6 +587,7 @@ export class OpenApiService {
   }): Promise<TxHistoryResult> => {
     const { data } = await this.request.get('/v1/user/history_list', {
       params,
+      ...this._getRequestOptions(params.chain_id),
     });
     return data;
   };
@@ -558,6 +616,7 @@ export class OpenApiService {
         id,
         chain_id,
       },
+      ...this._getRequestOptions(chain_id),
     });
 
     return data;
@@ -572,6 +631,7 @@ export class OpenApiService {
         id,
         chain_id,
       },
+      ...this._getRequestOptions(chain_id),
     });
 
     return data;
@@ -590,6 +650,7 @@ export class OpenApiService {
       params: {
         chain_id,
       },
+      ...this._getRequestOptions(chain_id),
     });
     return data;
   };
@@ -618,6 +679,7 @@ export class OpenApiService {
       receive_token: TokenItem;
     }>('/v1/wallet/swap_quote', {
       params,
+      ...this._getRequestOptions(params?.chain_id),
     });
     return data;
   };
@@ -631,6 +693,7 @@ export class OpenApiService {
           chain_id: chainId,
           is_all: false,
         },
+        ...this._getRequestOptions(chainId),
       }
     );
     return data;
@@ -646,18 +709,22 @@ export class OpenApiService {
     fromTokenAmount: string;
     fromUsdValue: number;
   }) => {
-    const { data } = await this.request.post('/v1/wallet/gas_station_order', {
-      order: {
-        user_addr: params.userAddr,
-        from_chain_id: params.fromChainId,
-        from_tx_id: params.fromTxId,
-        from_token_id: params.fromTokenId,
-        from_token_amount: params.fromTokenAmount,
-        to_chain_id: params.toChainId,
-        to_token_amount: params.toTokenAmount,
-        from_usd_value: params.fromUsdValue,
+    const { data } = await this.request.post(
+      '/v1/wallet/gas_station_order',
+      {
+        order: {
+          user_addr: params.userAddr,
+          from_chain_id: params.fromChainId,
+          from_tx_id: params.fromTxId,
+          from_token_id: params.fromTokenId,
+          from_token_amount: params.fromTokenAmount,
+          to_chain_id: params.toChainId,
+          to_token_amount: params.toTokenAmount,
+          from_usd_value: params.fromUsdValue,
+        },
       },
-    });
+      this._getRequestOptions(params.fromChainId)
+    );
     return data;
   };
 
@@ -669,6 +736,7 @@ export class OpenApiService {
           chain_id,
           addr,
         },
+        ...this._getRequestOptions(chain_id),
       }
     );
     return data;
@@ -820,6 +888,7 @@ export class OpenApiService {
         id,
         time_at: timeAt,
       },
+      ...this._getRequestOptions(chainId),
     });
     return data;
   };
@@ -839,6 +908,7 @@ export class OpenApiService {
         ids,
         time_at: timeAt,
       },
+      ...this._getRequestOptions(chainId),
     });
     return data;
   };
@@ -868,6 +938,7 @@ export class OpenApiService {
   }): Promise<CEXQuote> => {
     const { data } = await this.request.get('/v1/wallet/cex_swap_quote', {
       params,
+      ...this._getRequestOptions(params?.chain_id),
     });
     return data;
   };
@@ -907,6 +978,7 @@ export class OpenApiService {
   }): Promise<SlippageStatus> => {
     const { data } = await this.request.get('/v1/wallet/check_slippage', {
       params,
+      ...this._getRequestOptions(params?.chain_id),
     });
     return data;
   };
@@ -961,6 +1033,7 @@ export class OpenApiService {
         id,
         chain_id,
       },
+      ...this._getRequestOptions(chain_id),
     });
     return data;
   };
@@ -976,12 +1049,16 @@ export class OpenApiService {
     origin: string;
     addr: string;
   }): Promise<ParseTxResponse> => {
-    const { data } = await this.request.post('/v1/engine/action/parse_tx', {
-      chain_id: chainId,
-      tx,
-      origin,
-      user_addr: addr,
-    });
+    const { data } = await this.request.post(
+      '/v1/engine/action/parse_tx',
+      {
+        chain_id: chainId,
+        tx,
+        origin,
+        user_addr: addr,
+      },
+      this._getRequestOptions(chainId)
+    );
     return data;
   };
 
@@ -994,6 +1071,7 @@ export class OpenApiService {
         chain_id: chainId,
         id,
       },
+      ...this._getRequestOptions(chainId),
     });
     return data;
   };
@@ -1011,6 +1089,7 @@ export class OpenApiService {
           id,
           cex_id: cexId,
         },
+        ...this._getRequestOptions(chainId),
       }
     );
     return data;
@@ -1028,6 +1107,7 @@ export class OpenApiService {
           chain_id: chainId,
           id,
         },
+        ...this._getRequestOptions(chainId),
       }
     );
     return data;
@@ -1043,6 +1123,7 @@ export class OpenApiService {
         chain_id: chainId,
         id,
       },
+      ...this._getRequestOptions(chainId),
     });
     return data;
   };
@@ -1061,6 +1142,7 @@ export class OpenApiService {
           user_addr: addr,
           contract_id: contractId,
         },
+        ...this._getRequestOptions(chainId),
       }
     );
     return data;
@@ -1078,6 +1160,7 @@ export class OpenApiService {
           chain_id: chainId,
           id,
         },
+        ...this._getRequestOptions(chainId),
       }
     );
     return data;
@@ -1105,6 +1188,7 @@ export class OpenApiService {
         from_addr: from,
         to_addr: to,
       },
+      ...this._getRequestOptions(chainId),
     });
     return data;
   };
@@ -1118,6 +1202,7 @@ export class OpenApiService {
         id,
         chain_id: chainId,
       },
+      ...this._getRequestOptions(chainId),
     });
     return data;
   };
@@ -1137,6 +1222,7 @@ export class OpenApiService {
       '/v1/engine/contract/top_nft_approval_exposure',
       {
         params: { chain_id: chainId, id },
+        ...this._getRequestOptions(chainId),
       }
     );
     return data;
@@ -1148,6 +1234,7 @@ export class OpenApiService {
   ): Promise<{ collection: CollectionWithFloorPrice }> => {
     const { data } = await this.request.get('/v1/engine/collection', {
       params: { chain_id: chainId, id },
+      ...this._getRequestOptions(chainId),
     });
     return data;
   };
@@ -1160,6 +1247,7 @@ export class OpenApiService {
       '/v1/engine/collection/is_suspicious',
       {
         params: { chain_id: chainId, id },
+        ...this._getRequestOptions(chainId),
       }
     );
     return data;
@@ -1226,6 +1314,7 @@ export class OpenApiService {
         chain_id: chainId,
         is_all: isAll,
       },
+      ...this._getRequestOptions(chainId),
     });
     return data;
   };
