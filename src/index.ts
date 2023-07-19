@@ -8,6 +8,7 @@ import {
   SIGN_HDS,
   genSignParams,
   INITIAL_TESTNET_OPENAPI_URL,
+  getChainByNetwork,
 } from './utils';
 import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
 import { TESTNET_CHAINS_LIST } from '@debank/common';
@@ -267,12 +268,16 @@ export class OpenApiService {
     address: string,
     update_nonce = false
   ): Promise<SecurityCheckResponse> => {
-    const { data } = await this.request.post('/v1/wallet/check_tx', {
-      user_addr: address,
-      origin,
-      tx,
-      update_nonce,
-    });
+    const { data } = await this.request.post(
+      '/v1/wallet/check_tx',
+      {
+        user_addr: address,
+        origin,
+        tx,
+        update_nonce,
+      },
+      this._getRequestOptions(getChainByNetwork(tx.chainId)?.serverId)
+    );
 
     return data;
   };
@@ -290,13 +295,17 @@ export class OpenApiService {
     updateNonce: boolean;
     pending_tx_list: Tx[];
   }): Promise<ExplainTxResponse> => {
-    const { data } = await this.request.post('/v1/wallet/pre_exec_tx', {
-      tx,
-      user_addr: address,
-      origin,
-      update_nonce: updateNonce,
-      pending_tx_list,
-    });
+    const { data } = await this.request.post(
+      '/v1/wallet/pre_exec_tx',
+      {
+        tx,
+        user_addr: address,
+        origin,
+        update_nonce: updateNonce,
+        pending_tx_list,
+      },
+      this._getRequestOptions(getChainByNetwork(tx.chainId)?.serverId)
+    );
 
     return data;
   };
@@ -307,9 +316,13 @@ export class OpenApiService {
   }): Promise<{
     gas_used: number;
   }> => {
-    const { data } = await this.request.post('/v1/wallet/history_tx_used_gas', {
-      ...params,
-    });
+    const { data } = await this.request.post(
+      '/v1/wallet/history_tx_used_gas',
+      {
+        ...params,
+      },
+      this._getRequestOptions(getChainByNetwork(params?.tx?.chainId)?.serverId)
+    );
 
     return data;
   };
@@ -320,12 +333,16 @@ export class OpenApiService {
     address: string,
     update_nonce = false
   ): Promise<Tx[]> => {
-    const { data } = await this.request.post('/v1/wallet/pending_tx_list', {
-      tx,
-      user_addr: address,
-      origin,
-      update_nonce,
-    });
+    const { data } = await this.request.post(
+      '/v1/wallet/pending_tx_list',
+      {
+        tx,
+        user_addr: address,
+        origin,
+        update_nonce,
+      },
+      this._getRequestOptions(getChainByNetwork(tx.chainId)?.serverId)
+    );
 
     return data;
   };
@@ -348,14 +365,13 @@ export class OpenApiService {
   };
 
   pushTx = async (tx: Tx, traceId?: string) => {
-    const chain = TESTNET_CHAINS_LIST.find((item) => item.id === tx.chainId);
     const { data } = await this.request.post(
       '/v1/wallet/push_tx',
       {
         tx,
         trace_id: traceId,
       },
-      this._getRequestOptions(chain?.serverId)
+      this._getRequestOptions(getChainByNetwork(tx.chainId)?.serverId)
     );
 
     return data;
@@ -966,7 +982,11 @@ export class OpenApiService {
     tx_id: string;
     tx: Tx;
   }) => {
-    const { data } = await this.request.post('/v1/wallet/swap_trade', params);
+    const { data } = await this.request.post(
+      '/v1/wallet/swap_trade',
+      params,
+      this._getRequestOptions(getChainByNetwork(params?.tx?.chainId)?.serverId)
+    );
     return data;
   };
 
