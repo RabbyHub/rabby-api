@@ -601,6 +601,7 @@ export class OpenApiService {
     pay_token_id: string;
     pay_token_raw_amount: string;
     receive_token_id: string;
+    slippage?: string | number;
   }) => {
     const { data } = await this.request.get<{
       receive_token_raw_amount: number;
