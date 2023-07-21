@@ -547,7 +547,7 @@ export class OpenApiService {
     id: string,
     isTestnet = false
   ): Promise<TokenItem[]> => {
-    if (uuids?.length || !id) {
+    if (!uuids?.length || !id) {
       return [];
     }
     const { data } = await this.request.post(
