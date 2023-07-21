@@ -132,6 +132,7 @@ export interface TokenItem {
   usd_value?: number;
   raw_amount?: string;
   raw_amount_hex_str?: string;
+  price_24h_change?: number | null;
 }
 
 export interface TransferingNFTItem {
