@@ -1230,4 +1230,13 @@ export class OpenApiService {
     });
     return data;
   };
+
+  gasPriceStats = async (chainId: string): Promise<{ median: number }> => {
+    const { data } = await this.request.get('/v1/wallet/gas_price_stats', {
+      params: {
+        chain_id: chainId,
+      },
+    });
+    return data;
+  };
 }
