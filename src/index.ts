@@ -542,25 +542,53 @@ export class OpenApiService {
     );
   };
 
-  customListToken = async (
+  _customListToken = async (
     uuids: string[],
-    id: string
+    id: string,
+    isTestnet = false
   ): Promise<TokenItem[]> => {
-    const chain = TESTNET_CHAINS_LIST.find((item) => {
-      return uuids?.find((uuid) => uuid.split(':')[0] === item.serverId);
-    });
+    if (uuids?.length || !id) {
+      return [];
+    }
     const { data } = await this.request.post(
       '/v1/user/specific_token_list',
       {
         id,
         uuids,
       },
-      this._getRequestOptions(chain?.serverId)
+      isTestnet && this.store.testnetHost
+        ? { baseURL: this.store.testnetHost }
+        : undefined
     );
 
     return data?.filter((token: { chain: string | undefined }) =>
       getChain(token.chain)
     );
+  };
+
+  customListToken = async (
+    uuids: string[],
+    id: string
+  ): Promise<TokenItem[]> => {
+    const mainnetIds: string[] = [];
+    const testnetIds: string[] = [];
+    uuids.forEach((uuid) => {
+      const serverId = uuid.split(':')[0];
+      const chain = getChain(serverId);
+
+      if (chain?.isTestnet) {
+        testnetIds.push(uuid);
+      } else {
+        mainnetIds.push(uuid);
+      }
+    });
+
+    const res = await Promise.all([
+      this._customListToken(mainnetIds, id),
+      this._customListToken(testnetIds, id, true),
+    ]);
+
+    return res.flat();
   };
 
   listChainAssets = async (id: string): Promise<AssetItem[]> => {
