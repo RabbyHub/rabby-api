@@ -1373,6 +1373,7 @@ export class OpenApiService {
       params: {
         chain_id: chainId,
       },
+      ...this._getRequestOptions(chainId),
     });
     return data;
   };
