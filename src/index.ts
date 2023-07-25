@@ -646,6 +646,7 @@ export class OpenApiService {
       params: {
         token: tokenName,
       },
+      ...this._getRequestOptions(tokenName?.split(':')?.[0]),
     });
 
     return data;
