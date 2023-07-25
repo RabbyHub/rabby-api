@@ -706,6 +706,7 @@ export class OpenApiService {
     pay_token_id: string;
     pay_token_raw_amount: string;
     receive_token_id: string;
+    slippage?: string | number;
   }) => {
     const { data } = await this.request.get<{
       receive_token_raw_amount: number;
@@ -1363,6 +1364,15 @@ export class OpenApiService {
         is_all: isAll,
       },
       ...this._getRequestOptions(chainId),
+    });
+    return data;
+  };
+
+  gasPriceStats = async (chainId: string): Promise<{ median: number }> => {
+    const { data } = await this.request.get('/v1/wallet/gas_price_stats', {
+      params: {
+        chain_id: chainId,
+      },
     });
     return data;
   };
