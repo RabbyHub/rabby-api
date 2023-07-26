@@ -1,52 +1,49 @@
+import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
 import axios, { AxiosAdapter } from 'axios';
 import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import { ethErrors } from 'eth-rpc-errors';
 import {
-  getChain,
-  INITIAL_OPENAPI_URL,
   CHAINS,
   SIGN_HDS,
   genSignParams,
-  INITIAL_TESTNET_OPENAPI_URL,
+  getChain,
   getChainByNetwork,
 } from './utils';
-import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
-import { TESTNET_CHAINS_LIST } from '@debank/common';
 
 import {
-  RPCResponse,
-  ServerChain,
-  TotalBalanceResponse,
+  AddrDescResponse,
+  ApprovalStatus,
+  AssetItem,
+  CEXQuote,
+  Cex,
   ChainWithPendingCount,
-  SecurityCheckResponse,
-  Tx,
+  Collection,
+  CollectionList,
+  CollectionWithFloorPrice,
+  ComplexProtocol,
+  ContractCredit,
   ExplainTxResponse,
+  ExplainTypedDataResponse,
   GasLevel,
   GetTxResponse,
-  TokenItem,
-  AssetItem,
-  NFTItem,
-  Collection,
-  TxHistoryResult,
-  TokenApproval,
   NFTApprovalResponse,
-  ApprovalStatus,
-  UsedChain,
-  Protocol,
-  ComplexProtocol,
-  ExplainTypedDataResponse,
-  SwapTradeList,
-  SlippageStatus,
-  CEXQuote,
-  Summary,
-  Cex,
-  ContractCredit,
-  AddrDescResponse,
-  ParseTxResponse,
-  CollectionWithFloorPrice,
-  ParseTypedDataResponse,
+  NFTItem,
   ParseTextResponse,
-  CollectionList,
+  ParseTxResponse,
+  ParseTypedDataResponse,
+  Protocol,
+  RPCResponse,
+  SecurityCheckResponse,
+  ServerChain,
+  SlippageStatus,
+  Summary,
+  SwapTradeList,
+  TokenApproval,
+  TokenItem,
+  TotalBalanceResponse,
+  Tx,
+  TxHistoryResult,
+  UsedChain,
 } from './types';
 
 interface OpenApiStore {
@@ -107,11 +104,6 @@ export class OpenApiService {
 
   init = async (hf?: string) => {
     await sign.lW(hf);
-
-    if (!process.env.DEBUG) {
-      this.store.host = INITIAL_OPENAPI_URL;
-      this.store.testnetHost = INITIAL_TESTNET_OPENAPI_URL;
-    }
 
     const request = axios.create({
       baseURL: this.store.host,
