@@ -1370,4 +1370,60 @@ export class OpenApiService {
     });
     return data;
   };
+
+  badgeHasClaimed = async (
+    id: string
+  ): Promise<
+    | {
+        id: string;
+        badge_id: number;
+        user_id: string;
+        inner_id: number;
+        create_at: number;
+        update_at: number;
+        has_claimed: true;
+      }
+    | { has_claimed: false }
+  > => {
+    const { data } = await this.request.get('/v1/badge/code/user_has_claimed', {
+      params: {
+        user_id: id,
+      },
+    });
+    return data;
+  };
+
+  badgeHasMinted = async (
+    id: string
+  ): Promise<
+    | {
+        id: string;
+        badge_id: number;
+        user_id: string;
+        inner_id: number;
+        usd_value: number;
+        tvf: number;
+        mint_at: number;
+        has_minted: true;
+      }
+    | { has_minted: false }
+  > => {
+    const { data } = await this.request.get('/v1/badge/user_has_minted', {
+      params: {
+        user_id: id,
+      },
+    });
+    return data;
+  };
+
+  mintBadge = async (params: {
+    code: string;
+    userAddr: string;
+  }): Promise<{ is_success: boolean; inner_id: number }> => {
+    const { data } = await this.request.post('/v1/badge/mint', {
+      code: params.code,
+      user_id: params.userAddr,
+    });
+    return data;
+  };
 }
