@@ -836,6 +836,7 @@ export interface ContractDesc {
     name: string;
   };
   create_at: number;
+  is_danger?: boolean | null;
 }
 
 export interface AddrDescResponse {
