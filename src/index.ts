@@ -1426,4 +1426,24 @@ export class OpenApiService {
     });
     return data;
   };
+
+  userHasRequestedFaucet = async (params: {
+    chain_id: string;
+    user_addr: string;
+  }): Promise<{ has_requested: boolean }> => {
+    const { data } = await this.request.get('/v1/faucet/user_has_requested', {
+      params,
+    });
+    return data;
+  };
+
+  requestFaucet = async (params: {
+    chain_id: string;
+    user_addr: string;
+  }): Promise<{ is_success: boolean }> => {
+    const { data } = await this.request.post('/v1/faucet/request', {
+      ...params,
+    });
+    return data;
+  };
 }
