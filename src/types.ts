@@ -371,6 +371,7 @@ export interface TxHistoryItem {
     to_addr: string;
     usd_gas_fee: number;
     value: number;
+    message: string | null;
   } | null;
 }
 export interface TxHistoryResult {
