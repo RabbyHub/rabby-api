@@ -26,6 +26,7 @@ import {
   ExplainTypedDataResponse,
   GasLevel,
   GetTxResponse,
+  MempoolCheckDetail,
   NFTApprovalResponse,
   NFTItem,
   ParseTextResponse,
@@ -43,6 +44,8 @@ import {
   TotalBalanceResponse,
   Tx,
   TxHistoryResult,
+  TxPushType,
+  TxRequest,
   UsedChain,
 } from './types';
 
@@ -1444,6 +1447,76 @@ export class OpenApiService {
     const { data } = await this.request.post('/v1/faucet/request', {
       ...params,
     });
+    return data;
+  };
+
+  gasSupportedPushType = async (
+    chainId: string
+  ): Promise<{ low_gas: boolean; mev: boolean }> => {
+    const { data } = await this.request.get('/v1/wallet/supported_push_type', {
+      params: {
+        chain_id: chainId,
+      },
+      ...this._getRequestOptions(chainId),
+    });
+    return data;
+  };
+
+  submitTx = async (postData: {
+    req_id?: string;
+    tx: Tx;
+    push_type: TxPushType;
+    low_gas_deadline?: number;
+  }): Promise<{ req: TxRequest }> => {
+    const { data } = await this.request.post(
+      '/v1/wallet/submit_tx',
+      {
+        ...postData,
+      },
+      this._getRequestOptions(getChainByNetwork(postData.tx.chainId)?.serverId)
+    );
+
+    return data;
+  };
+
+  getTxRequests = async (ids: string | string[]): Promise<TxRequest[]> => {
+    const { data } = await this.request.get('/v1/wallet/get_tx_requests', {
+      params: {
+        ids: Array.isArray(ids) ? ids.join(',') : ids,
+      },
+    });
+
+    return data;
+  };
+
+  withdrawTx = async (reqId: string): Promise<{ req: TxRequest }> => {
+    const { data } = await this.request.post('/v1/wallet/withdraw_tx', {
+      id: reqId,
+    });
+
+    return data;
+  };
+
+  retryPushTx = async (reqId: string): Promise<{ req: TxRequest }> => {
+    const { data } = await this.request.post('/v1/wallet/retry_push_tx', {
+      id: reqId,
+    });
+
+    return data;
+  };
+
+  mempoolChecks = async (
+    txId: string,
+    chainId: string
+  ): Promise<MempoolCheckDetail[]> => {
+    const { data } = await this.request.get('/v1/wallet/mempool_checks', {
+      params: {
+        tx_id: txId,
+        chain_id: chainId,
+      },
+      ...this._getRequestOptions(getChainByNetwork(chainId)?.serverId),
+    });
+
     return data;
   };
 }
