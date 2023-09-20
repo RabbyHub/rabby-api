@@ -1446,4 +1446,40 @@ export class OpenApiService {
     });
     return data;
   };
+
+  walletSupportChain = async (params: {
+    chain_id: string;
+    user_addr: string;
+  }): Promise<{ is_success: boolean; count: number }> => {
+    const { data } = await this.request.post(
+      '/v1/wallet/support_chain',
+      params
+    );
+    return data;
+  };
+
+  walletSupportOrigin = async (params: {
+    origin: string;
+    user_addr: string;
+    text: string;
+  }): Promise<{ is_success: boolean; count: number }> => {
+    const { data } = await this.request.post(
+      '/v1/wallet/support_origin',
+      params
+    );
+    return data;
+  };
+
+  walletSupportSelector = async (params: {
+    selector: string;
+    user_addr: string;
+    chain_id: string;
+    contract_id: string;
+  }): Promise<{ is_success: boolean; count: number }> => {
+    const { data } = await this.request.post(
+      '/v1/wallet/support_selector',
+      params
+    );
+    return data;
+  };
 }
