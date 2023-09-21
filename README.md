@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-npm install rabby-api @debank/common
+npm install @rabby-wallet/rabby-api @debank/common
 ```
 
 ## Usage
@@ -13,8 +13,8 @@ import { OpenApiService } from 'rabby-api';
 
 const service = new OpenApiService({
   store: {
-    host: 'https://api.rabby.io'
-  }
+    host: 'https://api.rabby.io',
+  },
 });
 
 // init service
