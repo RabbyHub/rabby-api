@@ -1467,6 +1467,7 @@ export class OpenApiService {
     tx: Tx;
     push_type: TxPushType;
     low_gas_deadline?: number;
+    origin?: string;
   }): Promise<{ req: TxRequest }> => {
     const { data } = await this.request.post(
       '/v1/wallet/submit_tx',
