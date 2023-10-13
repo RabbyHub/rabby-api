@@ -1086,3 +1086,29 @@ export interface ParseTextResponse {
     data: CreateKeyAction | VerifyAddressAction;
   } | null;
 }
+
+export type TxPushType = 'default' | 'low_gas' | 'mev';
+export interface TxRequest {
+  id: string;
+  chain_id: string;
+  user_addr: string;
+  nonce: number;
+  signed_tx: Tx;
+  tx_id?: null | string;
+  push_type: TxPushType;
+  push_status?: 'success' | 'failed';
+  push_at?: number | null;
+  is_withdraw: boolean;
+  create_at: number;
+  low_gas_deadline?: number;
+  is_finished: boolean;
+}
+
+export interface MempoolCheckDetail {
+  id: string;
+  chain_id: string;
+  tx_id: string;
+  check_at: string;
+  check_success: boolean;
+  rpc: string;
+}
