@@ -1,5 +1,5 @@
 import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
-import axios, { AxiosAdapter } from 'axios';
+import axios, { AxiosAdapter, AxiosRequestConfig } from 'axios';
 import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import { ethErrors } from 'eth-rpc-errors';
 import {
@@ -8,6 +8,7 @@ import {
   genSignParams,
   getChain,
   getChainByNetwork,
+  sleep,
 } from './utils';
 
 import {
@@ -26,6 +27,7 @@ import {
   ExplainTypedDataResponse,
   GasLevel,
   GetTxResponse,
+  JobResponse,
   MempoolCheckDetail,
   NFTApprovalResponse,
   NFTItem,
@@ -43,11 +45,14 @@ import {
   TokenItem,
   TotalBalanceResponse,
   Tx,
+  TxAllHistoryResult,
   TxHistoryResult,
   TxPushType,
   TxRequest,
   UsedChain,
 } from './types';
+import { ASYNC_JOB_RETRY_DELAY, ASYNC_JOB_TIMEOUT } from './const';
+import { omit } from 'lodash';
 
 interface OpenApiStore {
   host: string;
@@ -152,6 +157,43 @@ export class OpenApiService {
       return response;
     });
     this._mountMethods();
+  };
+
+  asyncJob = <T = any>(
+    url: string,
+    options?: AxiosRequestConfig & {
+      retryDelay?: number;
+    }
+  ): Promise<T> => {
+    const _option = {
+      timeout: ASYNC_JOB_TIMEOUT,
+      retryDelay: ASYNC_JOB_RETRY_DELAY,
+      ...options,
+    };
+    const startTime = +new Date();
+
+    return this.request(
+      url,
+      omit(
+        {
+          method: 'GET',
+          ..._option,
+        },
+        'retryDelay'
+      )
+    ).then((res) => {
+      const data: JobResponse<T> = res.data;
+      if (data.result) {
+        return data.result.data;
+      }
+
+      const deltaTime = +new Date() - startTime;
+      _option.timeout = _option.timeout - deltaTime - _option.retryDelay;
+
+      return sleep(_option.retryDelay, _option.signal).then(() =>
+        this.asyncJob(url, _option)
+      );
+    });
   };
 
   private _getRequestOptions = (chainId?: string) => {
@@ -628,6 +670,22 @@ export class OpenApiService {
       params,
       ...this._getRequestOptions(params.chain_id),
     });
+    return data;
+  };
+
+  getAllTxHistory = async (
+    params: {
+      id: string;
+      start_time?: number;
+    },
+    options?: Parameters<typeof this.asyncJob>[1]
+  ): Promise<TxAllHistoryResult> => {
+    const data = await this.asyncJob('/v1/user/history_all_list', {
+      method: 'GET',
+      params,
+      ...options,
+    });
+
     return data;
   };
 

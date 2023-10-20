@@ -56,3 +56,25 @@ export function genSignParams(config: AxiosRequestConfig) {
     params,
   };
 }
+
+export function sleep(ms = 0, signal?: AbortController['signal']) {
+  if (signal?.aborted || ms < 0) {
+    return Promise.reject(new DOMException('Aborted', 'AbortError'));
+  }
+
+  return new Promise<void>((resolve, reject) => {
+    const abortHandler = () => {
+      clearTimeout(timer);
+      reject(new DOMException('Aborted', 'AbortError'));
+      signal?.removeEventListener('abort', abortHandler);
+    };
+
+    signal?.addEventListener('abort', abortHandler);
+
+    const timer = setTimeout(() => {
+      resolve();
+
+      signal?.removeEventListener('abort', abortHandler);
+    }, ms);
+  });
+}
