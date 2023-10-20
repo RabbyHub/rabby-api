@@ -172,34 +172,28 @@ export class OpenApiService {
     };
     const startTime = +new Date();
 
-    return (
-      this.request(
-        url,
-        omit(
-          {
-            method: 'GET',
-            ..._option,
-          },
-          'retryDelay'
-        )
+    return this.request(
+      url,
+      omit(
+        {
+          method: 'GET',
+          ..._option,
+        },
+        'retryDelay'
       )
-        // 内部报错会抛在外面的 error_code
-        // 如果有 result，表示 job 执行是成功的
-        .then((res) => {
-          const data: JobResponse<T> = res.data;
-          // 有未过期的结果
-          if (data.result) {
-            return data.result.data;
-          }
+    ).then((res) => {
+      const data: JobResponse<T> = res.data;
+      if (data.result) {
+        return data.result.data;
+      }
 
-          const deltaTime = +new Date() - startTime;
-          _option.timeout = _option.timeout - deltaTime - _option.retryDelay;
-          // 继续请求，默认 5s 间隔
-          return sleep(_option.retryDelay, _option.signal).then(() =>
-            this.asyncJob(url, _option)
-          );
-        })
-    );
+      const deltaTime = +new Date() - startTime;
+      _option.timeout = _option.timeout - deltaTime - _option.retryDelay;
+
+      return sleep(_option.retryDelay, _option.signal).then(() =>
+        this.asyncJob(url, _option)
+      );
+    });
   };
 
   private _getRequestOptions = (chainId?: string) => {
