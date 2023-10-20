@@ -388,6 +388,12 @@ export interface TxHistoryResult {
   >;
   token_dict: Record<string, TokenItem>;
 }
+
+export interface TxAllHistoryResult
+  extends Omit<TxHistoryResult, 'token_dict'> {
+  token_uuid_dict: Record<string, TokenItem>;
+}
+
 export interface GasResult {
   estimated_gas_cost_usd_value: number;
   estimated_gas_cost_value: number;
@@ -1111,4 +1117,15 @@ export interface MempoolCheckDetail {
   check_at: string;
   check_success: boolean;
   rpc: string;
+}
+
+export interface JobResponse<T = any> {
+  create_at: number;
+  id: string;
+  result: {
+    create_at: number;
+    id: string;
+    data: T;
+  };
+  job: { create_at: number; id: string; status: 'pending' | 'running' } | null;
 }
