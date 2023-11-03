@@ -62,7 +62,7 @@ interface OpenApiStore {
 }
 
 interface Options {
-  store: OpenApiStore;
+  store: OpenApiStore | Promise<OpenApiStore>;
   adapter?: AxiosAdapter;
 }
 
@@ -108,7 +108,13 @@ export class OpenApiService {
   adapter?: AxiosAdapter;
 
   constructor({ store, adapter }: Options) {
-    this.store = store;
+    if (store instanceof Promise) {
+      store.then((resolvedStore) => {
+        this.store = resolvedStore;
+      });
+    } else {
+      this.store = store;
+    }
     this.adapter = adapter;
   }
 
