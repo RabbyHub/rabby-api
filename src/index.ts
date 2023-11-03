@@ -28,12 +28,14 @@ import {
   GasLevel,
   GetTxResponse,
   JobResponse,
+  LatestExplainTxResponse,
   MempoolCheckDetail,
   NFTApprovalResponse,
   NFTItem,
   ParseTextResponse,
   ParseTxResponse,
   ParseTypedDataResponse,
+  PendingTxItem,
   Protocol,
   RPCResponse,
   SecurityCheckResponse,
@@ -1548,6 +1550,16 @@ export class OpenApiService {
     return data;
   };
 
+  getTxRequest = async (id: string): Promise<TxRequest> => {
+    const { data } = await this.request.get('/v1/wallet/get_tx_request', {
+      params: {
+        id,
+      },
+    });
+
+    return data;
+  };
+
   withdrawTx = async (reqId: string): Promise<{ req: TxRequest }> => {
     const { data } = await this.request.post('/v1/wallet/withdraw_tx', {
       id: reqId,
@@ -1566,14 +1578,42 @@ export class OpenApiService {
 
   mempoolChecks = async (
     txId: string,
-    chainId: string
+    chainId: string,
+    node_info?: boolean
   ): Promise<MempoolCheckDetail[]> => {
     const { data } = await this.request.get('/v1/wallet/mempool_checks', {
       params: {
         tx_id: txId,
         chain_id: chainId,
+        node_info: node_info ? 1 : 0,
       },
       ...this._getRequestOptions(getChainByNetwork(chainId)?.serverId),
+    });
+    return data;
+  };
+
+  getPendingTxList = async (
+    params: {
+      chain_id: string;
+    },
+    options?: Parameters<typeof this.asyncJob>[1]
+  ): Promise<{
+    pending_tx_list: PendingTxItem[];
+    token_dict: Record<string, TokenItem | NFTItem>;
+  }> => {
+    const data = await this.asyncJob('/v1/wallet/get_pending_tx_list', {
+      params,
+      ...this._getRequestOptions(getChainByNetwork(params.chain_id)?.serverId),
+      ...options,
+    });
+    return data;
+  };
+
+  getLatestPreExec = async (params: {
+    id: string;
+  }): Promise<LatestExplainTxResponse> => {
+    const { data } = await this.request.get('/v1/wallet/get_latest_pre_exec', {
+      params,
     });
     return data;
   };

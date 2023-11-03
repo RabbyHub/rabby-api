@@ -413,15 +413,15 @@ export interface GasLevel {
   base_fee: number;
 }
 
-export interface BalanceChange {
+export interface BalanceChange<T = TokenItem, N = TransferingNFTItem> {
   error?: {
     code: number;
     msg: string;
   } | null;
-  receive_nft_list: TransferingNFTItem[];
-  receive_token_list: TokenItem[];
-  send_nft_list: TransferingNFTItem[];
-  send_token_list: TokenItem[];
+  receive_nft_list: N[];
+  receive_token_list: T[];
+  send_nft_list: N[];
+  send_token_list: T[];
   success: boolean;
   usd_value_change: number;
 }
@@ -567,6 +567,15 @@ export interface ExplainTxResponse {
     }[];
     buyer_list: { id: string }[];
   };
+}
+
+export interface LatestExplainTxResponse {
+  id: string;
+  tx_id: string;
+  block_height: number;
+  gas_used: number;
+  pre_exec_result: PreExecResult;
+  create_at: number;
 }
 
 export interface RPCResponse<T> {
@@ -1108,6 +1117,7 @@ export interface TxRequest {
   create_at: number;
   low_gas_deadline?: number;
   is_finished: boolean;
+  predict_packed_at?: number;
 }
 
 export interface MempoolCheckDetail {
@@ -1117,6 +1127,10 @@ export interface MempoolCheckDetail {
   check_at: string;
   check_success: boolean;
   rpc: string;
+
+  name?: string;
+  operator?: string;
+  packed_rate?: number;
 }
 
 export interface JobResponse<T = any> {
@@ -1128,4 +1142,53 @@ export interface JobResponse<T = any> {
     data: T;
   };
   job: { create_at: number; id: string; status: 'pending' | 'running' } | null;
+}
+
+export interface PreExecResult {
+  balance_change: BalanceChange;
+  gas: {
+    success?: boolean;
+    error?: {
+      code: number;
+      msg: string;
+    } | null;
+    gas_used: number;
+    gas_limit: number;
+  };
+  is_multisig: boolean;
+  // todo
+  multisig?: null;
+  pre_exec: {
+    success: boolean;
+    error?: {
+      code: number;
+      msg: string;
+    } | null;
+  };
+}
+export interface PendingTxItem {
+  id: string;
+  action_data: ParseTxResponse['action']['data'];
+  action_type: ParseTxResponse['action']['type'];
+  block_height?: number | null;
+  gas_price?: number | null;
+  gas_used?: number | null;
+  pre_exec_at?: number | null;
+  pre_exec_result?: Omit<PreExecResult, 'balance_change'> & {
+    balance_change: BalanceChange<
+      {
+        token_id: string;
+        amount: number;
+      },
+      {
+        token_id: string;
+        amount: number;
+      }
+    >;
+  };
+  to_addr: string;
+  to_addr_desc: {
+    cex?: Cex | null;
+    protocol?: { id: string; logo_url: string; name: string };
+  };
 }
