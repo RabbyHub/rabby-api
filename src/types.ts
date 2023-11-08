@@ -1177,10 +1177,12 @@ export interface PendingTxItem {
   pre_exec_result?: Omit<PreExecResult, 'balance_change'> & {
     balance_change: BalanceChange<
       {
+        chain: string;
         token_id: string;
         amount: number;
       },
       {
+        chain: string;
         token_id: string;
         amount: number;
       }
