@@ -984,7 +984,11 @@ export type TypedDataActionName =
   | 'create_key'
   | 'verify_address'
   | 'sell_nft_list_order'
-  | 'permit2_approve_token_list';
+  | 'permit2_approve_token_list'
+  | 'create_cobo_safe'
+  | 'submit_safe_role_modification'
+  | 'submit_delegated_address_modification'
+  | 'submit_token_approval_modification';
 
 export interface BuyNFTOrderAction {
   expire_at: string;
@@ -1046,6 +1050,42 @@ export interface SignMultiSigActions {
   multisig_id: string;
 }
 
+export interface CreateCoboSafeAction {
+  multisig_id: string;
+  desc: string;
+  brand: {
+    name: string;
+    logo_url: string;
+  };
+}
+
+export interface SubmitSafeRoleModificationAction {
+  multisig_id: string;
+  desc: string;
+  brand: {
+    name: string;
+    logo_url: string;
+  };
+}
+
+export interface SubmitDelegatedAddressModificationAction {
+  multisig_id: string;
+  desc: string;
+  brand: {
+    name: string;
+    logo_url: string;
+  };
+}
+
+export interface SubmitTokenApprovalModificationAction {
+  multisig_id: string;
+  desc: string;
+  brand: {
+    name: string;
+    logo_url: string;
+  };
+}
+
 export interface ParseTypedDataResponse {
   action: {
     type: TypedDataActionName;
@@ -1060,7 +1100,11 @@ export interface ParseTypedDataResponse {
       | CreateKeyAction
       | VerifyAddressAction
       | BatchSellNFTOrderAction
-      | BatchPermit2Action;
+      | BatchPermit2Action
+      | CreateCoboSafeAction
+      | SubmitSafeRoleModificationAction
+      | SubmitDelegatedAddressModificationAction
+      | SubmitTokenApprovalModificationAction;
   } | null;
 }
 
