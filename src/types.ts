@@ -1200,8 +1200,7 @@ export interface PreExecResult {
     gas_limit: number;
   };
   is_multisig: boolean;
-  // todo
-  multisig?: null;
+  multisig?: any;
   pre_exec: {
     success: boolean;
     error?: {
