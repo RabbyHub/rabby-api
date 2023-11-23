@@ -410,6 +410,7 @@ export interface GasLevel {
   price: number;
   front_tx_count: number;
   estimated_seconds: number;
+  priority_price: number | null;
   base_fee: number;
 }
 
