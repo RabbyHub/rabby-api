@@ -1163,6 +1163,8 @@ export interface TxRequest {
   low_gas_deadline?: number;
   is_finished: boolean;
   predict_packed_at?: number;
+  predict_err_code?: number;
+  push_at_list?: number[];
 }
 
 export interface MempoolCheckDetail {
