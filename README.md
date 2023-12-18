@@ -15,8 +15,8 @@ import { WebSignApiPlugin } from 'rabby-api/dist/plugins/web-sign.ts';
 const service = new OpenApiService({
   store: {
     host: 'https://api.rabby.io',
-    // you can also customize plugin as you requirement
   },
+  // you can also customize plugin as you requirement
   plugin: WebSignApiPlugin,
 });
 
