@@ -1,10 +1,8 @@
-import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
 import axios, { AxiosAdapter, AxiosRequestConfig } from 'axios';
 import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import { ethErrors } from 'eth-rpc-errors';
 import {
   CHAINS,
-  SIGN_HDS,
   genSignParams,
   getChain,
   getChainByNetwork,
@@ -55,6 +53,7 @@ import {
 } from './types';
 import { ASYNC_JOB_RETRY_DELAY, ASYNC_JOB_TIMEOUT } from './const';
 import { omit } from 'lodash';
+import { RabbyApiPlugin } from './plugins/intf';
 
 interface OpenApiStore {
   host: string;
@@ -63,6 +62,7 @@ interface OpenApiStore {
 
 interface Options {
   store: OpenApiStore | Promise<OpenApiStore>;
+  plugin: RabbyApiPlugin;
   adapter?: AxiosAdapter;
 }
 
@@ -72,6 +72,8 @@ export class OpenApiService {
   store!: OpenApiStore;
 
   request!: RateLimitedAxiosInstance;
+
+  #plugin: RabbyApiPlugin;
 
   setHost = async (host: string) => {
     this.store.host = host;
@@ -107,7 +109,7 @@ export class OpenApiService {
   };
   adapter?: AxiosAdapter;
 
-  constructor({ store, adapter }: Options) {
+  constructor({ store, plugin, adapter }: Options) {
     if (store instanceof Promise) {
       store.then((resolvedStore) => {
         this.store = resolvedStore;
@@ -115,11 +117,14 @@ export class OpenApiService {
     } else {
       this.store = store;
     }
+    this.#plugin = plugin;
     this.adapter = adapter;
   }
 
   init = async (hf?: string) => {
-    await sign.lW(hf);
+    await this.#plugin.onInitiate({
+      webHr: hf,
+    });
 
     const request = axios.create({
       baseURL: this.store.host,
@@ -131,16 +136,13 @@ export class OpenApiService {
     });
 
     // sign after rateLimit, timestamp is the latest
-    request.interceptors.request.use((config) => {
+    request.interceptors.request.use(async (config) => {
       const { method, url, params } = genSignParams(config);
 
-      const res = sign.cattleGsW(params, method, url);
-
-      config.headers = config.headers || {};
-      config.headers[SIGN_HDS[0]] = encodeURIComponent(res.ts);
-      config.headers[SIGN_HDS[1]] = encodeURIComponent(res.nonce);
-      config.headers[SIGN_HDS[2]] = encodeURIComponent(res.version);
-      config.headers[SIGN_HDS[3]] = encodeURIComponent(res.signature);
+      await this.#plugin.onSignRequest({
+        axiosRequestConfig: config,
+        parsed: { method, url, params },
+      });
 
       return config;
     });

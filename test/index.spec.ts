@@ -1,6 +1,9 @@
-import { OpenApiService } from '../src';
-import { genSignParams, INITIAL_OPENAPI_URL, SIGN_HDS } from '../src/utils';
 import mockAxios from 'jest-mock-axios';
+
+import { OpenApiService } from '../src';
+import { genSignParams, INITIAL_OPENAPI_URL } from '../src/utils';
+import { SIGN_HDS } from '../src/const';
+import { WebSignApiPlugin } from '../src/plugins/web-sign';
 
 const MOCK_HF =
   'chrome-extension://obkcgnighkbncpmikckhjejibagknpee/bridge.html';
@@ -12,6 +15,7 @@ describe('rabby-api', () => {
       store: {
         host: INITIAL_OPENAPI_URL,
       },
+      plugin: WebSignApiPlugin,
     });
   });
 
