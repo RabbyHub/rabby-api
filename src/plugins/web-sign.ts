@@ -4,8 +4,8 @@ import { RabbyApiPlugin } from './intf';
 import { SIGN_HDS } from '../const';
 
 export const WebSignApiPlugin: RabbyApiPlugin = {
-  async onInitiate(options) {
-    await sign.lW(options?.webHr);
+  async onInitiateAsync(options) {
+    await sign.lW(options?.webHf);
   },
 
   async onSignRequest(ctx) {

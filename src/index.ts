@@ -53,7 +53,7 @@ import {
 } from './types';
 import { ASYNC_JOB_RETRY_DELAY, ASYNC_JOB_TIMEOUT } from './const';
 import { omit } from 'lodash';
-import { RabbyApiPlugin } from './plugins/intf';
+import { InitOptions, RabbyApiPlugin } from './plugins/intf';
 
 interface OpenApiStore {
   host: string;
@@ -64,27 +64,65 @@ interface Options {
   store: OpenApiStore | Promise<OpenApiStore>;
   plugin: RabbyApiPlugin;
   adapter?: AxiosAdapter;
+  clientName?: string;
+  clientVersion?: string;
 }
 
 const maxRPS = 500;
+
+function getHf() {
+  const hf =
+    // @ts-expect-error
+    chrome?.runtime?.getURL?.('bridge.html') ||
+    // @ts-expect-error
+    chrome?.extension?.getURL?.('bridge.html') ||
+    '';
+
+  return hf;
+}
 
 export class OpenApiService {
   store!: OpenApiStore;
 
   request!: RateLimitedAxiosInstance;
 
+  #adapter?: AxiosAdapter;
   #plugin: RabbyApiPlugin;
+
+  #clientName: string;
+  #clientVersion: string;
+
+  constructor({
+    store,
+    plugin,
+    adapter,
+    clientName = 'Rabby',
+    clientVersion = process.env.release ?? '0.0.0',
+  }: Options) {
+    if (store instanceof Promise) {
+      store.then((resolvedStore) => {
+        this.store = resolvedStore;
+      });
+    } else {
+      this.store = store;
+    }
+    this.#plugin = plugin;
+
+    this.#clientName = clientName;
+    this.#clientVersion = clientVersion;
+    this.#adapter = adapter;
+  }
 
   setHost = async (host: string) => {
     this.store.host = host;
-    let hf =
-      // @ts-expect-error
-      chrome?.runtime?.getURL?.('bridge.html') ||
-      // @ts-expect-error
-      chrome?.extension?.getURL?.('bridge.html') ||
-      '';
 
-    await this.init(hf);
+    await this.init({ webHf: getHf() });
+  };
+
+  setHostSync = (host: string) => {
+    this.store.host = host;
+
+    this.initSync({ webHf: getHf() });
   };
 
   getHost = () => {
@@ -107,31 +145,24 @@ export class OpenApiService {
     | (() => Promise<never>) = async () => {
     throw ethErrors.provider.disconnected();
   };
-  adapter?: AxiosAdapter;
 
-  constructor({ store, plugin, adapter }: Options) {
-    if (store instanceof Promise) {
-      store.then((resolvedStore) => {
-        this.store = resolvedStore;
-      });
-    } else {
-      this.store = store;
-    }
-    this.#plugin = plugin;
-    this.adapter = adapter;
-  }
+  init = async (options?: string | InitOptions) => {
+    options = typeof options === 'string' ? { webHf: options } : options;
 
-  init = async (hf?: string) => {
-    await this.#plugin.onInitiate({
-      webHr: hf,
-    });
+    await this.#plugin.onInitiateAsync?.({ ...options });
+
+    this.initSync({ ...options });
+  };
+
+  initSync(options?: InitOptions) {
+    this.#plugin.onInitiate?.({ ...options });
 
     const request = axios.create({
       baseURL: this.store.host,
-      adapter: this.adapter,
+      adapter: this.#adapter,
       headers: {
-        'X-Client': 'Rabby',
-        'X-Version': process.env.release ?? '0.0.0',
+        'X-Client': this.#clientName,
+        'X-Version': this.#clientVersion,
       },
     });
 
@@ -167,7 +198,7 @@ export class OpenApiService {
       return response;
     });
     this._mountMethods();
-  };
+  }
 
   asyncJob = <T = any>(
     url: string,
