@@ -3,9 +3,23 @@ import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
 import { RabbyApiPlugin } from './intf';
 import { SIGN_HDS } from '../const';
 
+function getWebHf() {
+  const hf =
+    // @ts-expect-error
+    typeof chrome === 'undefined'
+      ? ''
+      : // @ts-expect-error
+        chrome?.runtime?.getURL?.('bridge.html') ||
+        // @ts-expect-error
+        chrome?.extension?.getURL?.('bridge.html') ||
+        '';
+
+  return hf;
+}
+
 export const WebSignApiPlugin: RabbyApiPlugin = {
   async onInitiateAsync(options) {
-    await sign.lW(options?.webHf);
+    await sign.lW(options?.webHf || getWebHf());
   },
 
   async onSignRequest(ctx) {

@@ -1,6 +1,9 @@
 import type { AxiosRequestConfig } from 'axios';
 
 export type InitOptions = {
+  /**
+   * @deprecated legacy option, don't need to use it anymore
+   */
   webHf?: string;
 };
 
