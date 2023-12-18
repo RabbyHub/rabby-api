@@ -64,19 +64,24 @@ interface Options {
   store: OpenApiStore | Promise<OpenApiStore>;
   plugin: RabbyApiPlugin;
   adapter?: AxiosAdapter;
+
   clientName?: string;
   clientVersion?: string;
+  clientWebHf?: string;
 }
 
 const maxRPS = 500;
 
-function getHf() {
+function getWebHf() {
   const hf =
     // @ts-expect-error
-    chrome?.runtime?.getURL?.('bridge.html') ||
-    // @ts-expect-error
-    chrome?.extension?.getURL?.('bridge.html') ||
-    '';
+    typeof chrome === 'undefined'
+      ? ''
+      : // @ts-expect-error
+        chrome?.runtime?.getURL?.('bridge.html') ||
+        // @ts-expect-error
+        chrome?.extension?.getURL?.('bridge.html') ||
+        '';
 
   return hf;
 }
@@ -91,6 +96,7 @@ export class OpenApiService {
 
   #clientName: string;
   #clientVersion: string;
+  #clientWebHf?: string;
 
   constructor({
     store,
@@ -98,6 +104,7 @@ export class OpenApiService {
     adapter,
     clientName = 'Rabby',
     clientVersion = process.env.release ?? '0.0.0',
+    clientWebHf = getWebHf(),
   }: Options) {
     if (store instanceof Promise) {
       store.then((resolvedStore) => {
@@ -107,22 +114,23 @@ export class OpenApiService {
       this.store = store;
     }
     this.#plugin = plugin;
+    this.#adapter = adapter;
 
     this.#clientName = clientName;
     this.#clientVersion = clientVersion;
-    this.#adapter = adapter;
+    this.#clientWebHf = clientWebHf;
   }
 
   setHost = async (host: string) => {
     this.store.host = host;
 
-    await this.init({ webHf: getHf() });
+    await this.init({ webHf: this.#clientWebHf });
   };
 
   setHostSync = (host: string) => {
     this.store.host = host;
 
-    this.initSync({ webHf: getHf() });
+    this.initSync({ webHf: this.#clientWebHf });
   };
 
   getHost = () => {
