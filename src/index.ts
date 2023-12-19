@@ -15,6 +15,7 @@ import {
   AddrDescResponse,
   ApprovalStatus,
   AssetItem,
+  BasicDappInfo,
   CEXQuote,
   Cex,
   ChainWithPendingCount,
@@ -1657,6 +1658,25 @@ export class OpenApiService {
       '/v1/wallet/support_selector',
       params
     );
+    return data;
+  };
+
+  searchDapp = async (params: { q: string }): Promise<BasicDappInfo[]> => {
+    const { data } = await this.request.get('/v1/dapp/search', { params });
+    return data;
+  };
+
+  getDappsInfo = async (params: {
+    ids: string[];
+  }): Promise<BasicDappInfo[]> => {
+    const { data } = await this.request.get('/v1/dapp/list', { params });
+    return data;
+  };
+
+  getHotDapps = async (params?: {
+    limit: number;
+  }): Promise<BasicDappInfo[]> => {
+    const { data } = await this.request.get('/v1/dapp/hot_list', { params });
     return data;
   };
 }
