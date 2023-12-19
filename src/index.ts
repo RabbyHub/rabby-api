@@ -1,10 +1,8 @@
-import * as sign from '@rabby-wallet/rabby-sign/umd/sign-wasm-rabby';
 import axios, { AxiosAdapter, AxiosRequestConfig } from 'axios';
 import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import { ethErrors } from 'eth-rpc-errors';
 import {
   CHAINS,
-  SIGN_HDS,
   genSignParams,
   getChain,
   getChainByNetwork,
@@ -55,6 +53,7 @@ import {
 } from './types';
 import { ASYNC_JOB_RETRY_DELAY, ASYNC_JOB_TIMEOUT } from './const';
 import { omit } from 'lodash';
+import { InitOptions, RabbyApiPlugin } from './plugins/intf';
 
 interface OpenApiStore {
   host: string;
@@ -63,7 +62,11 @@ interface OpenApiStore {
 
 interface Options {
   store: OpenApiStore | Promise<OpenApiStore>;
+  plugin: RabbyApiPlugin;
   adapter?: AxiosAdapter;
+
+  clientName?: string;
+  clientVersion?: string;
 }
 
 const maxRPS = 500;
@@ -73,16 +76,43 @@ export class OpenApiService {
 
   request!: RateLimitedAxiosInstance;
 
+  #adapter?: AxiosAdapter;
+  #plugin: RabbyApiPlugin;
+
+  #clientName: string;
+  #clientVersion: string;
+
+  constructor({
+    store,
+    plugin,
+    adapter,
+    clientName = 'Rabby',
+    clientVersion = process.env.release ?? '0.0.0',
+  }: Options) {
+    if (store instanceof Promise) {
+      store.then((resolvedStore) => {
+        this.store = resolvedStore;
+      });
+    } else {
+      this.store = store;
+    }
+    this.#plugin = plugin;
+    this.#adapter = adapter;
+
+    this.#clientName = clientName;
+    this.#clientVersion = clientVersion;
+  }
+
   setHost = async (host: string) => {
     this.store.host = host;
-    let hf =
-      // @ts-expect-error
-      chrome?.runtime?.getURL?.('bridge.html') ||
-      // @ts-expect-error
-      chrome?.extension?.getURL?.('bridge.html') ||
-      '';
 
-    await this.init(hf);
+    await this.init();
+  };
+
+  setHostSync = (host: string) => {
+    this.store.host = host;
+
+    this.initSync();
   };
 
   getHost = () => {
@@ -105,42 +135,35 @@ export class OpenApiService {
     | (() => Promise<never>) = async () => {
     throw ethErrors.provider.disconnected();
   };
-  adapter?: AxiosAdapter;
 
-  constructor({ store, adapter }: Options) {
-    if (store instanceof Promise) {
-      store.then((resolvedStore) => {
-        this.store = resolvedStore;
-      });
-    } else {
-      this.store = store;
-    }
-    this.adapter = adapter;
-  }
+  init = async (options?: string | InitOptions) => {
+    options = typeof options === 'string' ? { webHf: options } : options;
 
-  init = async (hf?: string) => {
-    await sign.lW(hf);
+    await this.#plugin.onInitiateAsync?.({ ...options });
+
+    this.initSync({ ...options });
+  };
+
+  initSync(options?: InitOptions) {
+    this.#plugin.onInitiate?.({ ...options });
 
     const request = axios.create({
       baseURL: this.store.host,
-      adapter: this.adapter,
+      adapter: this.#adapter,
       headers: {
-        'X-Client': 'Rabby',
-        'X-Version': process.env.release ?? '0.0.0',
+        'X-Client': this.#clientName,
+        'X-Version': this.#clientVersion,
       },
     });
 
     // sign after rateLimit, timestamp is the latest
-    request.interceptors.request.use((config) => {
+    request.interceptors.request.use(async (config) => {
       const { method, url, params } = genSignParams(config);
 
-      const res = sign.cattleGsW(params, method, url);
-
-      config.headers = config.headers || {};
-      config.headers[SIGN_HDS[0]] = encodeURIComponent(res.ts);
-      config.headers[SIGN_HDS[1]] = encodeURIComponent(res.nonce);
-      config.headers[SIGN_HDS[2]] = encodeURIComponent(res.version);
-      config.headers[SIGN_HDS[3]] = encodeURIComponent(res.signature);
+      await this.#plugin.onSignRequest({
+        axiosRequestConfig: config,
+        parsed: { method, url, params },
+      });
 
       return config;
     });
@@ -165,7 +188,7 @@ export class OpenApiService {
       return response;
     });
     this._mountMethods();
-  };
+  }
 
   asyncJob = <T = any>(
     url: string,

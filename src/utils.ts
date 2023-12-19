@@ -28,13 +28,6 @@ export const INITIAL_TESTNET_OPENAPI_URL = 'https://api.testnet.rabby.io/';
 
 export { CHAINS };
 
-export const SIGN_HDS = [
-  'x-api-ts',
-  'x-api-nonce',
-  'x-api-ver',
-  'x-api-sign',
-] as const;
-
 export function genSignParams(config: AxiosRequestConfig) {
   let params = omitBy(config.params ?? {}, isNil);
   const method = (config.method ?? 'GET').toUpperCase() as any;
