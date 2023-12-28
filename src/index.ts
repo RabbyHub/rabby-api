@@ -183,7 +183,11 @@ export class OpenApiService {
           }
           throw err;
         }
-        throw new Error(response.data);
+        throw new Error(
+          typeof response.data === 'string'
+            ? response.data
+            : JSON.stringify(response.data)
+        );
       }
       return response;
     });

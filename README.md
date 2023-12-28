@@ -9,8 +9,8 @@ npm install @rabby-wallet/rabby-api @debank/common
 ## Usage
 
 ```ts
-import { OpenApiService } from 'rabby-api';
-import { WebSignApiPlugin } from 'rabby-api/dist/plugins/web-sign.ts';
+import { OpenApiService } from '@rabby-wallet/rabby-api';
+import { WebSignApiPlugin } from '@rabby-wallet/rabby-api/dist/plugins/web-sign.ts';
 
 const service = new OpenApiService({
   store: {

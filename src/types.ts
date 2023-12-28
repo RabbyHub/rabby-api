@@ -106,6 +106,8 @@ export interface Eip1559Tx {
 export interface TotalBalanceResponse {
   total_usd_value: number;
   chain_list: ChainWithBalance[];
+  error_code?: number;
+  err_chain_ids?: string[];
 }
 
 export interface TokenItem {
