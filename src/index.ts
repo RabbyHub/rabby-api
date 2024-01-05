@@ -1661,7 +1661,19 @@ export class OpenApiService {
     return data;
   };
 
-  searchDapp = async (params: { q: string }): Promise<BasicDappInfo[]> => {
+  searchDapp = async (params?: {
+    q?: string;
+    chain_id?: string;
+    start?: number;
+    limit?: number;
+  }): Promise<{
+    page: {
+      limit: number;
+      start: number;
+      total: number;
+    };
+    dapps: BasicDappInfo[];
+  }> => {
     const { data } = await this.request.get('/v1/dapp/search', { params });
     return data;
   };
@@ -1669,7 +1681,11 @@ export class OpenApiService {
   getDappsInfo = async (params: {
     ids: string[];
   }): Promise<BasicDappInfo[]> => {
-    const { data } = await this.request.get('/v1/dapp/list', { params });
+    const { data } = await this.request.get('/v1/dapp/list', {
+      params: {
+        ids: params?.ids?.join(','),
+      },
+    });
     return data;
   };
 

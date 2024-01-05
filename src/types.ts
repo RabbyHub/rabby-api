@@ -1248,4 +1248,5 @@ export interface BasicDappInfo {
   description: string;
   user_range: string;
   tags: string[];
+  chain_ids: string[];
 }
