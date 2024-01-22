@@ -1242,3 +1242,13 @@ export interface PendingTxItem {
     protocol?: { id: string; logo_url: string; name: string };
   };
 }
+
+export interface BasicDappInfo {
+  id: string;
+  name: string;
+  logo_url: string | null;
+  description: string;
+  user_range: string;
+  tags: string[];
+  chain_ids: string[];
+}
