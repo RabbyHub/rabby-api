@@ -1716,6 +1716,13 @@ export class OpenApiService {
     return data;
   };
 
+  getDappHotTags = async (params?: { limit: number }): Promise<string[]> => {
+    const { data } = await this.request.get('/v1/dapp/hot_tags', {
+      params,
+    });
+    return data;
+  };
+
   getHotDapps = async (params?: {
     limit: number;
   }): Promise<BasicDappInfo[]> => {
