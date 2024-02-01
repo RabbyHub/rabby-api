@@ -1251,4 +1251,8 @@ export interface BasicDappInfo {
   user_range: string;
   tags: string[];
   chain_ids: string[];
+  collected_list?: {
+    name: string;
+    logo_url: string;
+  }[];
 }
