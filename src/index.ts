@@ -41,6 +41,7 @@ import {
   ServerChain,
   SlippageStatus,
   Summary,
+  SupportedChain,
   SwapTradeList,
   TokenApproval,
   TokenItem,
@@ -1869,6 +1870,11 @@ export class OpenApiService {
       '/v1/points/claim_campaign',
       params
     );
+    return data;
+  };
+
+  getSupportedChains = async (): Promise<SupportedChain[]> => {
+    const { data } = await this.request.get('/v1/wallet/supported_chains');
     return data;
   };
 }
