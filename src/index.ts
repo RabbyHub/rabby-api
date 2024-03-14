@@ -1178,6 +1178,30 @@ export class OpenApiService {
     return data;
   };
 
+  unexpectedAddrList = async ({
+    chainId,
+    tx,
+    origin,
+    addr,
+  }: {
+    chainId: string;
+    tx: Tx;
+    origin: string;
+    addr: string;
+  }): Promise<{ id: string }[]> => {
+    const { data } = await this.request.post(
+      '/v1/engine/addr/unexpected_list',
+      {
+        chain_id: chainId,
+        tx,
+        origin,
+        user_addr: addr,
+      },
+      this._getRequestOptions(chainId)
+    );
+    return data;
+  };
+
   parseTx = async ({
     chainId,
     tx,
