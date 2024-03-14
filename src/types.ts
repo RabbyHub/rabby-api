@@ -1269,6 +1269,7 @@ export interface SupportedChain {
   };
   logo_url: string;
   white_logo_url?: string;
+  need_estimate_gas?: boolean;
   eip_1559: boolean;
   is_disabled: boolean;
   explorer_host: string;
