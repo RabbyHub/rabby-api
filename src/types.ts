@@ -1274,3 +1274,21 @@ export interface SupportedChain {
   is_disabled: boolean;
   explorer_host: string;
 }
+
+export interface HistoryCurve {
+  create_at: number;
+  executor_name: string;
+  executor_params: { addr: string };
+  executor_version: string;
+  id: string;
+  job?: null | {
+    create_at: number;
+    id: string;
+    status: 'pending' | 'running';
+  };
+  result?: null | {
+    create_at: number;
+    data: { usd_value_list: number[][] };
+    id: number;
+  };
+}
