@@ -26,6 +26,7 @@ import {
   ExplainTypedDataResponse,
   GasLevel,
   GetTxResponse,
+  HistoryCurve,
   JobResponse,
   LatestExplainTxResponse,
   MempoolCheckDetail,
@@ -1899,6 +1900,20 @@ export class OpenApiService {
 
   getSupportedChains = async (): Promise<SupportedChain[]> => {
     const { data } = await this.request.get('/v1/wallet/supported_chains');
+    return data;
+  };
+
+  getHistoryCurve = async (addr: string): Promise<HistoryCurve> => {
+    const { data } = await this.request.get('v1/user/history_curve', {
+      params: { id: addr },
+    });
+    return data;
+  };
+
+  getHistoryCurveSupportedList = async (): Promise<{
+    supported_chains: string[];
+  }> => {
+    const { data } = await this.request.get('v1/chain/classify_supported_list');
     return data;
   };
 }
