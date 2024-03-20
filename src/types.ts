@@ -1000,7 +1000,8 @@ export type TypedDataActionName =
   | 'create_cobo_safe'
   | 'submit_safe_role_modification'
   | 'submit_delegated_address_modification'
-  | 'submit_token_approval_modification';
+  | 'submit_token_approval_modification'
+  | 'send_token';
 
 export interface BuyNFTOrderAction {
   expire_at: string;
@@ -1116,7 +1117,8 @@ export interface ParseTypedDataResponse {
       | CreateCoboSafeAction
       | SubmitSafeRoleModificationAction
       | SubmitDelegatedAddressModificationAction
-      | SubmitTokenApprovalModificationAction;
+      | SubmitTokenApprovalModificationAction
+      | SendAction;
   } | null;
 }
 
