@@ -1904,7 +1904,7 @@ export class OpenApiService {
   };
 
   getHistoryCurve = async (addr: string): Promise<HistoryCurve> => {
-    const { data } = await this.request.get('v1/user/history_curve', {
+    const { data } = await this.request.get('/v1/user/history_curve', {
       params: { id: addr },
     });
     return data;
@@ -1913,7 +1913,33 @@ export class OpenApiService {
   getHistoryCurveSupportedList = async (): Promise<{
     supported_chains: string[];
   }> => {
-    const { data } = await this.request.get('v1/chain/classify_supported_list');
+    const { data } = await this.request.get(
+      '/v1/chain/classify_supported_list'
+    );
+    return data;
+  };
+
+  getHistoryCurveStatus = async (params: {
+    id: string;
+  }): Promise<{
+    failed_msg: Record<string, string>;
+    id: string;
+    status: 'pending' | 'running' | 'finished' | 'failed';
+    update_at: number;
+  }> => {
+    const { data } = await this.request.get('/v1/user/history_curve/status', {
+      params,
+    });
+    return data;
+  };
+
+  initHistoryCurve = async (params: {
+    id: string;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post(
+      '/v1/user/history_curve/init',
+      params
+    );
     return data;
   };
 }
