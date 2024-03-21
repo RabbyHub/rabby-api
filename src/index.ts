@@ -27,6 +27,7 @@ import {
   ExplainTypedDataResponse,
   GasLevel,
   GetTxResponse,
+  HistoryCurve,
   JobResponse,
   LatestExplainTxResponse,
   MempoolCheckDetail,
@@ -1179,6 +1180,30 @@ export class OpenApiService {
     return data;
   };
 
+  unexpectedAddrList = async ({
+    chainId,
+    tx,
+    origin,
+    addr,
+  }: {
+    chainId: string;
+    tx: Tx;
+    origin: string;
+    addr: string;
+  }): Promise<{ id: string }[]> => {
+    const { data } = await this.request.post(
+      '/v1/engine/addr/unexpected_list',
+      {
+        chain_id: chainId,
+        tx,
+        origin,
+        user_addr: addr,
+      },
+      this._getRequestOptions(chainId)
+    );
+    return data;
+  };
+
   parseTx = async ({
     chainId,
     tx,
@@ -1894,6 +1919,45 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/chain/total_list', {
       params,
     });
+    return data;
+  };
+  getHistoryCurve = async (addr: string): Promise<HistoryCurve> => {
+    const { data } = await this.request.get('/v1/user/history_curve', {
+      params: { id: addr },
+    });
+    return data;
+  };
+
+  getHistoryCurveSupportedList = async (): Promise<{
+    supported_chains: string[];
+  }> => {
+    const { data } = await this.request.get(
+      '/v1/chain/classify_supported_list'
+    );
+    return data;
+  };
+
+  getHistoryCurveStatus = async (params: {
+    id: string;
+  }): Promise<{
+    failed_msg: Record<string, string>;
+    id: string;
+    status: 'pending' | 'running' | 'finished' | 'failed';
+    update_at: number;
+  }> => {
+    const { data } = await this.request.get('/v1/user/history_curve/status', {
+      params,
+    });
+    return data;
+  };
+
+  initHistoryCurve = async (params: {
+    id: string;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post(
+      '/v1/user/history_curve/init',
+      params
+    );
     return data;
   };
 }

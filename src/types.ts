@@ -1000,7 +1000,8 @@ export type TypedDataActionName =
   | 'create_cobo_safe'
   | 'submit_safe_role_modification'
   | 'submit_delegated_address_modification'
-  | 'submit_token_approval_modification';
+  | 'submit_token_approval_modification'
+  | 'send_token';
 
 export interface BuyNFTOrderAction {
   expire_at: string;
@@ -1116,7 +1117,8 @@ export interface ParseTypedDataResponse {
       | CreateCoboSafeAction
       | SubmitSafeRoleModificationAction
       | SubmitDelegatedAddressModificationAction
-      | SubmitTokenApprovalModificationAction;
+      | SubmitTokenApprovalModificationAction
+      | SendAction;
   } | null;
 }
 
@@ -1286,4 +1288,21 @@ export interface ChainListItem {
   };
   explorer: string | null;
   rpc: null | string;
+}
+export interface HistoryCurve {
+  create_at: number;
+  executor_name: string;
+  executor_params: { addr: string };
+  executor_version: string;
+  id: string;
+  job?: null | {
+    create_at: number;
+    id: string;
+    status: 'pending' | 'running';
+  };
+  result?: null | {
+    create_at: number;
+    data: { usd_value_list: number[][] };
+    id: number;
+  };
 }
