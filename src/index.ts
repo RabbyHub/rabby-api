@@ -16,6 +16,7 @@ import {
   BasicDappInfo,
   CEXQuote,
   Cex,
+  ChainListItem,
   ChainWithPendingCount,
   Collection,
   CollectionList,
@@ -1875,6 +1876,24 @@ export class OpenApiService {
 
   getSupportedChains = async (): Promise<SupportedChain[]> => {
     const { data } = await this.request.get('/v1/wallet/supported_chains');
+    return data;
+  };
+
+  searchChainList = async (params?: {
+    limit?: number;
+    start?: number;
+    q?: string;
+  }): Promise<{
+    page: {
+      start: number;
+      limit: number;
+      total: number;
+    };
+    chain_list: ChainListItem[];
+  }> => {
+    const { data } = await this.request.get('/v1/chain/total_list', {
+      params,
+    });
     return data;
   };
 }
