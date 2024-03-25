@@ -1321,3 +1321,50 @@ export interface HistoryCurve {
     id: number;
   };
 }
+
+export interface NodeStatus {
+  id: string;
+  chain_id: string;
+  features: {
+    signature_decode: boolean;
+    tx_simulation: boolean;
+    security_check: boolean;
+    evm_tracing: boolean;
+  };
+  tags: string[];
+  official_node_height: number;
+  official_node_timestamp: number;
+  rabby_node_height: number;
+  rabby_data_service_height: number;
+  chain: {
+    id: string;
+    network_id: number;
+    name: string;
+    token_id: string;
+    token_symbol: string;
+    logo_url: string;
+    svg_logo_url: string;
+    block_interval: number;
+    start_at: string;
+    prefix: string;
+    wrapped: string;
+    explorer_host: string;
+    is_support_archive: boolean;
+    eip_1559: boolean;
+    white_logo_url: string;
+  };
+}
+
+interface NodeServiceData {
+  node: NodeDetails;
+  height_list: [number, number, number][];
+}
+
+interface NodeDetails {
+  name: string;
+  tag: string[];
+}
+export interface NodeStatusDetail {
+  rabby_rpc: NodeServiceData[];
+  rabby_data_service: NodeServiceData[];
+}
