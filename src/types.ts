@@ -926,8 +926,8 @@ export interface SwapOrderAction {
   takers: string[];
   receive_token_list: TokenItem[];
   receive_nft_list: NFTItem[];
-  receiver: string;
-  expire_at: string;
+  receiver: string | null;
+  expire_at: string | null;
 }
 
 export interface SwapAction {
