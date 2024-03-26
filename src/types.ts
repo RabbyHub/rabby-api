@@ -920,6 +920,16 @@ export interface RevokePermit2Action {
   token: TokenItem;
 }
 
+export interface SwapOrderAction {
+  pay_token_list: TokenItem[];
+  pay_nft_list: NFTItem[];
+  takers: string[];
+  receive_token_list: TokenItem[];
+  receive_nft_list: NFTItem[];
+  receiver: string;
+  expire_at: string;
+}
+
 export interface SwapAction {
   pay_token: TokenItem;
   receive_token: SwapReceiveToken;
@@ -966,6 +976,7 @@ export interface ParseTxResponse {
       | CrossSwapAction
       | CrossTokenAction
       | RevokePermit2Action
+      | SwapOrderAction
       | null;
   };
   contract_call?: {
@@ -1001,7 +1012,9 @@ export type TypedDataActionName =
   | 'submit_safe_role_modification'
   | 'submit_delegated_address_modification'
   | 'submit_token_approval_modification'
-  | 'send_token';
+  | 'send_token'
+  | 'permit1_revoke_token'
+  | 'swap_order';
 
 export interface BuyNFTOrderAction {
   expire_at: string;
@@ -1118,7 +1131,9 @@ export interface ParseTypedDataResponse {
       | SubmitSafeRoleModificationAction
       | SubmitDelegatedAddressModificationAction
       | SubmitTokenApprovalModificationAction
-      | SendAction;
+      | SendAction
+      | SwapOrderAction
+      | RevokeTokenApproveAction;
   } | null;
 }
 
