@@ -1921,6 +1921,16 @@ export class OpenApiService {
     });
     return data;
   };
+
+  getChainListByIds = async (params: {
+    ids: string;
+  }): Promise<ChainListItem[]> => {
+    const { data } = await this.request.get('/v1/chain/get_list', {
+      params,
+    });
+    return data;
+  };
+
   getHistoryCurve = async (addr: string): Promise<HistoryCurve> => {
     const { data } = await this.request.get('/v1/user/history_curve', {
       params: { id: addr },
