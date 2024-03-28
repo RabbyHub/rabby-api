@@ -74,8 +74,7 @@ describe('rabby-api', () => {
         chain_id: '1',
         method: 'call',
         params: [],
-      },
-      undefined
+      }
     );
 
     const req = (await mockAxios.lastReqGet()) as any;
