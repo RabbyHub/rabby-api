@@ -1292,6 +1292,18 @@ export interface SupportedChain {
   explorer_host: string;
 }
 
+export interface ChainListItem {
+  chain_id: number;
+  name: string;
+  short_name: string;
+  native_currency: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+  explorer: string | null;
+  rpc: null | string;
+}
 export interface HistoryCurve {
   create_at: number;
   executor_name: string;
