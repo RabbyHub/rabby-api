@@ -30,6 +30,8 @@ import {
   MempoolCheckDetail,
   NFTApprovalResponse,
   NFTItem,
+  NodeStatus,
+  NodeStatusDetail,
   ParseTextResponse,
   ParseTxResponse,
   ParseTypedDataResponse,
@@ -1817,6 +1819,18 @@ export class OpenApiService {
       '/v1/user/history_curve/init',
       params
     );
+    return data;
+  };
+
+  getNodeStatusList = async (): Promise<NodeStatus[]> => {
+    const { data } = await this.request.get('/v1/node/list');
+    return data;
+  };
+
+  getNodeStatusDetail = async (params: {
+    chain_id: string;
+  }): Promise<NodeStatusDetail> => {
+    const { data } = await this.request.get('/v1/node', { params });
     return data;
   };
 }
