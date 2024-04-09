@@ -1014,7 +1014,8 @@ export type TypedDataActionName =
   | 'submit_token_approval_modification'
   | 'send_token'
   | 'permit1_revoke_token'
-  | 'swap_order';
+  | 'swap_order'
+  | 'approve_nft';
 
 export interface BuyNFTOrderAction {
   expire_at: string;
@@ -1133,7 +1134,8 @@ export interface ParseTypedDataResponse {
       | SubmitTokenApprovalModificationAction
       | SendAction
       | SwapOrderAction
-      | RevokeTokenApproveAction;
+      | RevokeTokenApproveAction
+      | ApproveNFTAction;
   } | null;
 }
 
