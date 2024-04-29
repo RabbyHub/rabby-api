@@ -1082,14 +1082,17 @@ export class OpenApiService {
   gasLessTxCheck = async ({
     tx,
     usdValue,
-    pre_exec_success,
+    preExecSuccess,
+    gasUsed,
   }: {
-    pre_exec_success: boolean;
+    gasUsed: number;
+    preExecSuccess: boolean;
     tx: Tx;
     usdValue: number;
   }): Promise<{ is_gasless: boolean }> => {
     const { data } = await this.request.post('/v1/wallet/tx_is_gasless', {
-      pre_exec_success,
+      gas_used: gasUsed,
+      pre_exec_success: preExecSuccess,
       tx,
       usd_value: usdValue,
     });
