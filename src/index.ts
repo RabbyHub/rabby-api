@@ -1079,6 +1079,26 @@ export class OpenApiService {
     return data;
   };
 
+  gasLessTxCheck = async ({
+    tx,
+    usdValue,
+    preExecSuccess,
+    gasUsed,
+  }: {
+    gasUsed: number;
+    preExecSuccess: boolean;
+    tx: Tx;
+    usdValue: number;
+  }): Promise<{ is_gasless: boolean }> => {
+    const { data } = await this.request.post('/v1/wallet/tx_is_gasless', {
+      gas_used: gasUsed,
+      pre_exec_success: preExecSuccess,
+      tx,
+      usd_value: usdValue,
+    });
+    return data;
+  };
+
   parseTx = async ({
     chainId,
     tx,
@@ -1444,6 +1464,7 @@ export class OpenApiService {
     req_id?: string;
     tx: Tx;
     push_type: TxPushType;
+    is_gasless: boolean;
     low_gas_deadline?: number;
     origin?: string;
   }): Promise<{ req: TxRequest }> => {
