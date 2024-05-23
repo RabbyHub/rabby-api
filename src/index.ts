@@ -1759,6 +1759,13 @@ export class OpenApiService {
     return data;
   };
 
+  getRabbyPointsCampaignIsEnded = async (): Promise<{
+    campaign_is_ended: boolean;
+  }> => {
+    const { data } = await this.request.get('v1/points/campaign');
+    return data;
+  };
+
   claimRabbyPointsById = async (params: {
     campaign_id: number;
     user_id: string;
