@@ -456,6 +456,7 @@ export interface ExplainTxResponse {
       msg: string;
     } | null;
     gas_used: number;
+    gas_ratio: number;
     gas_limit: number;
     estimated_gas_cost_usd_value: number;
     estimated_gas_cost_value: number;
