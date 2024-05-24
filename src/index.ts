@@ -1089,7 +1089,7 @@ export class OpenApiService {
     preExecSuccess: boolean;
     tx: Tx;
     usdValue: number;
-  }): Promise<{ is_gasless: boolean }> => {
+  }): Promise<{ is_gasless: boolean; desc?: string }> => {
     const { data } = await this.request.post('/v1/wallet/tx_is_gasless', {
       gas_used: gasUsed,
       pre_exec_success: preExecSuccess,
@@ -1756,6 +1756,13 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/points/campaign_list', {
       params,
     });
+    return data;
+  };
+
+  getRabbyPointsCampaignIsEnded = async (): Promise<{
+    campaign_is_ended: boolean;
+  }> => {
+    const { data } = await this.request.get('v1/points/campaign');
     return data;
   };
 
