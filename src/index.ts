@@ -1871,4 +1871,17 @@ export class OpenApiService {
     const { data } = await this.request.post('/v1/engine/action/log', body);
     return data;
   };
+
+  checkSpoofing = async ({
+    from,
+    to,
+  }: {
+    from: string;
+    to: string;
+  }): Promise<{ is_spoofing: boolean }> => {
+    const { data } = await this.request.get('/v1/engine/addr/is_spoofing', {
+      params: { user_addr: from, dest_addr: to },
+    });
+    return data;
+  };
 }
