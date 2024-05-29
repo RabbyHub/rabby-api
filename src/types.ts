@@ -990,6 +990,7 @@ export interface ParseTxResponse {
       };
     };
   };
+  log_id: string;
 }
 
 export interface CollectionWithFloorPrice {
@@ -1138,6 +1139,7 @@ export interface ParseTypedDataResponse {
       | RevokeTokenApproveAction
       | ApproveNFTAction;
   } | null;
+  log_id: string;
 }
 
 export type TextActionName = 'create_key' | 'verify_address';
@@ -1167,6 +1169,7 @@ export interface ParseTextResponse {
     type: TextActionName;
     data: CreateKeyAction | VerifyAddressAction;
   } | null;
+  log_id: string;
 }
 
 export type TxPushType = 'default' | 'low_gas' | 'mev';

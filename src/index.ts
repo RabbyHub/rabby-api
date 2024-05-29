@@ -1465,6 +1465,7 @@ export class OpenApiService {
     tx: Tx;
     push_type: TxPushType;
     is_gasless: boolean;
+    log_id: string;
     low_gas_deadline?: number;
     origin?: string;
   }): Promise<{ req: TxRequest }> => {
@@ -1859,6 +1860,15 @@ export class OpenApiService {
     chain_id: string;
   }): Promise<NodeStatusDetail> => {
     const { data } = await this.request.get('/v1/node', { params });
+    return data;
+  };
+
+  postActionLog = async (body: {
+    id: string;
+    type: 'tx' | 'typed_data' | 'text';
+    rules: { id: string; level: string | null }[];
+  }) => {
+    const { data } = await this.request.post('/v1/engine/action/log', body);
     return data;
   };
 }
