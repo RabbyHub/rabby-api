@@ -1429,6 +1429,77 @@ export class OpenApiService {
     return data;
   };
 
+  badgeHasClaimedByName = async ({
+    id,
+    name,
+  }: {
+    id: string;
+    name: string;
+  }): Promise<
+    | {
+        id: string;
+        badge_id: number;
+        user_id: string;
+        inner_id: number;
+        create_at: number;
+        update_at: number;
+        has_claimed: true;
+      }
+    | { has_claimed: false }
+  > => {
+    const { data } = await this.request.get(
+      `/v1/badge/code/user_has_claimed/${name}`,
+      {
+        params: {
+          user_id: id,
+        },
+      }
+    );
+    return data;
+  };
+
+  badgeHasMintedByName = async ({
+    id,
+    name,
+  }: {
+    id: string;
+    name: string;
+  }): Promise<
+    | {
+        id: string;
+        badge_id: number;
+        user_id: string;
+        inner_id: number;
+        usd_value: number;
+        tvf: number;
+        mint_at: number;
+        has_minted: true;
+      }
+    | { has_minted: false }
+  > => {
+    const { data } = await this.request.get(
+      `/v1/badge/user_has_minted/${name}`,
+      {
+        params: {
+          user_id: id,
+        },
+      }
+    );
+    return data;
+  };
+
+  mintBadgeByName = async (params: {
+    name: string;
+    code: string;
+    userAddr: string;
+  }): Promise<{ is_success: boolean; inner_id: number }> => {
+    const { data } = await this.request.post(`/v1/badge/mint/${params.name}`, {
+      code: params.code,
+      user_id: params.userAddr,
+    });
+    return data;
+  };
+
   userHasRequestedFaucet = async (params: {
     chain_id: string;
     user_addr: string;
