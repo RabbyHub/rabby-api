@@ -1979,7 +1979,7 @@ export class OpenApiService {
     extra_bouns: number;
     claimed: boolean;
     snapshot_at: number;
-    is_new_user: boolean;
+    claimed_points: number;
   }> => {
     const { data } = await this.request.get('/v2/points/snapshot', {
       params,
