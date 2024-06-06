@@ -1850,6 +1850,168 @@ export class OpenApiService {
     return data;
   };
 
+  getRabbyPointsV2 = async (params: {
+    id: string;
+  }): Promise<{
+    id: string;
+    invite_code?: string;
+    logo_url: string;
+    logo_thumbnail_url: string;
+    web3_id: string;
+    claimed_points: number;
+    total_claimed_points: number;
+  }> => {
+    const { data } = await this.request.get('/v2/points/user', { params });
+    return data;
+  };
+
+  getRabbySignatureTextV2 = async (params: {
+    id: string;
+  }): Promise<{ id: string; text: string }> => {
+    const { data } = await this.request.get('/v2/points/user/sign_text', {
+      params,
+    });
+    return data;
+  };
+
+  getRabbyClaimTextV2 = async (params: {
+    id: string;
+    invite_code?: string;
+  }): Promise<{ id: string; text: string }> => {
+    const { data } = await this.request.get('/v2/points/user/claim_text', {
+      params,
+    });
+    return data;
+  };
+
+  setRabbyPointsInviteCodeV2 = async (params: {
+    id: string;
+    signature: string;
+    invite_code: string;
+  }): Promise<{ code: number }> => {
+    const { data } = await this.request.post(
+      '/v2/points/user/invite_code',
+      params
+    );
+    return data;
+  };
+
+  checkRabbyPointsInviteCodeV2 = async (params: {
+    code: string;
+  }): Promise<{ invite_code_exist: boolean }> => {
+    const { data } = await this.request.get(
+      '/v2/points/user/invite_code_exist',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  claimRabbyPointsSnapshotV2 = async (params: {
+    id: string;
+    signature: string;
+    invite_code?: string;
+  }): Promise<{
+    error_code: number;
+    error_msg?: string;
+  }> => {
+    const { data } = await this.request.post(
+      '/v2/points/claim_snapshot',
+      params
+    );
+    return data;
+  };
+
+  getRabbyPointsTopUsersV2 = async (params: {
+    id: string;
+  }): Promise<
+    {
+      id: string;
+      logo_url: string;
+      logo_thumbnail_url: string;
+      web3_id: string;
+      claimed_points: number;
+    }[]
+  > => {
+    const { data } = await this.request.get('/v2/points/top_user', {
+      params,
+    });
+    return data;
+  };
+
+  getRabbyPointsListV2 = async (params: {
+    id: string;
+  }): Promise<
+    {
+      id: number;
+      title: string;
+      description: string;
+      start_at: number;
+      end_at: number;
+      claimable_points: number;
+    }[]
+  > => {
+    const { data } = await this.request.get('/v2/points/campaign_list', {
+      params,
+    });
+    return data;
+  };
+
+  claimRabbyPointsByIdV2 = async (params: {
+    campaign_id: number;
+    user_id: string;
+    signature: string;
+  }): Promise<{ error_code: number }> => {
+    const { data } = await this.request.post(
+      '/v2/points/claim_campaign',
+      params
+    );
+    return data;
+  };
+
+  getRabbyPointsSnapshotV2 = async (params: {
+    id: string;
+  }): Promise<{
+    id: string;
+    wallet_balance_reward: number;
+    active_stats_reward: number;
+    extra_bouns: number;
+    claimed: boolean;
+    snapshot_at: number;
+    is_new_user: boolean;
+  }> => {
+    const { data } = await this.request.get('/v2/points/snapshot', {
+      params,
+    });
+    return data;
+  };
+
+  checkRabbyPointClaimableV2 = async (params: {
+    id: string;
+  }): Promise<{ claimable: boolean }> => {
+    const { data } = await this.request.get('/v2/points/user/claimable', {
+      params,
+    });
+    return data;
+  };
+
+  checkClaimInfoV2 = async (params: {
+    id: string;
+  }): Promise<{ claimable_points: number; claimed_points: number }> => {
+    const { data } = await this.request.get('/v2/points/user/claim_info', {
+      params,
+    });
+    return data;
+  };
+
+  getRabbyPointsCampaignIsEndedV2 = async (): Promise<{
+    campaign_is_ended: boolean;
+  }> => {
+    const { data } = await this.request.get('v2/points/campaign');
+    return data;
+  };
+
   getSupportedChains = async (): Promise<SupportedChain[]> => {
     const { data } = await this.request.get('/v1/wallet/supported_chains');
     return data;
