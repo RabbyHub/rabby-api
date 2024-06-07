@@ -2117,4 +2117,16 @@ export class OpenApiService {
     });
     return data;
   };
+
+  getAddressByDeBankId = async (
+    name: string
+  ): Promise<{ addr: string; web3_id: string }> => {
+    const { data } = await this.request.get('/v1/user/web3_id', {
+      params: {
+        text: name,
+      },
+    });
+
+    return data;
+  };
 }
