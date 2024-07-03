@@ -1089,7 +1089,23 @@ export class OpenApiService {
     preExecSuccess: boolean;
     tx: Tx;
     usdValue: number;
-  }): Promise<{ is_gasless: boolean; desc?: string }> => {
+  }): Promise<{
+    is_gasless: boolean;
+    desc?: string;
+    promotion?: {
+      id: string;
+      contract_id: string;
+      chain_id: string;
+      config: {
+        button_text: string;
+        before_click_text: string;
+        after_click_text: string;
+        logo: string;
+        theme_color: string;
+        dark_color: string;
+      };
+    };
+  }> => {
     const { data } = await this.request.post('/v1/wallet/tx_is_gasless', {
       gas_used: gasUsed,
       pre_exec_success: preExecSuccess,
