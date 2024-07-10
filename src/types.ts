@@ -1374,3 +1374,13 @@ export interface NodeStatusDetail {
   rabby_rpc: NodeServiceData[];
   rabby_data_service: NodeServiceData[];
 }
+
+export interface DbkBridgeHistoryItem {
+  user_addr: string;
+  from_chain_id: string;
+  to_chain_id: string;
+  is_deposit: boolean;
+  tx_id: string;
+  create_at: number;
+  from_token_amount: number;
+}
