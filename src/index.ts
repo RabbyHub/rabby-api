@@ -2230,4 +2230,9 @@ export class OpenApiService {
     const { data } = await this.request.post('/v1/bridge/history', params);
     return data;
   };
+
+  getSupportedDEXList = async (): Promise<{ dex_list: string[] }> => {
+    const { data } = await this.request.get('/v1/wallet/supported_dex_list');
+    return data;
+  };
 }
