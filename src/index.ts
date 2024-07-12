@@ -8,6 +8,7 @@ import { ASYNC_JOB_RETRY_DELAY, ASYNC_JOB_TIMEOUT } from './const';
 import { InitOptions, RabbyApiPlugin } from './plugins/intf';
 import {
   AddrDescResponse,
+  BridgeAggregator,
   ApprovalStatus,
   AssetItem,
   BasicDappInfo,
@@ -54,6 +55,9 @@ import {
   TxPushType,
   TxRequest,
   UsedChain,
+  BridgeTokenPair,
+  BridgeQuote,
+  BridgeHistory,
 } from './types';
 
 interface OpenApiStore {
@@ -693,6 +697,7 @@ export class OpenApiService {
     pay_token_raw_amount: string;
     receive_token_id: string;
     slippage?: string | number;
+    fee?: boolean;
   }) => {
     const { data } = await this.request.get<{
       receive_token_raw_amount: number;
@@ -2147,6 +2152,91 @@ export class OpenApiService {
     return data;
   };
 
+  getBridgeSupportChain = async (): Promise<string[]> => {
+    const { data } = await this.request.get('/v1/bridge/supported_chains');
+    return data;
+  };
+
+  getBridgeAggregatorList = async (): Promise<BridgeAggregator[]> => {
+    const { data } = await this.request.get('/v1/bridge/list');
+    return data;
+  };
+
+  getBridgePairList = async (params: {
+    aggregator_ids: string[];
+    to_chain_id: string;
+    user_addr: string;
+  }): Promise<BridgeTokenPair[]> => {
+    const { data } = await this.request.get('/v1/bridge/pair_list', {
+      params: { ...params, aggregator_ids: params.aggregator_ids.join(',') },
+    });
+    return data;
+  };
+
+  getBridgeQuoteList = async (params: {
+    aggregator_ids: string;
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_raw_amount: string;
+    to_chain_id: string;
+    to_token_id: string;
+  }): Promise<Omit<BridgeQuote, 'tx'>[]> => {
+    const { data } = await this.request.get('/v1/bridge/quote_list', {
+      params,
+    });
+    return data;
+  };
+
+  getBridgeQuote = async (params: {
+    aggregator_id: string;
+    bridge_id: string;
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_raw_amount: string;
+    to_chain_id: string;
+    to_token_id: string;
+  }): Promise<BridgeQuote> => {
+    const { data } = await this.request.get('/v1/bridge/quote', {
+      params,
+    });
+    return data;
+  };
+
+  getBridgeHistoryList = async (params: {
+    user_addr: string;
+    start: number;
+    limit: number;
+  }): Promise<{ history_list: BridgeHistory[]; total_cnt: number }> => {
+    const { data } = await this.request.get('/v1/bridge/history_list', {
+      params,
+    });
+    return data;
+  };
+
+  postBridgeHistory = async (params: {
+    aggregator_id: string;
+    bridge_id: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_amount: string | number;
+    to_chain_id: string;
+    to_token_id: string;
+    to_token_amount: string | number;
+    tx_id: string;
+    tx: Tx;
+    rabby_fee: number;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post('/v1/bridge/history', params);
+    return data;
+  };
+
+  getSupportedDEXList = async (): Promise<{ dex_list: string[] }> => {
+    const { data } = await this.request.get('/v1/wallet/supported_dex_list');
+    return data;
+  };
+
   createDbkBridgeHistory = async (
     postData: Pick<
       DbkBridgeHistoryItem,
@@ -2174,7 +2264,9 @@ export class OpenApiService {
   }> => {
     const { data } = await this.request.get(
       '/v1/user/dbk/bridge_history_list',
-      { params }
+      {
+        params,
+      }
     );
     return data;
   };
