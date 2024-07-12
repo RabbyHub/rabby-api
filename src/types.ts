@@ -1383,4 +1383,5 @@ export interface DbkBridgeHistoryItem {
   tx_id: string;
   create_at: number;
   from_token_amount: number;
+  from_token_id: string;
 }
