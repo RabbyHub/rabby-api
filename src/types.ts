@@ -1374,6 +1374,7 @@ export interface NodeStatusDetail {
   rabby_rpc: NodeServiceData[];
   rabby_data_service: NodeServiceData[];
 }
+
 interface BridgeItem {
   id: string;
   name: string;
@@ -1451,4 +1452,15 @@ export interface BridgeHistory {
     usd_gas_fee: number;
     gas_price: number;
   };
+}
+
+export interface DbkBridgeHistoryItem {
+  user_addr: string;
+  from_chain_id: string;
+  to_chain_id: string;
+  is_deposit: boolean;
+  tx_id: string;
+  create_at: number;
+  from_token_amount: number;
+  from_token_id: string;
 }

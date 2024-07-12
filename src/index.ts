@@ -21,6 +21,7 @@ import {
   CollectionWithFloorPrice,
   ComplexProtocol,
   ContractCredit,
+  DbkBridgeHistoryItem,
   ExplainTxResponse,
   ExplainTypedDataResponse,
   GasLevel,
@@ -2233,6 +2234,40 @@ export class OpenApiService {
 
   getSupportedDEXList = async (): Promise<{ dex_list: string[] }> => {
     const { data } = await this.request.get('/v1/wallet/supported_dex_list');
+    return data;
+  };
+
+  createDbkBridgeHistory = async (
+    postData: Pick<
+      DbkBridgeHistoryItem,
+      | 'user_addr'
+      | 'from_chain_id'
+      | 'to_chain_id'
+      | 'tx_id'
+      | 'from_token_amount'
+    >
+  ): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post(
+      '/v1/user/dbk/bridge_history',
+      postData
+    );
+    return data;
+  };
+
+  getDbkBridgeHistoryList = async (params: {
+    user_addr: string;
+    start?: number;
+    limit?: number;
+  }): Promise<{
+    page: { total: number; limit: number; start: number };
+    data: DbkBridgeHistoryItem[];
+  }> => {
+    const { data } = await this.request.get(
+      '/v1/user/dbk/bridge_history_list',
+      {
+        params,
+      }
+    );
     return data;
   };
 }
