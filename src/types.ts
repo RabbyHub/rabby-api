@@ -221,6 +221,7 @@ export interface TokenApproval<SpenderType extends Spender = Spender> {
 
 export interface Spender {
   id: string;
+  permit2_id?: string;
   value: number;
   exposure_usd: number;
   protocol: {
