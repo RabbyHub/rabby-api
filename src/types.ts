@@ -205,7 +205,7 @@ export interface NFTApproval {
   spender: Spender;
 }
 
-export interface TokenApproval {
+export interface TokenApproval<SpenderType extends Spender = Spender> {
   id: string;
   name: string;
   symbol: string;
@@ -213,9 +213,10 @@ export interface TokenApproval {
   chain: string;
   price: number;
   balance: number;
-  spenders: Spender[];
+  spenders: SpenderType[];
   sum_exposure_usd: number;
-  exposure_balance: number;
+  /** @deprecated */
+  exposure_balance?: number;
 }
 
 export interface Spender {
@@ -228,10 +229,14 @@ export interface Spender {
     logo_url: string;
     chain: string;
   };
-  is_contract: boolean;
-  is_open_source: boolean;
-  is_hacked: boolean;
-  is_abandoned: boolean;
+  /** @deprecated */
+  is_contract?: boolean;
+  /** @deprecated */
+  is_open_source?: boolean;
+  /** @deprecated */
+  is_hacked?: boolean;
+  /** @deprecated */
+  is_abandoned?: boolean;
   risk_alert: string;
   risk_level: string;
   // only for NFTApproval, NFTApprovalContract

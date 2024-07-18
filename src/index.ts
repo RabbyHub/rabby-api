@@ -76,6 +76,11 @@ interface Options {
 
 const maxRPS = 500;
 
+type VersionPrefix = 'v1' | 'v2';
+type ApiOptions<V extends VersionPrefix | void = VersionPrefix> = {
+  restfulPrefix?: V;
+};
+
 export class OpenApiService {
   store!: OpenApiStore;
 
@@ -644,16 +649,21 @@ export class OpenApiService {
     return data;
   };
 
-  tokenAuthorizedList = async (
+  tokenAuthorizedList = async <V extends ApiOptions['restfulPrefix']>(
     id: string,
-    chain_id: string
+    chain_id: string,
+    options?: ApiOptions<V>
   ): Promise<TokenApproval[]> => {
-    const { data } = await this.request.get('/v1/user/token_authorized_list', {
-      params: {
-        id,
-        chain_id,
-      },
-    });
+    const { restfulPrefix = 'v1' } = options || {};
+    const { data } = await this.request.get(
+      `/${restfulPrefix}/user/token_authorized_list`,
+      {
+        params: {
+          id,
+          chain_id,
+        },
+      }
+    );
 
     return data;
   };
@@ -810,12 +820,19 @@ export class OpenApiService {
     return resData;
   };
 
-  approvalStatus = async (id: string): Promise<ApprovalStatus[]> => {
-    const { data } = await this.request.get('/v1/user/approval_status', {
-      params: {
-        id,
-      },
-    });
+  approvalStatus = async (
+    id: string,
+    options?: ApiOptions
+  ): Promise<ApprovalStatus[]> => {
+    const { restfulPrefix = 'v1' } = options || {};
+    const { data } = await this.request.get(
+      `/${restfulPrefix}/user/approval_status`,
+      {
+        params: {
+          id,
+        },
+      }
+    );
     return data;
   };
 
