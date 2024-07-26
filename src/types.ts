@@ -244,6 +244,8 @@ export interface Spender {
   exposure_nft_usd_value?: number | null;
   // only for TokenApproval
   exposure_usd_value?: number | null;
+  // only for TokenApproval
+  spend_usd_value?: number | null;
   approve_user_count?: number | null;
   revoke_user_count?: number | null;
   last_approve_at: number | null;
