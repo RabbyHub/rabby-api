@@ -1239,13 +1239,32 @@ export class OpenApiService {
     return data;
   };
 
-  // 授权风险敞口
+  /**
+   * @deprecated
+   * 授权风险敞口
+   */
   tokenApproveExposure = async (
     id: string,
     chainId: string
   ): Promise<{ usd_value: number }> => {
     const { data } = await this.request.get(
       '/v1/engine/contract/token_approval_exposure',
+      {
+        params: {
+          chain_id: chainId,
+          id,
+        },
+      }
+    );
+    return data;
+  };
+
+  tokenApproveTrustValue = async (
+    id: string,
+    chainId: string
+  ): Promise<{ usd_value: number }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/contract/spend_usd_value',
       {
         params: {
           chain_id: chainId,
@@ -1302,12 +1321,28 @@ export class OpenApiService {
     return data;
   };
 
+  /**
+   * @deprecated
+   */
   getTokenNFTExposure = async (
     chainId: string,
     id: string
   ): Promise<{ usd_value: number }> => {
     const { data } = await this.request.get(
       '/v1/engine/contract/top_nft_approval_exposure',
+      {
+        params: { chain_id: chainId, id },
+      }
+    );
+    return data;
+  };
+
+  getTokenNFTTrustValue = async (
+    chainId: string,
+    id: string
+  ): Promise<{ usd_value: number }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/contract/top_nft_spend_usd_value',
       {
         params: { chain_id: chainId, id },
       }
