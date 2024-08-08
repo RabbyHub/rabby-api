@@ -723,6 +723,7 @@ export class OpenApiService {
       };
       pay_token: TokenItem;
       receive_token: TokenItem;
+      dex_fee_desc?: string | null;
     }>('/v1/wallet/swap_quote', {
       params,
     });
