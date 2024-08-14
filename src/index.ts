@@ -58,6 +58,7 @@ import {
   BridgeTokenPair,
   BridgeQuote,
   BridgeHistory,
+  ContractInfo,
 } from './types';
 
 interface OpenApiStore {
@@ -1274,6 +1275,23 @@ export class OpenApiService {
       }
     );
     return data;
+  };
+
+  getContractInfo = async (
+    id: string,
+    chainId: string
+  ): Promise<ContractInfo | null> => {
+    const { data } = await this.request.get<{ contract: null | ContractInfo }>(
+      '/v1/contract',
+      {
+        params: {
+          chain_id: chainId,
+          id,
+        },
+      }
+    );
+
+    return data.contract;
   };
 
   // 地址描述
