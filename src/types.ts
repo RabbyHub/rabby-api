@@ -1480,4 +1480,11 @@ export interface ContractInfo {
   top_nft_approval_exposure: number;
   spend_usd_value: number;
   top_nft_spend_usd_value: number;
+  create_at: number;
+  name: string | null;
+  protocol: { id: string; logo_url: string; name: string } | null;
+  is_danger: {
+    auto: null | boolean;
+    edit: null | boolean;
+  };
 }
