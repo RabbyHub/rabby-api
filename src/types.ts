@@ -853,7 +853,6 @@ export interface Cex {
 
 export interface ContractCredit {
   value: null | number;
-  popularity_level: 'very_low' | 'low' | 'medium' | 'high';
   rank_at: number | null;
 }
 
@@ -1471,4 +1470,21 @@ export interface DbkBridgeHistoryItem {
   create_at: number;
   from_token_amount: number;
   from_token_id: string;
+}
+
+export interface ContractInfo {
+  id: string;
+  credit: ContractCredit;
+  is_token: boolean;
+  token_approval_exposure: number;
+  top_nft_approval_exposure: number;
+  spend_usd_value: number;
+  top_nft_spend_usd_value: number;
+  create_at: number;
+  name: string | null;
+  protocol: { id: string; logo_url: string; name: string } | null;
+  is_danger: {
+    auto: null | boolean;
+    edit: null | boolean;
+  };
 }
