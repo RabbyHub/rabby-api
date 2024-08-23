@@ -1140,6 +1140,32 @@ export class OpenApiService {
     return data;
   };
 
+  gasLessTxsCheck = async (postData: {
+    tx_list: Tx[];
+  }): Promise<{
+    is_gasless: boolean;
+    desc?: string;
+    promotion?: {
+      id: string;
+      contract_id: string;
+      chain_id: string;
+      config: {
+        button_text: string;
+        before_click_text: string;
+        after_click_text: string;
+        logo: string;
+        theme_color: string;
+        dark_color: string;
+      };
+    };
+  }> => {
+    const { data } = await this.request.post(
+      '/v1/wallet/txs_is_gasless',
+      postData
+    );
+    return data;
+  };
+
   parseTx = async ({
     chainId,
     tx,
