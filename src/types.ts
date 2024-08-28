@@ -938,6 +938,29 @@ export interface SwapOrderAction {
   expire_at: string | null;
 }
 
+export interface MaxPayTokenItem extends TokenItem {
+  max_amount: number;
+  max_raw_amount: string;
+}
+
+export interface SwapLimitPay {
+  pay_token: MaxPayTokenItem;
+  receive_token: TokenItem;
+  receiver: string;
+}
+
+export interface MultiSwapAction {
+  pay_token_list: TokenItem[];
+  receive_token_list: SwapReceiveToken[];
+  receiver: string;
+}
+
+export interface TransferOwnerAction {
+  description: string;
+  from_addr: string;
+  to_addr: string;
+}
+
 export interface SwapAction {
   pay_token: TokenItem;
   receive_token: SwapReceiveToken;
@@ -985,6 +1008,9 @@ export interface ParseTxResponse {
       | CrossTokenAction
       | RevokePermit2Action
       | SwapOrderAction
+      | TransferOwnerAction
+      | MultiSwapAction
+      | SwapLimitPay
       | null;
   };
   contract_call?: {
