@@ -2481,8 +2481,12 @@ export class OpenApiService {
     history_list: {
       id: string;
       chain_id: string;
-      amount: number;
       create_at: number;
+      gas_cost_usd_value: number;
+      gas_account_id: string;
+      tx_id: string;
+      usd_value: number;
+      user_addr: string;
     }[];
     pagination: {
       limit: number;
