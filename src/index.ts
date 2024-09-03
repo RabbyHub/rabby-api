@@ -2391,9 +2391,13 @@ export class OpenApiService {
       nonce: number;
     };
   }> => {
+    const { sig, ...others } = params;
     const { data } = await this.request.get('/v1/gas_account', {
       params: {
-        ...params,
+        ...others,
+      },
+      headers: {
+        sig,
       },
     });
     return data;
@@ -2405,9 +2409,18 @@ export class OpenApiService {
   }): Promise<{
     success: boolean;
   }> => {
-    const { data } = await this.request.post('/v1/gas_account/login', {
-      ...params,
-    });
+    const { sig, ...others } = params;
+    const { data } = await this.request.post(
+      '/v1/gas_account/login',
+      {
+        ...others,
+      },
+      {
+        headers: {
+          sig,
+        },
+      }
+    );
     return data;
   };
 
@@ -2417,9 +2430,18 @@ export class OpenApiService {
   }): Promise<{
     success: boolean;
   }> => {
-    const { data } = await this.request.post('/v1/gas_account/logout', {
-      ...params,
-    });
+    const { sig, ...others } = params;
+    const { data } = await this.request.post(
+      '/v1/gas_account/logout',
+      {
+        ...others,
+      },
+      {
+        headers: {
+          sig,
+        },
+      }
+    );
     return data;
   };
 
@@ -2432,7 +2454,7 @@ export class OpenApiService {
     return data;
   };
 
-  rechargeGasAccount = async (params: {
+  rechargeGasAccount = async (p: {
     sig: string;
     account_id: string;
     tx_id: string;
@@ -2443,28 +2465,40 @@ export class OpenApiService {
   }): Promise<{
     success: boolean;
   }> => {
+    const { sig, ...params } = p;
     const { data } = await this.request.post(
       '/v1/gas_account/recharge',
-      params
+      params,
+      {
+        headers: {
+          sig,
+        },
+      }
     );
     return data;
   };
 
-  withdrawGasAccount = async (params: {
+  withdrawGasAccount = async (p: {
     sig: string;
     amount: number;
     account_id: string;
   }): Promise<{
     success: boolean;
   }> => {
+    const { sig, ...params } = p;
     const { data } = await this.request.post(
       '/v1/gas_account/withdraw',
-      params
+      params,
+      {
+        headers: {
+          sig,
+        },
+      }
     );
     return data;
   };
 
-  getGasAccountHistory = async (params: {
+  getGasAccountHistory = async (p: {
     sig: string;
     account_id: string;
     start: number;
@@ -2494,20 +2528,31 @@ export class OpenApiService {
       total: number;
     };
   }> => {
+    const { sig, ...params } = p;
+
     const { data } = await this.request.get('/v1/gas_account/history', {
       params,
+      headers: {
+        sig,
+      },
     });
     return data;
   };
 
-  checkGasAccountTxs = async (params: {
+  checkGasAccountTxs = async (p: {
     sig: string;
     account_id: string;
     tx_list: Tx[];
   }): Promise<GasAccountCheckResult> => {
+    const { sig, ...params } = p;
     const { data } = await this.request.post(
       '/v1/gas_account/check_txs',
-      params
+      params,
+      {
+        headers: {
+          sig,
+        },
+      }
     );
     return data;
   };
