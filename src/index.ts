@@ -2521,6 +2521,7 @@ export class OpenApiService {
       tx_id: string;
       usd_value: number;
       user_addr: string;
+      history_type: 'tx' | 'recharge' | 'withdraw';
     }[];
     pagination: {
       limit: number;
