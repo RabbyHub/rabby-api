@@ -1514,3 +1514,14 @@ export interface ContractInfo {
     edit: null | boolean;
   };
 }
+
+export interface GasAccountCheckResult {
+  gas_account_cost: {
+    total_cost: number;
+    tx_cost: number;
+    gas_cost: number;
+  };
+  is_gas_account: boolean;
+  balance_is_enough: boolean;
+  chain_not_support: boolean;
+}

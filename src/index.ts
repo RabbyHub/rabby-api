@@ -59,6 +59,7 @@ import {
   BridgeQuote,
   BridgeHistory,
   ContractInfo,
+  GasAccountCheckResult,
 } from './types';
 
 interface OpenApiStore {
@@ -1654,7 +1655,8 @@ export class OpenApiService {
     req_id?: string;
     tx: Tx;
     push_type: TxPushType;
-    is_gasless: boolean;
+    is_gasless?: boolean;
+    is_gas_account?: boolean;
     log_id: string;
     low_gas_deadline?: number;
     origin?: string;
@@ -2363,6 +2365,194 @@ export class OpenApiService {
       '/v1/user/dbk/bridge_history_list',
       {
         params,
+      }
+    );
+    return data;
+  };
+  getGasAccountSignText = async (
+    account_id: string
+  ): Promise<{ text: string }> => {
+    const { data } = await this.request.get('/v1/gas_account/sign_text', {
+      params: {
+        account_id,
+      },
+    });
+    return data;
+  };
+
+  getGasAccountInfo = async (params: {
+    sig: string;
+    id: string;
+  }): Promise<{
+    account: {
+      id: string;
+      balance: number;
+      create_at: number;
+      nonce: number;
+    };
+  }> => {
+    const { sig, ...others } = params;
+    const { data } = await this.request.get('/v1/gas_account', {
+      params: {
+        ...others,
+      },
+      headers: {
+        sig,
+      },
+    });
+    return data;
+  };
+
+  loginGasAccount = async (params: {
+    sig: string;
+    account_id: string;
+  }): Promise<{
+    success: boolean;
+  }> => {
+    const { sig, ...others } = params;
+    const { data } = await this.request.post(
+      '/v1/gas_account/login',
+      {
+        ...others,
+      },
+      {
+        headers: {
+          sig,
+        },
+      }
+    );
+    return data;
+  };
+
+  logoutGasAccount = async (params: {
+    sig: string;
+    account_id: string;
+  }): Promise<{
+    success: boolean;
+  }> => {
+    const { sig, ...others } = params;
+    const { data } = await this.request.post(
+      '/v1/gas_account/logout',
+      {
+        ...others,
+      },
+      {
+        headers: {
+          sig,
+        },
+      }
+    );
+    return data;
+  };
+
+  getGasAccountTokenList = async (id: string): Promise<TokenItem[]> => {
+    const { data } = await this.request.get('/v1/user/recharge_token_list', {
+      params: {
+        id,
+      },
+    });
+    return data;
+  };
+
+  rechargeGasAccount = async (p: {
+    sig: string;
+    account_id: string;
+    tx_id: string;
+    chain_id: string;
+    amount: number;
+    user_addr: string;
+    nonce: number;
+  }): Promise<{
+    success: boolean;
+  }> => {
+    const { sig, ...params } = p;
+    const { data } = await this.request.post(
+      '/v1/gas_account/recharge',
+      params,
+      {
+        headers: {
+          sig,
+        },
+      }
+    );
+    return data;
+  };
+
+  withdrawGasAccount = async (p: {
+    sig: string;
+    amount: number;
+    account_id: string;
+  }): Promise<{
+    success: boolean;
+  }> => {
+    const { sig, ...params } = p;
+    const { data } = await this.request.post(
+      '/v1/gas_account/withdraw',
+      params,
+      {
+        headers: {
+          sig,
+        },
+      }
+    );
+    return data;
+  };
+
+  getGasAccountHistory = async (p: {
+    sig: string;
+    account_id: string;
+    start: number;
+    limit: number;
+  }): Promise<{
+    recharge_list: {
+      amount: number;
+      chain_id: string;
+      create_at: number;
+      gas_account_id: string;
+      tx_id: string;
+      user_addr: string;
+    }[];
+    history_list: {
+      id: string;
+      chain_id: string;
+      create_at: number;
+      gas_cost_usd_value: number;
+      gas_account_id: string;
+      tx_id: string;
+      usd_value: number;
+      user_addr: string;
+      history_type: 'tx' | 'recharge' | 'withdraw';
+    }[];
+    pagination: {
+      limit: number;
+      start: number;
+      total: number;
+    };
+  }> => {
+    const { sig, ...params } = p;
+
+    const { data } = await this.request.get('/v1/gas_account/history', {
+      params,
+      headers: {
+        sig,
+      },
+    });
+    return data;
+  };
+
+  checkGasAccountTxs = async (p: {
+    sig: string;
+    account_id: string;
+    tx_list: Tx[];
+  }): Promise<GasAccountCheckResult> => {
+    const { sig, ...params } = p;
+    const { data } = await this.request.post(
+      '/v1/gas_account/check_txs',
+      params,
+      {
+        headers: {
+          sig,
+        },
       }
     );
     return data;
