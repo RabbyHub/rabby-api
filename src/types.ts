@@ -1513,6 +1513,7 @@ export interface ContractInfo {
     auto: null | boolean;
     edit: null | boolean;
   };
+  is_phishing: boolean | null;
 }
 
 export interface GasAccountCheckResult {
