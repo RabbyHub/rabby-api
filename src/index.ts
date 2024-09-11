@@ -76,6 +76,11 @@ interface Options {
   clientVersion?: string;
 }
 
+enum CurveDayType {
+  DAY = 1,
+  WEEK = 7,
+}
+
 const maxRPS = 500;
 
 type VersionPrefix = 'v1' | 'v2';
@@ -961,11 +966,13 @@ export class OpenApiService {
   };
 
   getNetCurve = async (
-    addr: string
+    addr: string,
+    days: CurveDayType = CurveDayType.DAY
   ): Promise<{ timestamp: number; usd_value: number }[]> => {
     const { data } = await this.request.get('/v1/user/total_net_curve', {
       params: {
         id: addr,
+        days,
       },
     });
     return data;
