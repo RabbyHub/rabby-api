@@ -2295,6 +2295,21 @@ export class OpenApiService {
     return data;
   };
 
+  getBridgeQuoteListV2 = async (params: {
+    aggregator_id: string;
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_raw_amount: string;
+    to_chain_id: string;
+    to_token_id: string;
+  }): Promise<Omit<BridgeQuote, 'tx'>[]> => {
+    const { data } = await this.request.get('/v2/bridge/quote_list', {
+      params,
+    });
+    return data;
+  };
+
   getBridgeQuote = async (params: {
     aggregator_id: string;
     bridge_id: string;
