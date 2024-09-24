@@ -60,6 +60,7 @@ import {
   BridgeHistory,
   ContractInfo,
   GasAccountCheckResult,
+  ParseCommonResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -2561,6 +2562,18 @@ export class OpenApiService {
           sig,
         },
       }
+    );
+    return data;
+  };
+
+  parseCommon = async (params: {
+    typed_data: Record<string, any>;
+    origin: string;
+    user_addr: string;
+  }): Promise<ParseCommonResponse> => {
+    const { data } = await this.request.post(
+      '/v1/engine/action/parse_common',
+      params
     );
     return data;
   };

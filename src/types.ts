@@ -1526,3 +1526,15 @@ export interface GasAccountCheckResult {
   balance_is_enough: boolean;
   chain_not_support: boolean;
 }
+
+export interface ParseCommonResponse {
+  input_type: 'typed_data' | 'text' | 'tx';
+  output_type: 'typed_data' | 'text' | 'tx';
+  action:
+    | ParseTypedDataResponse['action']
+    | ParseTextResponse['action']
+    | ParseTxResponse['action'];
+  log_id: string;
+  pre_exec_result: ExplainTxResponse | null;
+  contract_call_data: ParseTxResponse['contract_call'] | null;
+}
