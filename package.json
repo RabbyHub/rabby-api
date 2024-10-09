@@ -10,7 +10,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@rabby-wallet/rabby-sign": "0.4.0-alpha.0",
+    "@rabby-wallet/rabby-sign": "0.4.0",
     "axios": "^0.27.2",
     "axios-rate-limit": "^1.3.0",
     "eth-rpc-errors": "^4.0.3",
