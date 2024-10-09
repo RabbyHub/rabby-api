@@ -5,12 +5,9 @@ import { SIGN_HDS } from '../const';
 
 function getWebHf() {
   const hf =
-    // @ts-expect-error
     typeof chrome === 'undefined'
       ? ''
-      : // @ts-expect-error
-        chrome?.runtime?.getURL?.('bridge.html') ||
-        // @ts-expect-error
+      : chrome?.runtime?.getURL?.('bridge.html') ||
         chrome?.extension?.getURL?.('bridge.html') ||
         '';
 
