@@ -1537,4 +1537,5 @@ export interface ParseCommonResponse {
   log_id: string;
   pre_exec_result: ExplainTxResponse | null;
   contract_call_data: ParseTxResponse['contract_call'] | null;
+  pre_exec?: PreExecResult['pre_exec'];
 }
