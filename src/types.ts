@@ -1521,6 +1521,7 @@ export interface GasAccountCheckResult {
     total_cost: number;
     tx_cost: number;
     gas_cost: number;
+    estimate_tx_cost: number;
   };
   is_gas_account: boolean;
   balance_is_enough: boolean;
