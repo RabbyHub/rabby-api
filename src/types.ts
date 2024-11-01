@@ -1051,7 +1051,8 @@ export type TypedDataActionName =
   | 'send_token'
   | 'permit1_revoke_token'
   | 'swap_order'
-  | 'approve_nft';
+  | 'approve_nft'
+  | 'confirm_safe_message';
 
 export interface BuyNFTOrderAction {
   expire_at: string;
