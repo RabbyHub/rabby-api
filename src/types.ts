@@ -135,6 +135,7 @@ export interface TokenItem {
   raw_amount?: string;
   raw_amount_hex_str?: string;
   price_24h_change?: number | null;
+  low_credit_score?: boolean;
 }
 
 export interface TransferingNFTItem {

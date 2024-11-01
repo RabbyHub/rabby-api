@@ -2581,6 +2581,15 @@ export class OpenApiService {
     return data;
   };
 
+  getGasAccountAml = async (id: string): Promise<{ is_risk: boolean }> => {
+    const { data } = await this.request.get('/v1/gas_account/aml', {
+      params: {
+        id,
+      },
+    });
+    return data;
+  };
+
   parseCommon = async (params: {
     typed_data: Record<string, any>;
     origin: string;
