@@ -2601,4 +2601,96 @@ export class OpenApiService {
     );
     return data;
   };
+
+  getRecommendBridgeToChain = async (params: {
+    from_chain_id: string;
+  }): Promise<{ to_chain_id: string }> => {
+    const { data } = await this.request.get('/v2/bridge/recommend/to_chain', {
+      params,
+    });
+    return data;
+  };
+
+  getRecommendFromToken = async (params: {
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_amount: string;
+    to_chain_id: string;
+    to_token_id: string;
+  }): Promise<{ token_list: TokenItem[] }> => {
+    const { data } = await this.request.get(
+      '/v2/bridge/recommend/from_token_list',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  getBridgeToTokenList = async (params: {
+    from_chain_id: string;
+    from_token_id?: string;
+    q?: string;
+  }): Promise<{
+    token_list: (TokenItem & { trade_volume_24h: 'low' | 'middle' | 'high' })[];
+  }> => {
+    const { data } = await this.request.get(
+      '/v2/bridge/recommend/to_token_list',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  getBridgeQuoteV2 = async (params: {
+    aggregator_id: string;
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_raw_amount: string;
+    to_chain_id: string;
+    to_token_id: string;
+    slippage: string;
+  }): Promise<Omit<BridgeQuote, 'tx'>[]> => {
+    const { data } = await this.request.get('/v2/bridge/quote_list', {
+      params,
+    });
+    return data;
+  };
+
+  getBridgeQuoteTxV2 = async (params: {
+    aggregator_id: string;
+    bridge_id: string;
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_raw_amount: string;
+    to_chain_id: string;
+    to_token_id: string;
+    slippage: string;
+  }): Promise<BridgeQuote> => {
+    const { data } = await this.request.get('/v2/bridge/quote', {
+      params,
+    });
+    return data;
+  };
+
+  isSameBridgeToken = async (params: {
+    from_chain_id: string;
+    from_token_id: string;
+    to_chain_id: string;
+    to_token_id: string;
+  }): Promise<{ is_same: boolean; aggregator_id: string }[]> => {
+    const { data } = await this.request.get('/v2/bridge/same_token', {
+      params,
+    });
+    return data;
+  };
+
+  getBridgeSupportChainV2 = async (): Promise<string[]> => {
+    const { data } = await this.request.get('/v2/bridge/supported_chains');
+    return data;
+  };
 }
