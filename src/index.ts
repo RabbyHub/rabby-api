@@ -2630,6 +2630,7 @@ export class OpenApiService {
 
   getBridgeToTokenList = async (params: {
     from_chain_id: string;
+    to_chain_id: string;
     from_token_id?: string;
     q?: string;
   }): Promise<{
