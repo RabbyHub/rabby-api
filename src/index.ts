@@ -280,10 +280,14 @@ export class OpenApiService {
     return data;
   };
 
-  getTotalBalance = async (address: string): Promise<TotalBalanceResponse> => {
+  getTotalBalance = async (
+    address: string,
+    isCore = false
+  ): Promise<TotalBalanceResponse> => {
     const { data } = await this.request.get('/v1/user/total_balance', {
       params: {
         id: address,
+        is_core: isCore,
       },
     });
 
