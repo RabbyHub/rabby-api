@@ -2698,4 +2698,15 @@ export class OpenApiService {
     const { data } = await this.request.get('/v2/bridge/supported_chains');
     return data;
   };
+
+  uninstalledFeedback = async ({
+    text,
+  }: {
+    text: string;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post('v1/feedback', {
+      text,
+    });
+    return data;
+  };
 }
