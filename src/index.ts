@@ -435,14 +435,16 @@ export class OpenApiService {
     return data;
   };
 
-  gasMarket = async (
-    chainId: string,
-    customGas?: number
-  ): Promise<GasLevel[]> => {
+  gasMarket = async (options: {
+    chainId: string;
+    tx?: Tx;
+    customGas?: number;
+  }): Promise<GasLevel[]> => {
     const { data } = await this.request.get('/v1/wallet/gas_market', {
       params: {
-        chain_id: chainId,
-        custom_price: customGas,
+        chain_id: options.chainId,
+        custom_price: options.customGas,
+        tx: options.tx,
       },
     });
 
