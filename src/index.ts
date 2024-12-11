@@ -808,6 +808,20 @@ export class OpenApiService {
     return data;
   };
 
+  getApprovalCount = async (
+    address: string
+  ): Promise<{ total_asset_cnt: number }> => {
+    const { data } = await this.request.get(
+      '/v1/user/total_approval_asset_cnt',
+      {
+        params: {
+          id: address,
+        },
+      }
+    );
+    return data;
+  };
+
   getGasStationTokenList = async () => {
     const { data } = await this.request.get<TokenItem[]>(
       '/v1/wallet/gas_station_token_list'
