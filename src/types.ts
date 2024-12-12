@@ -287,14 +287,14 @@ export interface NFTItem {
   id: string;
   contract_id: string;
   inner_id: string;
-  token_id: string;
+  token_id?: string;
   name: string;
   contract_name: string;
   description: string;
-  usd_price: number;
+  usd_price?: number;
   amount: number;
   collection_id?: string;
-  pay_token: {
+  pay_token?: {
     id: string;
     name: string;
     symbol: string;
