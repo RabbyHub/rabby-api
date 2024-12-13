@@ -2751,7 +2751,7 @@ export class OpenApiService {
   getTokenDatePrice = async (params: {
     chain_id: string;
     id: string;
-  }): Promise<{ date_at: number; price: number }[]> => {
+  }): Promise<{ date_at: string; price: number }[]> => {
     const { data } = await this.request.get('/v1/token/date_price', {
       params,
     });
