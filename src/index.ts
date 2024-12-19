@@ -294,6 +294,35 @@ export class OpenApiService {
     return data;
   };
 
+  getTotalBalanceV2 = async ({
+    address,
+    isCore = false,
+    included_token_uuids = [],
+    excluded_token_uuids = [],
+    excluded_protocol_ids = [],
+    excluded_chain_ids = [],
+  }: {
+    address: string;
+    isCore: boolean;
+    included_token_uuids: string[];
+    excluded_token_uuids: string[];
+    excluded_protocol_ids: string[];
+    excluded_chain_ids: string[];
+  }): Promise<TotalBalanceResponse> => {
+    const { data } = await this.request.get('/v2/user/total_balance', {
+      params: {
+        id: address,
+        is_core: isCore,
+        included_token_uuids: included_token_uuids,
+        excluded_token_uuids: excluded_token_uuids,
+        excluded_protocol_ids: excluded_protocol_ids,
+        excluded_chain_ids: excluded_chain_ids,
+      },
+    });
+
+    return data;
+  };
+
   getPendingCount = async (
     address: string
   ): Promise<{ total_count: number; chains: ChainWithPendingCount[] }> => {
@@ -611,12 +640,23 @@ export class OpenApiService {
     return data;
   };
 
-  listNFT = async (id: string, isAll = true): Promise<NFTItem[]> => {
+  listNFT = async (
+    id: string,
+    isAll = true,
+    sortByCredit?: boolean
+  ): Promise<NFTItem[]> => {
     const { data } = await this.request.get('/v1/user/nft_list', {
-      params: {
-        id,
-        is_all: isAll,
-      },
+      params: Object.assign(
+        {
+          id,
+          is_all: isAll,
+        },
+        sortByCredit
+          ? {
+              sort_by: 'credit_score',
+            }
+          : {}
+      ),
     });
     return data;
   };
