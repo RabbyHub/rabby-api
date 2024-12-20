@@ -310,14 +310,12 @@ export class OpenApiService {
     excluded_chain_ids: string[];
   }): Promise<TotalBalanceResponse> => {
     const { data } = await this.request.post('/v2/user/total_balance', {
-      params: {
-        id: address,
-        is_core: isCore,
-        included_token_uuids: included_token_uuids,
-        excluded_token_uuids: excluded_token_uuids,
-        excluded_protocol_ids: excluded_protocol_ids,
-        excluded_chain_ids: excluded_chain_ids,
-      },
+      id: address,
+      is_core: isCore,
+      included_token_uuids: included_token_uuids,
+      excluded_token_uuids: excluded_token_uuids,
+      excluded_protocol_ids: excluded_protocol_ids,
+      excluded_chain_ids: excluded_chain_ids,
     });
 
     return data;
