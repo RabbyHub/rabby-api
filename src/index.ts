@@ -309,7 +309,7 @@ export class OpenApiService {
     excluded_protocol_ids: string[];
     excluded_chain_ids: string[];
   }): Promise<TotalBalanceResponse> => {
-    const { data } = await this.request.get('/v2/user/total_balance', {
+    const { data } = await this.request.post('/v2/user/total_balance', {
       params: {
         id: address,
         is_core: isCore,
