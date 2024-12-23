@@ -311,6 +311,7 @@ export interface NFTItem {
   collection?: Collection | null;
   is_erc1155?: boolean;
   is_erc721: boolean;
+  thumbnail_url?: string;
 }
 
 export interface Collection {
