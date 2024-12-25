@@ -2776,11 +2776,25 @@ export class OpenApiService {
     return data;
   };
 
+  /**
+   * @deprecated
+   */
   getToken24hPrice = async (params: {
     chain_id: string;
     id: string;
   }): Promise<{ time_at: number; price: number }[]> => {
     const { data } = await this.request.get('/v1/token/24h_price', {
+      params,
+    });
+    return data;
+  };
+
+  getTokenPriceCurve = async (params: {
+    chain_id: string;
+    id: string;
+    days: number | 1 | 7;
+  }): Promise<{ time_at: number; price: number }[]> => {
+    const { data } = await this.request.get('/v1/token/price_curve', {
       params,
     });
     return data;
