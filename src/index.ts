@@ -790,6 +790,7 @@ export class OpenApiService {
       dex_fee_desc?: string | null;
     }>('/v1/wallet/swap_quote', {
       params,
+      timeout: 5000,
     });
     return data;
   };
