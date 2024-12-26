@@ -2597,11 +2597,7 @@ export class OpenApiService {
 
   getWithdrawList = async (p: {
     sig: string;
-    amount: number;
     account_id: string;
-    user_addr: string;
-    chain_id: string;
-    fee: number;
   }): Promise<WithdrawListAddressItem[]> => {
     const { sig, ...params } = p;
     const { data } = await this.request.get('/v1/gas_account/withdraw_list', {
