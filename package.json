@@ -1,6 +1,6 @@
 {
   "name": "@rabby-wallet/rabby-api",
-  "version": "0.9.6",
+  "version": "0.9.6-beta.23",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -38,7 +38,7 @@
   },
   "scripts": {
     "test": "jest test/*.spec.ts --env=./test/jsdom-env-hack.js",
-    "build": "rimraf dist && tsc",
+    "build": "tsc",
     "preversion": "npm run build",
     "prepublishOnly": "npm run build && npm run test",
     "prepare": "husky install"
