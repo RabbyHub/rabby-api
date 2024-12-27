@@ -1542,3 +1542,14 @@ export interface ParseCommonResponse {
   contract_call_data: ParseTxResponse['contract_call'] | null;
   pre_exec?: PreExecResult['pre_exec'];
 }
+export interface RechargeChainItem {
+  chain_id: string;
+  withdraw_limit: number;
+  withdraw_fee: number;
+}
+
+export interface WithdrawListAddressItem {
+  recharge_addr: string;
+  total_withdraw_limit: number;
+  recharge_chain_list: RechargeChainItem[];
+}

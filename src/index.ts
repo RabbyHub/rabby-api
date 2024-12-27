@@ -61,6 +61,7 @@ import {
   ContractInfo,
   GasAccountCheckResult,
   ParseCommonResponse,
+  WithdrawListAddressItem,
 } from './types';
 
 interface OpenApiStore {
@@ -2576,6 +2577,9 @@ export class OpenApiService {
     sig: string;
     amount: number;
     account_id: string;
+    user_addr: string;
+    chain_id: string;
+    fee: number;
   }): Promise<{
     success: boolean;
   }> => {
@@ -2592,6 +2596,20 @@ export class OpenApiService {
     return data;
   };
 
+  getWithdrawList = async (p: {
+    sig: string;
+    id: string;
+  }): Promise<WithdrawListAddressItem[]> => {
+    const { sig, ...params } = p;
+    const { data } = await this.request.get('/v1/gas_account/withdraw_list', {
+      params,
+      headers: {
+        sig,
+      },
+    });
+    return data;
+  };
+
   getGasAccountHistory = async (p: {
     sig: string;
     account_id: string;
@@ -2599,6 +2617,14 @@ export class OpenApiService {
     limit: number;
   }): Promise<{
     recharge_list: {
+      amount: number;
+      chain_id: string;
+      create_at: number;
+      gas_account_id: string;
+      tx_id: string;
+      user_addr: string;
+    }[];
+    withdraw_list: {
       amount: number;
       chain_id: string;
       create_at: number;
