@@ -1546,6 +1546,7 @@ export interface RechargeChainItem {
   chain_id: string;
   withdraw_limit: number;
   withdraw_fee: number;
+  l1_balance: number;
 }
 
 export interface WithdrawListAddressItem {
