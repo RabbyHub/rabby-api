@@ -38,7 +38,7 @@
   },
   "scripts": {
     "test": "jest test/*.spec.ts --env=./test/jsdom-env-hack.js",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "preversion": "npm run build",
     "prepublishOnly": "npm run build && npm run test",
     "prepare": "husky install"
