@@ -1331,6 +1331,7 @@ export interface SupportedChain {
   eip_1559: boolean;
   is_disabled: boolean;
   explorer_host: string;
+  block_interval: number;
 }
 
 export interface ChainListItem {
