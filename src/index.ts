@@ -2843,4 +2843,13 @@ export class OpenApiService {
     });
     return data;
   };
+  batchQueryTokens = async (uuids: string | string[]): Promise<TokenItem[]> => {
+    const { data } = await this.request.get('/v1/token/list_by_uuids', {
+      params: {
+        uuids: Array.isArray(uuids) ? uuids.join(',') : uuids,
+      },
+    });
+
+    return data;
+  };
 }
