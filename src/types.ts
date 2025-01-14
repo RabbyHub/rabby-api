@@ -294,6 +294,8 @@ export interface NFTItem {
   usd_price?: number;
   amount: number;
   collection_id?: string;
+  collection_name?: string;
+  is_core?: boolean;
   pay_token?: {
     id: string;
     name: string;
