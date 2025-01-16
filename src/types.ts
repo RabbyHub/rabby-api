@@ -404,6 +404,7 @@ export interface TxHistoryResult {
 export interface TxAllHistoryResult
   extends Omit<TxHistoryResult, 'token_dict'> {
   token_uuid_dict: Record<string, TokenItem>;
+  project_dict: TxHistoryResult['project_dict'];
 }
 
 export interface GasResult {

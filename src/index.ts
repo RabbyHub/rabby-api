@@ -1080,6 +1080,17 @@ export class OpenApiService {
     return data;
   };
 
+  getSwapTradeListV2 = async (params: {
+    user_addr: string;
+    limit: number;
+    start_time?: number;
+  }): Promise<SwapTradeList> => {
+    const { data } = await this.request.get('/v2/wallet/swap_trade_list', {
+      params,
+    });
+    return data;
+  };
+
   postSwap = async (params: {
     quote: {
       pay_token_id: string;
