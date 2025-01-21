@@ -687,7 +687,7 @@ export class OpenApiService {
     params: {
       id: string;
       start_time?: number;
-      end_time?: number;
+      page_count?: number;
     },
     options?: Parameters<typeof this.asyncJob>[1]
   ): Promise<TxAllHistoryResult> => {
