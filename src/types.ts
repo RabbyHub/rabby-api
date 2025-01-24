@@ -294,6 +294,8 @@ export interface NFTItem {
   usd_price?: number;
   amount: number;
   collection_id?: string;
+  collection_name?: string;
+  is_core?: boolean;
   pay_token?: {
     id: string;
     name: string;
@@ -404,6 +406,7 @@ export interface TxHistoryResult {
 export interface TxAllHistoryResult
   extends Omit<TxHistoryResult, 'token_dict'> {
   token_uuid_dict: Record<string, TokenItem>;
+  project_dict: TxHistoryResult['project_dict'];
 }
 
 export interface GasResult {

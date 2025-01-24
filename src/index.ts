@@ -687,6 +687,7 @@ export class OpenApiService {
     params: {
       id: string;
       start_time?: number;
+      page_count?: number;
     },
     options?: Parameters<typeof this.asyncJob>[1]
   ): Promise<TxAllHistoryResult> => {
@@ -1075,6 +1076,17 @@ export class OpenApiService {
     limit: string;
   }): Promise<SwapTradeList> => {
     const { data } = await this.request.get('/v1/wallet/swap_trade_list', {
+      params,
+    });
+    return data;
+  };
+
+  getSwapTradeListV2 = async (params: {
+    user_addr: string;
+    limit: number;
+    start_time?: number;
+  }): Promise<SwapTradeList> => {
+    const { data } = await this.request.get('/v2/wallet/swap_trade_list', {
       params,
     });
     return data;
