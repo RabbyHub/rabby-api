@@ -62,6 +62,9 @@ import {
   GasAccountCheckResult,
   ParseCommonResponse,
   WithdrawListAddressItem,
+  BuyCountryItem,
+  BuyQuoteItem,
+  BuyHistoryList,
 } from './types';
 
 interface OpenApiStore {
@@ -2862,6 +2865,58 @@ export class OpenApiService {
       },
     });
 
+    return data;
+  };
+
+  getBuySupportedCountryList = async () => {
+    const { data } = await this.request.get<BuyCountryItem[]>(
+      '/v1/buy/supported_country_list'
+    );
+    return data;
+  };
+  getBuySupportedTokenList = async () => {
+    const { data } = await this.request.get<
+      (TokenItem & { currency_code: string })[]
+    >('/v1/buy/supported_token_list');
+    return data;
+  };
+  getBuyQuote = async (params: {
+    country_code: string;
+    user_addr: string;
+    usd_amount: string;
+    receive_token_uuid: string;
+  }) => {
+    const { data } = await this.request.get<BuyQuoteItem[]>('/v1/buy/quote', {
+      params,
+    });
+    return data;
+  };
+  getBuyWidgetUrl = async (params: {
+    country_code: string;
+    user_addr: string;
+    usd_amount: string;
+    receive_token_uuid: string;
+    service_provider: string;
+  }) => {
+    const { data } = await this.request.get<{
+      url: string;
+      msg: number;
+    }>('/v1/buy/get_widget_url', { params });
+    return data;
+  };
+
+  getBuyHistory = async (params: {
+    user_addr: string;
+    start?: number;
+    limit?: number;
+  }) => {
+    const { data } = await this.request.get<BuyHistoryList>('/v1/buy/history', {
+      params: {
+        ...params,
+        start: params.start || 0,
+        limit: params.limit || 20,
+      },
+    });
     return data;
   };
 }

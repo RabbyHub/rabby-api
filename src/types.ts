@@ -1557,3 +1557,45 @@ export interface WithdrawListAddressItem {
   total_withdraw_limit: number;
   recharge_chain_list: RechargeChainItem[];
 }
+
+export interface BuyCountryItem {
+  id: string;
+  name: string;
+  image_url: string;
+  regions: null | {
+    regionCode: string;
+    name: string;
+  };
+}
+
+export interface BuyQuoteItem {
+  service_provider: {
+    id: string;
+    name: string;
+    website_url: string;
+    customer_support_url: string;
+    image_url: string;
+    logo_url: string;
+  };
+  token_amount: number;
+  payment_method_type: string;
+}
+
+export interface BuyHistoryList {
+  pagination: {
+    start: number;
+    limit: number;
+    total: number;
+  };
+  histories: {
+    user_addr: string;
+    status: 'pending' | 'success' | 'failed';
+    create_at: number;
+    service_provider: string;
+    pay_usd_amount: number;
+    payment_type: string;
+    receive_tx_id: string;
+    receive_chain_id: string;
+    receive_token: TokenItem;
+  }[];
+}
