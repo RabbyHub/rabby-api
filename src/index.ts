@@ -65,6 +65,7 @@ import {
   BuyCountryItem,
   BuyQuoteItem,
   BuyHistoryList,
+  BuyPaymentMethod,
 } from './types';
 
 interface OpenApiStore {
@@ -2916,6 +2917,15 @@ export class OpenApiService {
         start: params.start || 0,
         limit: params.limit || 20,
       },
+    });
+    return data;
+  };
+  getBuyPaymentMethods = async (params?: {
+    country_code: string;
+    service_provider: string;
+  }): Promise<BuyPaymentMethod[]> => {
+    const { data } = await this.request.get('/v1/buy/get_payment_method', {
+      params,
     });
     return data;
   };

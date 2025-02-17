@@ -1599,3 +1599,10 @@ export interface BuyHistoryList {
     receive_token: TokenItem;
   }[];
 }
+
+export interface BuyPaymentMethod {
+  id: string;
+  name: string;
+  type: string;
+  logo_url: string;
+}
