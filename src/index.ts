@@ -2920,9 +2920,10 @@ export class OpenApiService {
     });
     return data;
   };
-  getBuyPaymentMethods = async (params?: {
+  getBuyPaymentMethods = async (params: {
     country_code: string;
     service_provider: string;
+    redirect_url?: string;
   }): Promise<BuyPaymentMethod[]> => {
     const { data } = await this.request.get('/v1/buy/get_payment_method', {
       params,

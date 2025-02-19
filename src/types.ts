@@ -1568,17 +1568,30 @@ export interface BuyCountryItem {
   };
 }
 
+export interface BuyServiceProvider {
+  id: string;
+  name: string;
+  website_url: string;
+  customer_support_url: string;
+  image_url: string;
+  logo_url: string;
+}
 export interface BuyQuoteItem {
-  service_provider: {
-    id: string;
-    name: string;
-    website_url: string;
-    customer_support_url: string;
-    image_url: string;
-    logo_url: string;
-  };
+  service_provider: BuyServiceProvider;
   token_amount: number;
   payment_method_type: string;
+}
+
+interface BuyHistoryItem {
+  user_addr: string;
+  status: 'pending' | 'success' | 'failed';
+  create_at: number;
+  service_provider: BuyServiceProvider;
+  pay_usd_amount: number;
+  payment_type: string;
+  receive_tx_id: string;
+  receive_chain_id: string;
+  receive_token: TokenItem;
 }
 
 export interface BuyHistoryList {
@@ -1587,17 +1600,7 @@ export interface BuyHistoryList {
     limit: number;
     total: number;
   };
-  histories: {
-    user_addr: string;
-    status: 'pending' | 'success' | 'failed';
-    create_at: number;
-    service_provider: string;
-    pay_usd_amount: number;
-    payment_type: string;
-    receive_tx_id: string;
-    receive_chain_id: string;
-    receive_token: TokenItem;
-  }[];
+  histories: BuyHistoryItem[];
 }
 
 export interface BuyPaymentMethod {
