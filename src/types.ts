@@ -1582,15 +1582,19 @@ export interface BuyQuoteItem {
   payment_method_type: string;
 }
 
-interface BuyHistoryItem {
+export interface BuyHistoryItem {
+  id: string;
   user_addr: string;
-  status: 'pending' | 'success' | 'failed';
+  status: string;
   create_at: number;
   service_provider: BuyServiceProvider;
+  service_provider_url: null;
   pay_usd_amount: number;
   payment_type: string;
-  receive_tx_id: string;
   receive_chain_id: string;
+  receive_tx_id: string;
+  receive_token_id: string;
+  receive_amount: number;
   receive_token: TokenItem;
 }
 
