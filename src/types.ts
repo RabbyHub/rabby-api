@@ -1481,8 +1481,14 @@ export interface BridgeHistory {
     pay_token_amount: number;
     receive_token_amount: number;
   };
+  from_tx: {
+    tx_id: string;
+  };
+  to_tx: {
+    tx_id: string;
+  };
   detail_url: string;
-  status: 'pending' | 'completed';
+  status: 'pending' | 'completed' | 'failed';
   create_at: number;
   from_gas: {
     native_token: TokenItem;

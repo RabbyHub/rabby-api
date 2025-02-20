@@ -2421,6 +2421,17 @@ export class OpenApiService {
     return data;
   };
 
+  getBridgeHistoryListV2 = async (params: {
+    user_addr: string;
+    start_time: number;
+    limit: number;
+  }): Promise<{ history_list: BridgeHistory[]; total_cnt: number }> => {
+    const { data } = await this.request.get('/v2/bridge/history_list', {
+      params,
+    });
+    return data;
+  };
+
   postBridgeHistory = async (params: {
     aggregator_id: string;
     bridge_id: string;
