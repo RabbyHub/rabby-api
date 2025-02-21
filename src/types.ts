@@ -1588,8 +1588,9 @@ export interface BuyHistoryItem {
   status: string;
   create_at: number;
   service_provider: BuyServiceProvider;
-  service_provider_url: null;
+  service_provider_url: null | string;
   pay_usd_amount: number;
+  pay_currency_code: string;
   payment_type: string;
   receive_chain_id: string;
   receive_tx_id: string;
