@@ -2885,6 +2885,7 @@ export class OpenApiService {
     country_code: string;
     user_addr: string;
     usd_amount: string;
+    currency_code: string;
     receive_token_uuid: string;
   }) => {
     const { data } = await this.request.get<BuyQuoteItem[]>('/v1/buy/quote', {
@@ -2898,6 +2899,7 @@ export class OpenApiService {
     usd_amount: string;
     receive_token_uuid: string;
     service_provider: string;
+    currency_code: string;
     redirect_url?: string;
   }) => {
     const { data } = await this.request.get<{
@@ -2922,6 +2924,7 @@ export class OpenApiService {
     return data;
   };
   getBuyPaymentMethods = async (params: {
+    currency_code: string;
     country_code: string;
     service_provider: string;
   }): Promise<BuyPaymentMethod[]> => {
