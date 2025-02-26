@@ -2930,4 +2930,15 @@ export class OpenApiService {
     });
     return data;
   };
+
+  getBuyCurrencyList = async () => {
+    const { data } = await this.request.get<
+      {
+        id: string;
+        name: string;
+        image_url: string;
+      }[]
+    >('/v1/buy/supported_currency_list');
+    return data;
+  };
 }
