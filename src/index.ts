@@ -1752,10 +1752,18 @@ export class OpenApiService {
     log_id: string;
     low_gas_deadline?: number;
     origin?: string;
+    sig?: string;
   }): Promise<{ req: TxRequest }> => {
-    const { data } = await this.request.post('/v1/wallet/submit_tx', {
-      ...postData,
-    });
+    const { sig, ...rest } = postData;
+    const { data } = await this.request.post(
+      '/v1/wallet/submit_tx',
+      {
+        ...rest,
+      },
+      {
+        headers: sig ? { sig } : undefined,
+      }
+    );
 
     return data;
   };
@@ -2510,6 +2518,36 @@ export class OpenApiService {
     return data;
   };
 
+  getGasAccountInfoV2 = async (params: {
+    id: string;
+  }): Promise<{
+    account: {
+      id: string;
+      balance: number;
+      create_at: number;
+      nonce: number;
+    };
+  }> => {
+    const { data } = await this.request.get('/v2/gas_account', {
+      params,
+    });
+    return data;
+  };
+
+  confirmIapOrder = async (postData: {
+    user_id: string;
+    transaction_id: string;
+    device_type: 'android' | 'ios';
+    product_id: string;
+  }): Promise<{ req: TxRequest }> => {
+    const { data } = await this.request.post(
+      '/v1/gas_account/confirm_iap_order',
+      postData
+    );
+
+    return data;
+  };
+
   loginGasAccount = async (params: {
     sig: string;
     account_id: string;
@@ -2673,7 +2711,7 @@ export class OpenApiService {
   };
 
   checkGasAccountTxs = async (p: {
-    sig: string;
+    sig?: string;
     account_id: string;
     tx_list: Tx[];
   }): Promise<GasAccountCheckResult> => {
@@ -2682,9 +2720,11 @@ export class OpenApiService {
       '/v1/gas_account/check_txs',
       params,
       {
-        headers: {
-          sig,
-        },
+        headers: sig
+          ? {
+              sig,
+            }
+          : undefined,
       }
     );
     return data;
