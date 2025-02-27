@@ -1,6 +1,6 @@
 {
   "name": "@rabby-wallet/rabby-api",
-  "version": "0.9.11",
+  "version": "0.9.12-alpha.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
