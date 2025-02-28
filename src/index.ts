@@ -66,6 +66,7 @@ import {
   BuyQuoteItem,
   BuyHistoryList,
   BuyPaymentMethod,
+  GasAccountInfo,
 } from './types';
 
 interface OpenApiStore {
@@ -1757,7 +1758,7 @@ export class OpenApiService {
     low_gas_deadline?: number;
     origin?: string;
     sig?: string;
-  }): Promise<{ req: TxRequest }> => {
+  }): Promise<{ req: TxRequest; access_token?: string }> => {
     const { sig, ...rest } = postData;
     const { data } = await this.request.post(
       '/v1/wallet/submit_tx',
@@ -2503,12 +2504,7 @@ export class OpenApiService {
     sig: string;
     id: string;
   }): Promise<{
-    account: {
-      id: string;
-      balance: number;
-      create_at: number;
-      nonce: number;
-    };
+    account: GasAccountInfo;
   }> => {
     const { sig, ...others } = params;
     const { data } = await this.request.get('/v1/gas_account', {
@@ -2525,12 +2521,7 @@ export class OpenApiService {
   getGasAccountInfoV2 = async (params: {
     id: string;
   }): Promise<{
-    account: {
-      id: string;
-      balance: number;
-      create_at: number;
-      nonce: number;
-    };
+    account: GasAccountInfo;
   }> => {
     const { data } = await this.request.get('/v2/gas_account', {
       params,

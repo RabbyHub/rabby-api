@@ -1228,7 +1228,6 @@ export interface TxRequest {
   predict_packed_at?: number;
   predict_err_code?: number;
   push_at_list?: number[];
-  access_token?: string;
 }
 
 export interface MempoolCheckDetail {
@@ -1614,4 +1613,13 @@ export interface BuyPaymentMethod {
   name: string;
   type: string;
   logo_url: string;
+}
+
+export interface GasAccountInfo {
+  id: string;
+  balance: number;
+  create_at: number;
+  nonce: number;
+  uuid: string;
+  has_iap_order: boolean;
 }
