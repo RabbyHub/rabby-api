@@ -2944,4 +2944,14 @@ export class OpenApiService {
     >('/v1/buy/supported_currency_list');
     return data;
   };
+
+  getOfflineChainList = async () => {
+    const { data } = await this.request.get<
+      {
+        id: string;
+        offline_at: number;
+      }[]
+    >('/v1/chain/offline_list');
+    return data;
+  };
 }
