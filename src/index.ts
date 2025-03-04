@@ -2529,8 +2529,19 @@ export class OpenApiService {
     return data;
   };
 
+  createGasAccountPayInfo = async (postData: {
+    id: string;
+  }): Promise<{
+    account: GasAccountInfo;
+  }> => {
+    const { data } = await this.request.post(
+      '/v2/gas_account/pay_info',
+      postData
+    );
+    return data;
+  };
+
   confirmIapOrder = async (postData: {
-    user_id: string;
     transaction_id: string;
     device_type: 'android' | 'ios';
     product_id: string;
