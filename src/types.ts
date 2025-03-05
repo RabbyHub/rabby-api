@@ -1622,4 +1622,5 @@ export interface GasAccountInfo {
   nonce: number;
   uuid: string;
   has_iap_order: boolean;
+  no_register: boolean;
 }
