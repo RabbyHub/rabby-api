@@ -1444,6 +1444,20 @@ export class OpenApiService {
     return data;
   };
 
+  // 全链两个地址是否发生过转账
+  hasTransferAllChain = async (
+    from: string,
+    to: string
+  ): Promise<{ has_transfer: boolean }> => {
+    const { data } = await this.request.get('/v2/engine/addr/has_transfer', {
+      params: {
+        from_addr: from,
+        to_addr: to,
+      },
+    });
+    return data;
+  };
+
   isTokenContract = async (
     chainId: string,
     id: string
