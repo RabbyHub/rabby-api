@@ -880,6 +880,7 @@ export interface AddrDescResponse {
     born_at: number;
     is_danger: boolean | null;
     is_spam: boolean | null;
+    is_scam: boolean | null;
     name: string;
   };
 }
