@@ -1614,3 +1614,13 @@ export interface BuyPaymentMethod {
   type: string;
   logo_url: string;
 }
+
+export interface GasAccountInfo {
+  id: string;
+  balance: number;
+  create_at: number;
+  nonce: number;
+  uuid: string;
+  has_iap_order: boolean;
+  no_register: boolean;
+}

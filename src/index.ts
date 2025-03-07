@@ -66,6 +66,7 @@ import {
   BuyQuoteItem,
   BuyHistoryList,
   BuyPaymentMethod,
+  GasAccountInfo,
 } from './types';
 
 interface OpenApiStore {
@@ -1756,10 +1757,18 @@ export class OpenApiService {
     log_id: string;
     low_gas_deadline?: number;
     origin?: string;
-  }): Promise<{ req: TxRequest }> => {
-    const { data } = await this.request.post('/v1/wallet/submit_tx', {
-      ...postData,
-    });
+    sig?: string;
+  }): Promise<{ req: TxRequest; access_token?: string }> => {
+    const { sig, ...rest } = postData;
+    const { data } = await this.request.post(
+      '/v1/wallet/submit_tx',
+      {
+        ...rest,
+      },
+      {
+        headers: sig ? { sig } : undefined,
+      }
+    );
 
     return data;
   };
@@ -2495,12 +2504,7 @@ export class OpenApiService {
     sig: string;
     id: string;
   }): Promise<{
-    account: {
-      id: string;
-      balance: number;
-      create_at: number;
-      nonce: number;
-    };
+    account: GasAccountInfo;
   }> => {
     const { sig, ...others } = params;
     const { data } = await this.request.get('/v1/gas_account', {
@@ -2511,6 +2515,42 @@ export class OpenApiService {
         sig,
       },
     });
+    return data;
+  };
+
+  getGasAccountInfoV2 = async (params: {
+    id: string;
+  }): Promise<{
+    account: GasAccountInfo;
+  }> => {
+    const { data } = await this.request.get('/v2/gas_account', {
+      params,
+    });
+    return data;
+  };
+
+  createGasAccountPayInfo = async (postData: {
+    id: string;
+  }): Promise<{
+    account: GasAccountInfo;
+  }> => {
+    const { data } = await this.request.post(
+      '/v2/gas_account/pay_info',
+      postData
+    );
+    return data;
+  };
+
+  confirmIapOrder = async (postData: {
+    transaction_id: string;
+    device_type: 'android' | 'ios';
+    product_id: string;
+  }): Promise<{ req: TxRequest }> => {
+    const { data } = await this.request.post(
+      '/v1/gas_account/confirm_iap_order',
+      postData
+    );
+
     return data;
   };
 
@@ -2677,7 +2717,7 @@ export class OpenApiService {
   };
 
   checkGasAccountTxs = async (p: {
-    sig: string;
+    sig?: string;
     account_id: string;
     tx_list: Tx[];
   }): Promise<GasAccountCheckResult> => {
@@ -2686,9 +2726,11 @@ export class OpenApiService {
       '/v1/gas_account/check_txs',
       params,
       {
-        headers: {
-          sig,
-        },
+        headers: sig
+          ? {
+              sig,
+            }
+          : undefined,
       }
     );
     return data;
