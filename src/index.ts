@@ -604,10 +604,10 @@ export class OpenApiService {
     return data;
   };
 
-  geTokenEntity = async (
+  getTokenEntity = async (
     id: string,
     chainId?: string
-  ): Promise<TokenEntityDetail[]> => {
+  ): Promise<TokenEntityDetail> => {
     const { data } = await this.request.get('/v1/token/entity', {
       params: {
         id,
