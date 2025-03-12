@@ -123,11 +123,13 @@ export interface TokenEntityDetail {
   bridge_ids: string[];
   listed_sites: {
     name: string;
-    url: string;
+    url?: string;
+    id?: string;
     logo_url: string;
   }[];
   cex_list: {
-    id: string;
+    id?: string;
+    url?: string;
     name: string;
     logo_url: string;
   }[];
