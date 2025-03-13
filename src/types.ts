@@ -121,15 +121,15 @@ export interface TokenEntityDetail {
   cmc_id: string;
   coingecko_id: string;
   bridge_ids: string[];
+  origin_token?: TokenItem;
   listed_sites: {
     name: string;
-    url?: string;
-    id?: string;
+    url: string;
     logo_url: string;
   }[];
   cex_list: {
-    id?: string;
-    url?: string;
+    id: string;
+    site_url: string;
     name: string;
     logo_url: string;
   }[];
@@ -164,7 +164,7 @@ export interface TokenItem {
 }
 
 export interface TokenItemWithEntity extends TokenItem {
-  entity?: TokenEntityDetail;
+  identity?: TokenEntityDetail;
 }
 
 export interface TransferingNFTItem {
