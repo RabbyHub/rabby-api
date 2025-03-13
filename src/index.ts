@@ -608,7 +608,7 @@ export class OpenApiService {
     id: string,
     chainId?: string
   ): Promise<TokenEntityDetail> => {
-    const { data } = await this.request.get('/v1/token/entity', {
+    const { data } = await this.request.get('/v1/token/identity', {
       params: {
         id,
         chain_id: chainId,
