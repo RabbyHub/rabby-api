@@ -120,6 +120,7 @@ export interface TokenItem {
   display_symbol: string | null;
   id: string;
   is_core: boolean;
+  credit_score?: number;
   is_verified: boolean;
   is_wallet: boolean;
   is_scam?: boolean;
