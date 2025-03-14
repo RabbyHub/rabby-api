@@ -116,6 +116,7 @@ export interface TokenEntityDetail {
   token_id: string;
   symbol: string;
   domain_id: string;
+  fdv: number;
   is_domain_verified: boolean;
   relate_domain_ids: string[];
   cmc_id: string;
