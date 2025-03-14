@@ -120,6 +120,7 @@ export interface TokenItem {
   display_symbol: string | null;
   id: string;
   is_core: boolean;
+  credit_score?: number;
   is_verified: boolean;
   is_wallet: boolean;
   is_scam?: boolean;
@@ -880,6 +881,7 @@ export interface AddrDescResponse {
     born_at: number;
     is_danger: boolean | null;
     is_spam: boolean | null;
+    is_scam: boolean | null;
     name: string;
   };
 }
