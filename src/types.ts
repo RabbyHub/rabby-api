@@ -110,6 +110,32 @@ export interface TotalBalanceResponse {
   err_chain_ids?: string[];
 }
 
+export interface TokenEntityDetail {
+  id: string;
+  chain: string;
+  token_id: string;
+  symbol: string;
+  domain_id: string;
+  fdv: number;
+  is_domain_verified: boolean;
+  relate_domain_ids: string[];
+  cmc_id: string;
+  coingecko_id: string;
+  bridge_ids: string[];
+  origin_token?: TokenItem;
+  listed_sites: {
+    name: string;
+    url: string;
+    logo_url: string;
+  }[];
+  cex_list: {
+    id: string;
+    site_url: string;
+    name: string;
+    logo_url: string;
+  }[];
+}
+
 export interface TokenItem {
   content_type?: 'image' | 'image_url' | 'video_url' | 'audio_url' | undefined;
   content?: string | undefined;
@@ -137,6 +163,10 @@ export interface TokenItem {
   raw_amount_hex_str?: string;
   price_24h_change?: number | null;
   low_credit_score?: boolean;
+}
+
+export interface TokenItemWithEntity extends TokenItem {
+  identity?: TokenEntityDetail;
 }
 
 export interface TransferingNFTItem {

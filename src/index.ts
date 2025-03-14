@@ -67,6 +67,8 @@ import {
   BuyHistoryList,
   BuyPaymentMethod,
   GasAccountInfo,
+  TokenEntityDetail,
+  TokenItemWithEntity,
 } from './types';
 
 interface OpenApiStore {
@@ -595,6 +597,20 @@ export class OpenApiService {
       params: {
         id,
         is_all: isAll,
+        chain_id: chainId,
+      },
+    });
+
+    return data;
+  };
+
+  getTokenEntity = async (
+    id: string,
+    chainId?: string
+  ): Promise<TokenEntityDetail> => {
+    const { data } = await this.request.get('/v1/token/identity', {
+      params: {
+        id,
         chain_id: chainId,
       },
     });
@@ -2915,6 +2931,16 @@ export class OpenApiService {
     });
     return data;
   };
+
+  searchTokensV2 = async (params: {
+    q: string;
+  }): Promise<TokenItemWithEntity[]> => {
+    const { data } = await this.request.get('/v2/token/search', {
+      params,
+    });
+    return data;
+  };
+
   batchQueryTokens = async (uuids: string | string[]): Promise<TokenItem[]> => {
     const { data } = await this.request.get('/v1/token/list_by_uuids', {
       params: {
