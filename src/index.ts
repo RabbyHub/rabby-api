@@ -3036,4 +3036,13 @@ export class OpenApiService {
     >('/v1/chain/offline_list');
     return data;
   };
+
+  isBlockedAddress = async (id: string) => {
+    const { data } = await this.request.get<{
+      is_blocked: boolean;
+    }>('/v1/engine/addr/is_blocked', {
+      params: { id },
+    });
+    return data;
+  };
 }
