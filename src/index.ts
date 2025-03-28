@@ -3045,4 +3045,28 @@ export class OpenApiService {
     });
     return data;
   };
+
+  estimateGasUsd = async ({
+    tx,
+    origin,
+    address,
+    updateNonce = false,
+    pending_tx_list = [],
+  }: {
+    tx: Tx;
+    origin: string;
+    address: string;
+    updateNonce: boolean;
+    pending_tx_list: Tx[];
+  }): Promise<{ gas_used?: number; safe_gas_used?: number }> => {
+    const { data } = await this.request.post('/v1/wallet/estimate_gas', {
+      tx,
+      user_addr: address,
+      origin,
+      update_nonce: updateNonce,
+      pending_tx_list,
+    });
+
+    return data;
+  };
 }
