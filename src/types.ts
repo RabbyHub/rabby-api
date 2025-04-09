@@ -1379,6 +1379,7 @@ export interface ChainListItem {
   };
   explorer: string | null;
   rpc: null | string;
+  rpc_list?: string[];
 }
 export interface HistoryCurve {
   create_at: number;
