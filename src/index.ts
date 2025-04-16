@@ -1456,6 +1456,7 @@ export class OpenApiService {
         from_addr: from,
         to_addr: to,
       },
+      timeout: 2000,
     });
     return data;
   };
@@ -1470,6 +1471,7 @@ export class OpenApiService {
         from_addr: from,
         to_addr: to,
       },
+      timeout: 2000,
     });
     return data;
   };
