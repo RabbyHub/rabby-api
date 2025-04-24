@@ -1922,6 +1922,7 @@ export class OpenApiService {
     chain_id?: string;
     start?: number;
     limit?: number;
+    match_id?: boolean;
   }): Promise<{
     page: {
       limit: number;
