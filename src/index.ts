@@ -69,6 +69,7 @@ import {
   GasAccountInfo,
   TokenEntityDetail,
   TokenItemWithEntity,
+  ProjectItem,
 } from './types';
 
 interface OpenApiStore {
@@ -3070,6 +3071,10 @@ export class OpenApiService {
       pending_tx_list,
     });
 
+    return data;
+  };
+  getCexSupportList = async (): Promise<ProjectItem[]> => {
+    const { data } = await this.request.get('/v1/cex/supported_list');
     return data;
   };
 }
