@@ -1142,6 +1142,19 @@ export class OpenApiService {
     return data;
   };
 
+  suggestSlippage = async (params: {
+    chain_id: string;
+    slippage: string;
+    from_token_id: string;
+    to_token_id: string;
+    from_token_amount: string;
+  }): Promise<{ suggest_slippage: number }> => {
+    const { data } = await this.request.get('v1/wallet/suggest_slippage', {
+      params,
+    });
+    return data;
+  };
+
   getOriginPopularityLevel = async (
     origin: string
   ): Promise<{ level: 'very_low' | 'low' | 'medium' | 'high' }> => {
