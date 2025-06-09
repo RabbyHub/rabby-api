@@ -388,12 +388,14 @@ export class OpenApiService {
     address,
     updateNonce = false,
     pending_tx_list = [],
+    delegate_call,
   }: {
     tx: Tx;
     origin: string;
     address: string;
     updateNonce: boolean;
     pending_tx_list: Tx[];
+    delegate_call?: boolean;
   }): Promise<ExplainTxResponse> => {
     const { data } = await this.request.post('/v1/wallet/pre_exec_tx', {
       tx,
@@ -401,6 +403,7 @@ export class OpenApiService {
       origin,
       update_nonce: updateNonce,
       pending_tx_list,
+      delegate_call,
     });
 
     return data;
