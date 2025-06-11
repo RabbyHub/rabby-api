@@ -88,6 +88,45 @@ export interface Tx {
   v?: string;
 }
 
+export interface CopyTradeTokenItem extends TokenItem {
+  fdv: number | null;
+  buy_amount_24h: number;
+  buy_usd_value_24h: number;
+  net_curve_24h: { time_at: number; price: number }[];
+}
+
+export interface CopyTradeTokenListResponse {
+  token_list: CopyTradeTokenItem[];
+}
+
+export interface CopyTradeRecentBuyItem {
+  id: string;
+  user_addr: string;
+  user_addr_pnl: {
+    id: string;
+    profit_usd: number;
+  };
+  chain_id: string;
+  token_id: string;
+  token_amount: number;
+  action: string;
+  usd_value: number;
+  create_at: number;
+}
+
+export interface CopyTradeRecentBuyListResponse {
+  recent_buy_list: CopyTradeRecentBuyItem[];
+  total: number;
+}
+
+export interface CopyTradePnlItem extends TokenItem {
+  profit_usd: number;
+}
+
+export interface CopyTradePnlListResponse {
+  pnl_list: CopyTradePnlItem[];
+}
+
 export interface Eip1559Tx {
   chainId: number;
   data: string;
