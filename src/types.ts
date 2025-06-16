@@ -92,7 +92,7 @@ export interface CopyTradeTokenItem extends TokenItem {
   fdv: number | null;
   buy_amount_24h: number;
   buy_usd_value_24h: number;
-  net_curve_24h: { time_at: number; price: number }[];
+  price_curve_24h: { time_at: number; price: number }[];
 }
 
 export interface CopyTradeTokenListResponse {
@@ -104,13 +104,13 @@ export interface CopyTradeRecentBuyItem {
   user_addr: string;
   user_addr_pnl: {
     id: string;
-    profit_usd: number;
+    profit_usd_value: number;
   };
   chain_id: string;
   token_id: string;
   token_amount: number;
   action: string;
-  usd_value: number;
+  buy_usd_value: number;
   create_at: number;
 }
 
@@ -120,7 +120,7 @@ export interface CopyTradeRecentBuyListResponse {
 }
 
 export interface CopyTradePnlItem extends TokenItem {
-  profit_usd: number;
+  profit_usd_value: number;
 }
 
 export interface CopyTradePnlListResponse {

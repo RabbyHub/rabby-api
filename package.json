@@ -1,6 +1,6 @@
 {
   "name": "@rabby-wallet/rabby-api",
-  "version": "0.9.23.beta.1",
+  "version": "0.9.23-beta.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -37,7 +37,7 @@
     "typescript": "^4.8.3"
   },
   "scripts": {
-    "test": "jest test/*.spec.ts --env=./test/jsdom-env-hack.js",
+    "test": "jest --env=./test/jsdom-env-hack.js",
     "build": "rimraf dist && tsc",
     "preversion": "npm run build",
     "prepublishOnly": "npm run build && npm run test",
