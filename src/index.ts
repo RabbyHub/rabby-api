@@ -2975,7 +2975,7 @@ export class OpenApiService {
     limit: number; // default 10 max 20
     start_time: number; // default 0
   }): Promise<CopyTradeTokenListResponse> => {
-    const { data } = await this.request.get('/v1/copytrading/token_list', {
+    const { data } = await this.request.get('/v1/copytrading/token/list', {
       params,
     });
     return data;
