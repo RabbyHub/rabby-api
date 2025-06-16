@@ -435,17 +435,20 @@ export interface TxHistoryItem {
     amount: number;
     from_addr: string;
     token_id: string;
+    price?: number;
   }[];
   sends: {
     amount: number;
     to_addr: string;
     token_id: string;
+    price?: number;
   }[];
   time_at: number;
   token_approve: {
     spender: string;
     token_id: string;
     value: number;
+    price?: number;
   } | null;
   tx: {
     eth_gas_fee: number;
