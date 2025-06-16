@@ -1410,6 +1410,7 @@ export interface SupportedChain {
   is_disabled: boolean;
   explorer_host: string;
   block_interval: number;
+  severity?: number;
 }
 
 export interface ChainListItem {
