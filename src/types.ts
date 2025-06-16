@@ -93,6 +93,7 @@ export interface CopyTradeTokenItem extends TokenItem {
   buy_amount_24h: number;
   buy_usd_value_24h: number;
   price_curve_24h: { time_at: number; price: number }[];
+  create_at: number; // split page time, for next page start_time
 }
 
 export interface CopyTradeTokenListResponse {
