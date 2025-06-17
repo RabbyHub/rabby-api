@@ -2995,9 +2995,12 @@ export class OpenApiService {
   getCopyTradingPnlList = async (params: {
     user_addr: string;
   }): Promise<CopyTradePnlListResponse> => {
-    const { data } = await this.request.get('/v1/copytrading/pnl/list', {
-      params,
-    });
+    const { data } = await this.request.get(
+      '/v1/copytrading/smart_money/pnl/list',
+      {
+        params,
+      }
+    );
     return data;
   };
 

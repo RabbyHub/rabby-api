@@ -122,6 +122,7 @@ export interface CopyTradeRecentBuyListResponse {
 
 export interface CopyTradePnlItem extends TokenItem {
   profit_usd_value: number;
+  protocol_id?: string;
 }
 
 export interface CopyTradePnlListResponse {
