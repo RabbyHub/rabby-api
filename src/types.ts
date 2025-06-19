@@ -163,6 +163,7 @@ export interface TokenItem {
   raw_amount_hex_str?: string;
   price_24h_change?: number | null;
   low_credit_score?: boolean;
+  cex_ids?: string[];
 }
 
 export interface TokenItemWithEntity extends TokenItem {
