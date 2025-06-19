@@ -2903,15 +2903,32 @@ export class OpenApiService {
     return data;
   };
 
+  submitFeedback = async ({
+    text,
+    usage,
+  }: {
+    text: string;
+    /**
+     * @description 'usage' is used to submit feedback on rate scene.
+     * by default, it means 'uninstall' scene.
+     */
+    usage?: 'rate' /*  | 'uninstall' */;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post('v1/feedback', {
+      text,
+      ...(usage && { usage }),
+    });
+    return data;
+  };
+
   uninstalledFeedback = async ({
     text,
   }: {
     text: string;
   }): Promise<{ success: boolean }> => {
-    const { data } = await this.request.post('v1/feedback', {
+    return this.submitFeedback({
       text,
     });
-    return data;
   };
 
   /**
