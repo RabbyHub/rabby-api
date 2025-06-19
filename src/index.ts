@@ -2909,10 +2909,10 @@ export class OpenApiService {
   }: {
     text: string;
     /**
-     * @description 'usage' is used to submit feedback on rate scene.
+     * @description 'usage' is used to submit feedback on rating scene.
      * by default, it means 'uninstall' scene.
      */
-    usage?: 'rate' /*  | 'uninstall' */;
+    usage?: 'rating' /*  | 'uninstall' */;
   }): Promise<{ success: boolean }> => {
     const { data } = await this.request.post('v1/feedback', {
       text,
