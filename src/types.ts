@@ -395,17 +395,20 @@ export interface TxHistoryItem {
     amount: number;
     from_addr: string;
     token_id: string;
+    price?: number;
   }[];
   sends: {
     amount: number;
     to_addr: string;
     token_id: string;
+    price?: number;
   }[];
   time_at: number;
   token_approve: {
     spender: string;
     token_id: string;
     value: number;
+    price?: number;
   } | null;
   tx: {
     eth_gas_fee: number;
@@ -1367,6 +1370,7 @@ export interface SupportedChain {
   is_disabled: boolean;
   explorer_host: string;
   block_interval: number;
+  severity?: number;
 }
 
 export interface ChainListItem {
@@ -1518,6 +1522,12 @@ export interface BridgeHistory {
   detail_url: string;
   status: 'pending' | 'completed';
   create_at: number;
+  from_tx: {
+    tx_id: string;
+  };
+  to_tx: {
+    tx_id?: string;
+  };
   from_gas: {
     native_token: TokenItem;
     gas_amount: number;
