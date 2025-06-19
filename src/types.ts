@@ -1563,6 +1563,12 @@ export interface BridgeHistory {
   detail_url: string;
   status: 'pending' | 'completed';
   create_at: number;
+  from_tx: {
+    tx_id: string;
+  };
+  to_tx: {
+    tx_id?: string;
+  };
   from_gas: {
     native_token: TokenItem;
     gas_amount: number;
