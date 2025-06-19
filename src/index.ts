@@ -70,6 +70,9 @@ import {
   TokenEntityDetail,
   TokenItemWithEntity,
   ProjectItem,
+  CopyTradeTokenListResponse,
+  CopyTradeRecentBuyListResponse,
+  CopyTradePnlListResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -2958,6 +2961,46 @@ export class OpenApiService {
     const { data } = await this.request.get('/v2/token/search', {
       params,
     });
+    return data;
+  };
+
+  // resp arr of chain_id
+  getCopyTradingChainList = async (): Promise<string[]> => {
+    const { data } = await this.request.get('/v1/copytrading/chain_list');
+    return data;
+  };
+
+  getCopyTradingTokenList = async (params: {
+    chain_id: string;
+    limit: number; // default 10 max 20
+    start_time: number; // default 0
+  }): Promise<CopyTradeTokenListResponse> => {
+    const { data } = await this.request.get('/v1/copytrading/token/list', {
+      params,
+    });
+    return data;
+  };
+
+  getCopyTradingRecentBuyList = async (params: {
+    chain_id: string;
+    token_id: string;
+    limit: number; // default 10 max 20
+  }): Promise<CopyTradeRecentBuyListResponse> => {
+    const { data } = await this.request.get('/v1/copytrading/recent_buy/list', {
+      params,
+    });
+    return data;
+  };
+
+  getCopyTradingPnlList = async (params: {
+    user_addr: string;
+  }): Promise<CopyTradePnlListResponse> => {
+    const { data } = await this.request.get(
+      '/v1/copytrading/smart_money/pnl/list',
+      {
+        params,
+      }
+    );
     return data;
   };
 
