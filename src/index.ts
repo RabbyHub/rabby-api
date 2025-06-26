@@ -73,6 +73,7 @@ import {
   CopyTradeTokenListResponse,
   CopyTradeRecentBuyListResponse,
   CopyTradePnlListResponse,
+  DefaultRPCRes,
 } from './types';
 
 interface OpenApiStore {
@@ -1822,6 +1823,57 @@ export class OpenApiService {
       }
     );
 
+    return data;
+  };
+
+  submitTxV2 = async (postData: {
+    frontend_push_result?:
+      | {
+          // FE  push
+          success: true;
+          has_pushed: true;
+          raw_tx: string;
+          url: string;
+          return_tx_id: string;
+        }
+      | {
+          // FE push failed
+          success: false;
+          has_pushed: true;
+          url: string;
+          error_msg: string;
+        };
+    backend_push_require: {
+      gas_type: 'gas_account' | 'gasless' | null;
+    };
+    context: {
+      tx: Tx;
+      origin?: string;
+      log_id: string;
+    };
+    mev_share_model: 'user' | 'rabby';
+    sig?: string;
+  }): Promise<{
+    tx_id?: string;
+    access_token?: string;
+    err?: string;
+  }> => {
+    const { sig, ...rest } = postData;
+    const { data } = await this.request.post(
+      '/v2/wallet/submit_tx',
+      {
+        ...rest,
+      },
+      {
+        headers: sig ? { sig } : undefined,
+      }
+    );
+
+    return data;
+  };
+
+  getDefaultRPCs = async (): Promise<DefaultRPCRes> => {
+    const { data } = await this.request.get('/v1/chainrpc');
     return data;
   };
 
