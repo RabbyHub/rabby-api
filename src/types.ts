@@ -1714,7 +1714,7 @@ export interface GasAccountInfo {
 export type DefaultRPCRes = {
   message: string;
   status: string;
-  stats: RPCDefaultItem[];
+  rpcs: RPCDefaultItem[];
 };
 
 type RPCDefaultItem = {
