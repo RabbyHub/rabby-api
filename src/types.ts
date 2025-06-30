@@ -100,6 +100,23 @@ export interface CopyTradeTokenListResponse {
   token_list: CopyTradeTokenItem[];
 }
 
+export interface CopyTradeTokenItemV2 extends CopyTradeTokenItem {
+  buy_address_count: number;
+  token_create_at: number;
+  liquidity: number;
+  buy_amount: number;
+  buy_usd_value: number;
+  pnl_usd_value: number;
+}
+export interface CopyTradeTokenListV2Response {
+  token_list: CopyTradeTokenItemV2[];
+  pagination: {
+    limit: number;
+    has_next: boolean;
+    next_cursor: string;
+  };
+}
+
 export interface CopyTradeRecentBuyItem {
   id: string;
   user_addr: string;
@@ -118,6 +135,29 @@ export interface CopyTradeRecentBuyItem {
 export interface CopyTradeRecentBuyListResponse {
   recent_buy_list: CopyTradeRecentBuyItem[];
   total: number;
+}
+
+export interface CopyTradeRecentBuyItemV2 {
+  user_addr: string;
+  current_balance: number;
+  buy_usd_value: number;
+  buy_amount: number;
+  buy_price: number;
+  sell_usd_value: number;
+  sell_amount: number;
+  sell_price: number;
+  pnl_usd_value: number;
+  realized_pnl_usd_value: number;
+  unrealized_pnl_usd_value: number;
+  last_buy_at: string;
+}
+export interface CopyTradeRecentBuyListV2Response {
+  recent_buy_list: CopyTradeRecentBuyItemV2[];
+  pagination: {
+    limit: number;
+    has_next: boolean;
+    next_cursor: string;
+  };
 }
 
 export interface CopyTradePnlItem extends TokenItem {
