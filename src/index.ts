@@ -3043,7 +3043,7 @@ export class OpenApiService {
     chain_id: string;
     token_id: string;
   }): Promise<CopyTradeTokenItemV2> => {
-    const { data } = await this.request.get('/v1/copytrading/token/detail', {
+    const { data } = await this.request.get('/v2/copytrading/token/detail', {
       params,
     });
     return data;
