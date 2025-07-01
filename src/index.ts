@@ -73,6 +73,7 @@ import {
   CopyTradeTokenListResponse,
   CopyTradeRecentBuyListResponse,
   CopyTradePnlListResponse,
+  AppChainListResponse,
   CopyTradeTokenListV2Response,
   CopyTradeRecentBuyListV2Response,
   CopyTradeTokenItemV2,
@@ -3253,6 +3254,12 @@ export class OpenApiService {
   };
   getCexSupportList = async (): Promise<ProjectItem[]> => {
     const { data } = await this.request.get('/v1/cex/supported_list');
+    return data;
+  };
+  getAppChainList = async (id: string): Promise<AppChainListResponse> => {
+    const { data } = await this.request.get('/v1/user/complex_app_list', {
+      params: { id },
+    });
     return data;
   };
 }

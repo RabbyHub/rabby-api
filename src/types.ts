@@ -1769,6 +1769,20 @@ export interface GasAccountInfo {
   no_register: boolean;
 }
 
+export interface AppChainItem {
+  id: string;
+  name: string;
+  site_url: string;
+  logo_url: string;
+  is_support_portfolio: boolean;
+  is_visible: boolean;
+  portfolio_item_list: PortfolioItem[];
+}
+
+export interface AppChainListResponse {
+  apps: AppChainItem[];
+  error_app_ids: string[];
+}
 export type DefaultRPCRes = {
   message: string;
   status: string;
