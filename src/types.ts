@@ -1754,3 +1754,15 @@ export interface GasAccountInfo {
   has_iap_order: boolean;
   no_register: boolean;
 }
+
+export type DefaultRPCRes = {
+  message: string;
+  status: string;
+  rpcs: RPCDefaultItem[];
+};
+
+type RPCDefaultItem = {
+  chainId: string;
+  rpcUrl: string[];
+  txPushToRPC: boolean;
+};
