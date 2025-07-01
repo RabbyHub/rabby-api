@@ -70,6 +70,10 @@ import {
   TokenEntityDetail,
   TokenItemWithEntity,
   ProjectItem,
+  CopyTradeTokenListResponse,
+  CopyTradeRecentBuyListResponse,
+  CopyTradePnlListResponse,
+  DefaultRPCRes,
 } from './types';
 
 interface OpenApiStore {
@@ -1822,6 +1826,57 @@ export class OpenApiService {
     return data;
   };
 
+  submitTxV2 = async (postData: {
+    frontend_push_result?:
+      | {
+          // FE  push
+          success: true;
+          has_pushed: true;
+          raw_tx: string;
+          url: string;
+          return_tx_id: string;
+        }
+      | {
+          // FE push failed
+          success: false;
+          has_pushed: true;
+          url: string;
+          error_msg: string;
+        };
+    backend_push_require: {
+      gas_type: 'gas_account' | 'gasless' | null;
+    };
+    context: {
+      tx: Tx;
+      origin?: string;
+      log_id: string;
+    };
+    mev_share_model: 'user' | 'rabby';
+    sig?: string;
+  }): Promise<{
+    tx_id?: string;
+    access_token?: string;
+    err?: string;
+  }> => {
+    const { sig, ...rest } = postData;
+    const { data } = await this.request.post(
+      '/v2/wallet/submit_tx',
+      {
+        ...rest,
+      },
+      {
+        headers: sig ? { sig } : undefined,
+      }
+    );
+
+    return data;
+  };
+
+  getDefaultRPCs = async (): Promise<DefaultRPCRes> => {
+    const { data } = await this.request.get('/v1/chainrpc');
+    return data;
+  };
+
   getTxRequests = async (ids: string | string[]): Promise<TxRequest[]> => {
     const { data } = await this.request.get('/v1/wallet/get_tx_requests', {
       params: {
@@ -2900,15 +2955,32 @@ export class OpenApiService {
     return data;
   };
 
+  submitFeedback = async ({
+    text,
+    usage,
+  }: {
+    text: string;
+    /**
+     * @description 'usage' is used to submit feedback on rating scene.
+     * by default, it means 'uninstall' scene.
+     */
+    usage?: 'rating' /*  | 'uninstall' */;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post('v1/feedback', {
+      text,
+      ...(usage && { usage }),
+    });
+    return data;
+  };
+
   uninstalledFeedback = async ({
     text,
   }: {
     text: string;
   }): Promise<{ success: boolean }> => {
-    const { data } = await this.request.post('v1/feedback', {
+    return this.submitFeedback({
       text,
     });
-    return data;
   };
 
   /**
@@ -2958,6 +3030,46 @@ export class OpenApiService {
     const { data } = await this.request.get('/v2/token/search', {
       params,
     });
+    return data;
+  };
+
+  // resp arr of chain_id
+  getCopyTradingChainList = async (): Promise<string[]> => {
+    const { data } = await this.request.get('/v1/copytrading/chain_list');
+    return data;
+  };
+
+  getCopyTradingTokenList = async (params: {
+    chain_id: string;
+    limit: number; // default 10 max 20
+    start_time: number; // default 0
+  }): Promise<CopyTradeTokenListResponse> => {
+    const { data } = await this.request.get('/v1/copytrading/token/list', {
+      params,
+    });
+    return data;
+  };
+
+  getCopyTradingRecentBuyList = async (params: {
+    chain_id: string;
+    token_id: string;
+    limit: number; // default 10 max 20
+  }): Promise<CopyTradeRecentBuyListResponse> => {
+    const { data } = await this.request.get('/v1/copytrading/recent_buy/list', {
+      params,
+    });
+    return data;
+  };
+
+  getCopyTradingPnlList = async (params: {
+    user_addr: string;
+  }): Promise<CopyTradePnlListResponse> => {
+    const { data } = await this.request.get(
+      '/v1/copytrading/smart_money/pnl/list',
+      {
+        params,
+      }
+    );
     return data;
   };
 

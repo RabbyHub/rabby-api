@@ -88,6 +88,47 @@ export interface Tx {
   v?: string;
 }
 
+export interface CopyTradeTokenItem extends TokenItem {
+  fdv: number | null;
+  buy_amount_24h: number;
+  buy_usd_value_24h: number;
+  price_curve_24h: { time_at: number; price: number }[];
+  create_at: number; // split page time, for next page start_time
+}
+
+export interface CopyTradeTokenListResponse {
+  token_list: CopyTradeTokenItem[];
+}
+
+export interface CopyTradeRecentBuyItem {
+  id: string;
+  user_addr: string;
+  user_addr_pnl: {
+    id: string;
+    profit_usd_value: number;
+  };
+  chain_id: string;
+  token_id: string;
+  token_amount: number;
+  action: string;
+  buy_usd_value: number;
+  create_at: number;
+}
+
+export interface CopyTradeRecentBuyListResponse {
+  recent_buy_list: CopyTradeRecentBuyItem[];
+  total: number;
+}
+
+export interface CopyTradePnlItem extends TokenItem {
+  profit_usd_value: number;
+  protocol_id?: string;
+}
+
+export interface CopyTradePnlListResponse {
+  pnl_list: CopyTradePnlItem[];
+}
+
 export interface Eip1559Tx {
   chainId: number;
   data: string;
@@ -163,6 +204,7 @@ export interface TokenItem {
   raw_amount_hex_str?: string;
   price_24h_change?: number | null;
   low_credit_score?: boolean;
+  cex_ids?: string[];
 }
 
 export interface TokenItemWithEntity extends TokenItem {
@@ -395,17 +437,20 @@ export interface TxHistoryItem {
     amount: number;
     from_addr: string;
     token_id: string;
+    price?: number;
   }[];
   sends: {
     amount: number;
     to_addr: string;
     token_id: string;
+    price?: number;
   }[];
   time_at: number;
   token_approve: {
     spender: string;
     token_id: string;
     value: number;
+    price?: number;
   } | null;
   tx: {
     eth_gas_fee: number;
@@ -1381,6 +1426,7 @@ export interface SupportedChain {
   is_disabled: boolean;
   explorer_host: string;
   block_interval: number;
+  severity?: number;
 }
 
 export interface ChainListItem {
@@ -1532,6 +1578,12 @@ export interface BridgeHistory {
   detail_url: string;
   status: 'pending' | 'completed';
   create_at: number;
+  from_tx: {
+    tx_id: string;
+  };
+  to_tx: {
+    tx_id?: string;
+  };
   from_gas: {
     native_token: TokenItem;
     gas_amount: number;
@@ -1672,3 +1724,15 @@ export interface GasAccountInfo {
   has_iap_order: boolean;
   no_register: boolean;
 }
+
+export type DefaultRPCRes = {
+  message: string;
+  status: string;
+  rpcs: RPCDefaultItem[];
+};
+
+type RPCDefaultItem = {
+  chainId: string;
+  rpcUrl: string[];
+  txPushToRPC: boolean;
+};
