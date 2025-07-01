@@ -73,6 +73,10 @@ import {
   CopyTradeTokenListResponse,
   CopyTradeRecentBuyListResponse,
   CopyTradePnlListResponse,
+  CopyTradeTokenListV2Response,
+  CopyTradeRecentBuyListV2Response,
+  CopyTradeTokenItemV2,
+  CopyTradeSameToken,
   DefaultRPCRes,
 } from './types';
 
@@ -3050,12 +3054,58 @@ export class OpenApiService {
     return data;
   };
 
+  getCopyTradingTokenListV2 = async (params: {
+    chain_id: string;
+    limit: number; // default 10 max 20
+    cursor: string;
+    order_by: 'price_change' | 'buy_address_count' | 'token_create_at';
+    order?: 'asc' | 'desc';
+    time_range?: '24h' | '7d' | '30d';
+  }): Promise<CopyTradeTokenListV2Response> => {
+    const { data } = await this.request.get('/v2/copytrading/token/list', {
+      params,
+    });
+    return data;
+  };
+
   getCopyTradingRecentBuyList = async (params: {
     chain_id: string;
     token_id: string;
     limit: number; // default 10 max 20
   }): Promise<CopyTradeRecentBuyListResponse> => {
     const { data } = await this.request.get('/v1/copytrading/recent_buy/list', {
+      params,
+    });
+    return data;
+  };
+
+  getCopyTradingRecentBuyListV2 = async (params: {
+    chain_id: string;
+    token_id: string;
+    limit: number; // default 10 max 20
+    cursor: string;
+  }): Promise<CopyTradeRecentBuyListV2Response> => {
+    const { data } = await this.request.get('/v2/copytrading/recent_buy/list', {
+      params,
+    });
+    return data;
+  };
+
+  getCopyTradingDetail = async (params: {
+    chain_id: string;
+    token_id: string;
+  }): Promise<CopyTradeTokenItemV2> => {
+    const { data } = await this.request.get('/v2/copytrading/token/detail', {
+      params,
+    });
+    return data;
+  };
+
+  getCopyTradingSameName = async (params: {
+    chain_id: string;
+    token_id: string;
+  }): Promise<CopyTradeSameToken[]> => {
+    const { data } = await this.request.get('/v1/token/same_name', {
       params,
     });
     return data;
