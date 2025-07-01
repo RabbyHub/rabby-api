@@ -76,6 +76,7 @@ import {
   CopyTradeTokenListV2Response,
   CopyTradeRecentBuyListV2Response,
   CopyTradeTokenItemV2,
+  CopyTradeSameToken,
 } from './types';
 
 interface OpenApiStore {
@@ -3043,6 +3044,16 @@ export class OpenApiService {
     token_id: string;
   }): Promise<CopyTradeTokenItemV2> => {
     const { data } = await this.request.get('/v1/copytrading/token/detail', {
+      params,
+    });
+    return data;
+  };
+
+  getCopyTradingSameName = async (params: {
+    chain_id: string;
+    token_id: string;
+  }): Promise<CopyTradeSameToken[]> => {
+    const { data } = await this.request.get('/v1/token/same_name', {
       params,
     });
     return data;

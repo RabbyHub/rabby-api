@@ -117,6 +117,10 @@ export interface CopyTradeTokenListV2Response {
   };
 }
 
+export interface CopyTradeSameToken extends TokenItem {
+  liquidity: number; // Liquidity depth in USD
+}
+
 export interface CopyTradeRecentBuyItem {
   id: string;
   user_addr: string;
