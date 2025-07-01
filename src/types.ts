@@ -1725,3 +1725,14 @@ export interface AppChainListResponse {
   apps: AppChainItem[];
   error_app_ids: string[];
 }
+export type DefaultRPCRes = {
+  message: string;
+  status: string;
+  rpcs: RPCDefaultItem[];
+};
+
+type RPCDefaultItem = {
+  chainId: string;
+  rpcUrl: string[];
+  txPushToRPC: boolean;
+};
