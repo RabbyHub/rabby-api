@@ -1025,31 +1025,39 @@ export interface PushMultiSigAction {
 }
 
 export type RevokeNFTCollectionAction = ApproveNFTCollectionAction;
+
+export type MultiAction = TransactionAction[];
+
+export type TransactionActionDataItem =
+  | SwapAction
+  | ApproveAction
+  | SendAction
+  | SendNFTAction
+  | ApproveNFTAction
+  | RevokeNFTAction
+  | ApproveNFTCollectionAction
+  | RevokeNFTCollectionAction
+  | RevokeTokenApproveAction
+  | WrapTokenAction
+  | UnWrapTokenAction
+  | PushMultiSigAction
+  | CrossSwapAction
+  | CrossTokenAction
+  | RevokePermit2Action
+  | SwapOrderAction
+  | TransferOwnerAction
+  | MultiSwapAction
+  | SwapLimitPay
+  | MultiAction
+  | null;
+
+export interface TransactionAction {
+  type: string;
+  data: TransactionActionDataItem;
+}
+
 export interface ParseTxResponse {
-  action: {
-    type: string;
-    data:
-      | SwapAction
-      | ApproveAction
-      | SendAction
-      | SendNFTAction
-      | ApproveNFTAction
-      | RevokeNFTAction
-      | ApproveNFTCollectionAction
-      | RevokeNFTCollectionAction
-      | RevokeTokenApproveAction
-      | WrapTokenAction
-      | UnWrapTokenAction
-      | PushMultiSigAction
-      | CrossSwapAction
-      | CrossTokenAction
-      | RevokePermit2Action
-      | SwapOrderAction
-      | TransferOwnerAction
-      | MultiSwapAction
-      | SwapLimitPay
-      | null;
-  };
+  action: TransactionAction;
   contract_call?: {
     func: string;
     contract: {
@@ -1087,7 +1095,8 @@ export type TypedDataActionName =
   | 'send_token'
   | 'permit1_revoke_token'
   | 'swap_order'
-  | 'approve_nft';
+  | 'approve_nft'
+  | 'multi_actions';
 
 export interface BuyNFTOrderAction {
   expire_at: string;
@@ -1185,30 +1194,35 @@ export interface SubmitTokenApprovalModificationAction {
   };
 }
 
+export type TypeDataActionDataItem =
+  | SellNFTOrderAction
+  | BuyNFTOrderAction
+  | SwapTokenOrderAction
+  | PermitAction
+  | Permit2Action
+  | SignMultiSigActions
+  | CreateKeyAction
+  | VerifyAddressAction
+  | BatchSellNFTOrderAction
+  | BatchPermit2Action
+  | CreateCoboSafeAction
+  | SubmitSafeRoleModificationAction
+  | SubmitDelegatedAddressModificationAction
+  | SubmitTokenApprovalModificationAction
+  | SendAction
+  | SwapOrderAction
+  | RevokeTokenApproveAction
+  | ApproveNFTAction
+  | MultiAction;
+
+export interface TypeDataActionItem {
+  type: TypedDataActionName;
+  expire_at?: number;
+  data: TypeDataActionDataItem;
+}
+
 export interface ParseTypedDataResponse {
-  action: {
-    type: TypedDataActionName;
-    expire_at?: number;
-    data:
-      | SellNFTOrderAction
-      | BuyNFTOrderAction
-      | SwapTokenOrderAction
-      | PermitAction
-      | Permit2Action
-      | SignMultiSigActions
-      | CreateKeyAction
-      | VerifyAddressAction
-      | BatchSellNFTOrderAction
-      | BatchPermit2Action
-      | CreateCoboSafeAction
-      | SubmitSafeRoleModificationAction
-      | SubmitDelegatedAddressModificationAction
-      | SubmitTokenApprovalModificationAction
-      | SendAction
-      | SwapOrderAction
-      | RevokeTokenApproveAction
-      | ApproveNFTAction;
-  } | null;
+  action: TypeDataActionItem | null;
   log_id: string;
 }
 
