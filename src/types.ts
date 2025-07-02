@@ -107,6 +107,7 @@ export interface CopyTradeTokenItemV2 extends CopyTradeTokenItem {
   buy_amount: number;
   buy_usd_value: number;
   pnl_usd_value: number;
+  price_change: number;
 }
 export interface CopyTradeTokenListV2Response {
   token_list: CopyTradeTokenItemV2[];
