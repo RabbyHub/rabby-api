@@ -1002,6 +1002,7 @@ export interface AddrDescResponse {
     is_spam: boolean | null;
     is_scam: boolean | null;
     name: string;
+    id: string;
   };
 }
 
