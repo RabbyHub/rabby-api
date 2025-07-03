@@ -3262,4 +3262,12 @@ export class OpenApiService {
     });
     return data;
   };
+  checkCex = async (postData: {
+    chain_id: string;
+    id: string;
+    cex_id: string;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post('/v1/token/check_cex', postData);
+    return data;
+  };
 }
