@@ -1796,3 +1796,7 @@ type RPCDefaultItem = {
   rpcUrl: string[];
   txPushToRPC: boolean;
 };
+
+export interface TokenDetailWithPriceCurve extends TokenItemWithEntity {
+  price_curve_24h: { time_at: number; price: number }[];
+}
