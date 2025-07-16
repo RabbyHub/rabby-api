@@ -3272,7 +3272,7 @@ export class OpenApiService {
     return data;
   };
   // top 20 tokens
-  getHotTokenList = async (): Promise<TokenDetailWithPriceCurve> => {
+  getHotTokenList = async (): Promise<TokenDetailWithPriceCurve[]> => {
     const { data } = await this.request.get('/v1/token/hot_list');
     return data;
   };
