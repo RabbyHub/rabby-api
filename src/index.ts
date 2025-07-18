@@ -79,6 +79,7 @@ import {
   CopyTradeTokenItemV2,
   CopyTradeSameToken,
   DefaultRPCRes,
+  TokenDetailWithPriceCurve,
 } from './types';
 
 interface OpenApiStore {
@@ -3268,6 +3269,22 @@ export class OpenApiService {
     cex_id: string;
   }): Promise<{ success: boolean }> => {
     const { data } = await this.request.post('/v1/token/check_cex', postData);
+    return data;
+  };
+  // top 20 tokens
+  getHotTokenList = async (): Promise<TokenDetailWithPriceCurve[]> => {
+    const { data } = await this.request.get('/v1/token/hot_list');
+    return data;
+  };
+  // uuid: 'chain:token_id'
+  getTokensDetailByUuids = async (
+    uuids: string[]
+  ): Promise<TokenDetailWithPriceCurve[]> => {
+    const { data } = await this.request.get('/v1/token/list_by_uuids', {
+      params: {
+        uuids: uuids.join(','),
+      },
+    });
     return data;
   };
 }
