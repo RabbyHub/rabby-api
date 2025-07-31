@@ -2899,6 +2899,7 @@ export class OpenApiService {
     to_chain_id: string;
     from_token_id?: string;
     q?: string;
+    user_addr?: string;
   }): Promise<{
     token_list: (TokenItem & { trade_volume_24h: 'low' | 'middle' | 'high' })[];
   }> => {
