@@ -1769,6 +1769,8 @@ export interface GasAccountInfo {
   uuid: string;
   has_iap_order: boolean;
   no_register: boolean;
+  non_withdrawable_balance: number | undefined;
+  withdrawable_balance: number | undefined;
 }
 
 export interface AppChainItem {
