@@ -2652,6 +2652,20 @@ export class OpenApiService {
     return data;
   };
 
+  checkGasAccountGiftEligibility = async (params: {
+    id: string;
+  }): Promise<{
+    has_eligibility: boolean;
+  }> => {
+    const { data } = await this.request.get(
+      '/v1/gas_account/check_eligibility',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
   confirmIapOrder = async (postData: {
     transaction_id: string;
     device_type: 'android' | 'ios';
@@ -2662,6 +2676,27 @@ export class OpenApiService {
       postData
     );
 
+    return data;
+  };
+
+  claimGasAccountGift = async (params: {
+    sig: string;
+    id: string;
+  }): Promise<{
+    success: boolean;
+  }> => {
+    const { sig, ...others } = params;
+    const { data } = await this.request.post(
+      '/v1/gas_account/claim',
+      {
+        ...others,
+      },
+      {
+        headers: {
+          sig,
+        },
+      }
+    );
     return data;
   };
 
@@ -2809,6 +2844,7 @@ export class OpenApiService {
       usd_value: number;
       user_addr: string;
       history_type: 'tx' | 'recharge' | 'withdraw';
+      source: string;
     }[];
     pagination: {
       limit: number;
