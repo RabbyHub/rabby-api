@@ -22,8 +22,7 @@ export const getChainByNetwork = (network?: string | number) => {
   return chainNetworkDict[network.startsWith('0x') ? +network : network];
 };
 
-export const INITIAL_OPENAPI_URL =
-  'https://gas-account-err-msg.rabby-api.debank.dbkops.com/';
+export const INITIAL_OPENAPI_URL = 'https://api.rabby.io';
 
 export const INITIAL_TESTNET_OPENAPI_URL = 'https://api.testnet.rabby.io/';
 
