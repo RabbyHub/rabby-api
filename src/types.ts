@@ -1678,6 +1678,7 @@ export interface GasAccountCheckResult {
   is_gas_account: boolean;
   balance_is_enough: boolean;
   chain_not_support: boolean;
+  err_msg: string;
 }
 
 export interface ParseCommonResponse {
