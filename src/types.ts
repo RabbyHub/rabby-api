@@ -250,6 +250,7 @@ export interface TokenItem {
   price_24h_change?: number | null;
   low_credit_score?: boolean;
   cex_ids?: string[];
+  fdv?: number | null;
 }
 
 export interface TokenItemWithEntity extends TokenItem {
