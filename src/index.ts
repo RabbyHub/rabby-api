@@ -2656,6 +2656,7 @@ export class OpenApiService {
     id: string;
   }): Promise<{
     has_eligibility: boolean;
+    can_claimed_usd_value: number;
   }> => {
     const { data } = await this.request.get(
       '/v1/gas_account/check_eligibility',
