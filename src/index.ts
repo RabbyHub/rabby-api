@@ -2667,6 +2667,24 @@ export class OpenApiService {
     return data;
   };
 
+  checkGasAccountGiftEligibilityBatch = async (params: {
+    list: {
+      id: string;
+    }[];
+  }): Promise<{
+    list: {
+      id: string;
+      has_eligibility: boolean;
+      can_claimed_usd_value: number;
+    }[];
+  }> => {
+    const { data } = await this.request.post(
+      '/v1/gas_account/check_eligibility/batch',
+      params
+    );
+    return data;
+  };
+
   confirmIapOrder = async (postData: {
     transaction_id: string;
     device_type: 'android' | 'ios';
