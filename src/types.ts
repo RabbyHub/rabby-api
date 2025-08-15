@@ -1787,7 +1787,16 @@ export interface AppChainItem {
 
 export interface AppChainListResponse {
   apps: AppChainItem[];
-  error_app_ids: string[];
+  error_apps: {
+    create_at: number;
+    id: string;
+    is_support_portfolio: boolean;
+    is_visible: boolean;
+    logo_url: string;
+    name: string;
+    site_url: string;
+    update_at: number;
+  }[];
 }
 export type DefaultRPCRes = {
   message: string;
