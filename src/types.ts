@@ -1804,3 +1804,9 @@ type RPCDefaultItem = {
 export interface TokenDetailWithPriceCurve extends TokenItemWithEntity {
   price_curve_24h: { time_at: number; price: number }[];
 }
+
+export type GiftEligibilityItem = {
+  id?: string;
+  has_eligibility: boolean;
+  can_claimed_usd_value: number;
+};

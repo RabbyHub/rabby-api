@@ -80,6 +80,7 @@ import {
   CopyTradeSameToken,
   DefaultRPCRes,
   TokenDetailWithPriceCurve,
+  GiftEligibilityItem,
 } from './types';
 
 interface OpenApiStore {
@@ -2663,6 +2664,16 @@ export class OpenApiService {
       {
         params,
       }
+    );
+    return data;
+  };
+
+  checkGasAccountGiftEligibilityBatch = async (params: {
+    ids: string[];
+  }): Promise<GiftEligibilityItem[]> => {
+    const { data } = await this.request.post(
+      '/v1/gas_account/check_eligibility/batch',
+      params
     );
     return data;
   };
