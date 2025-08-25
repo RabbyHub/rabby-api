@@ -1607,6 +1607,7 @@ export interface BridgeQuote {
     to: string;
     value: string;
   };
+  quote_key: Record<string, any>;
 }
 
 export interface BridgeHistory {
