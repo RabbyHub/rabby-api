@@ -3359,8 +3359,7 @@ export class OpenApiService {
   };
 
   uploadUserFeedbackImage = async (data: {
-    id: string;
-    image: File;
+    image: File | Blob;
   }): Promise<UserFeedbackUploadedImage> => {
     const formData = new FormData();
     formData.append('file', data.image);
