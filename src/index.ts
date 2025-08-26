@@ -82,7 +82,6 @@ import {
   TokenDetailWithPriceCurve,
   GiftEligibilityItem,
   UserFeedbackItem,
-  UserFeedbackUploadedImage,
 } from './types';
 
 interface OpenApiStore {

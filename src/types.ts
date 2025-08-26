@@ -1830,7 +1830,3 @@ export type UserFeedbackItem = {
   comment: string | null;
   comment_at: number | null;
 };
-
-export type UserFeedbackUploadedImage = {
-  image_url: string;
-};
