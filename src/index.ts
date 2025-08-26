@@ -81,6 +81,8 @@ import {
   DefaultRPCRes,
   TokenDetailWithPriceCurve,
   GiftEligibilityItem,
+  UserFeedbackItem,
+  UserFeedbackUploadedImage,
 } from './types';
 
 interface OpenApiStore {
@@ -3335,5 +3337,37 @@ export class OpenApiService {
       },
     });
     return data;
+  };
+
+  postUserFeedback = async (data: {
+    title: string;
+    image_url_list: string[];
+    content: string;
+  }): Promise<UserFeedbackItem> => {
+    const { data: response } = await this.request.post(
+      '/v1/feedback/app',
+      data
+    );
+    return response;
+  };
+
+  getUserFeedback = async (id: string): Promise<UserFeedbackItem> => {
+    const { data } = await this.request.get('/v1/feedback/app', {
+      params: { id },
+    });
+    return data;
+  };
+
+  uploadUserFeedbackImage = async (data: {
+    id: string;
+    image: File;
+  }): Promise<UserFeedbackUploadedImage> => {
+    const formData = new FormData();
+    formData.append('file', data.image);
+    const { data: response } = await this.request.post(
+      `/v1/feedback/upload`,
+      formData
+    );
+    return response;
   };
 }
