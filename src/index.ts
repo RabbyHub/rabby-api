@@ -3357,16 +3357,4 @@ export class OpenApiService {
     });
     return data;
   };
-
-  uploadUserFeedbackImage = async (data: {
-    image: File | Blob;
-  }): Promise<UserFeedbackUploadedImage> => {
-    const formData = new FormData();
-    formData.append('file', data.image);
-    const { data: response } = await this.request.post(
-      `/v1/feedback/upload`,
-      formData
-    );
-    return response;
-  };
 }
