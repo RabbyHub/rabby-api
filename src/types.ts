@@ -1607,6 +1607,7 @@ export interface BridgeQuote {
     to: string;
     value: string;
   };
+  quote_key: Record<string, any>;
 }
 
 export interface BridgeHistory {
@@ -1614,6 +1615,7 @@ export interface BridgeHistory {
   bridge: BridgeItem;
   from_token: TokenItem;
   to_token: TokenItem;
+  to_actual_token: TokenItem;
   quote: {
     pay_token_amount: number;
     receive_token_amount: number;
@@ -1623,7 +1625,7 @@ export interface BridgeHistory {
     receive_token_amount: number;
   };
   detail_url: string;
-  status: 'pending' | 'completed';
+  status: 'pending' | 'completed' | 'failed';
   create_at: number;
   from_tx: {
     tx_id: string;

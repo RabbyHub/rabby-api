@@ -2539,8 +2539,27 @@ export class OpenApiService {
     user_addr: string;
     start: number;
     limit: number;
+    is_all?: boolean;
   }): Promise<{ history_list: BridgeHistory[]; total_cnt: number }> => {
     const { data } = await this.request.get('/v1/bridge/history_list', {
+      params,
+    });
+    return data;
+  };
+
+  buildBridgeTx = async (params: {
+    aggregator_id: string;
+    bridge_id: string;
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_raw_amount: string;
+    to_chain_id: string;
+    to_token_id: string;
+    slippage: string;
+    quote_key: string;
+  }): Promise<Tx> => {
+    const { data } = await this.request.get('/v2/bridge/build_tx', {
       params,
     });
     return data;
