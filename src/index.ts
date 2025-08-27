@@ -3356,4 +3356,14 @@ export class OpenApiService {
     });
     return data;
   };
+
+  getUserFeedbackList = async (
+    id: string | string[]
+  ): Promise<UserFeedbackItem[]> => {
+    const ids = Array.isArray(id) ? id : [id];
+    const { data } = await this.request.post('/v1/feedback/app/list', {
+      ids,
+    });
+    return data;
+  };
 }
