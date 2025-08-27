@@ -1825,7 +1825,7 @@ export type UserFeedbackItem = {
   title: string;
   content: string;
   image_url_list: string[];
-  status: 'pending' | 'reviewing' | 'closed';
+  status: 'pending' | 'complete' | 'closed';
   create_at: number;
   comment: string | null;
   comment_at: number | null;
