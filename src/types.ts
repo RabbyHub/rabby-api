@@ -1668,6 +1668,13 @@ export interface ContractInfo {
   is_phishing: boolean | null;
 }
 
+export interface PerpTopToken {
+  id: number;
+  name: string;
+  full_logo_url: string | null;
+  daily_volume: number;
+}
+
 export interface GasAccountCheckResult {
   gas_account_cost: {
     total_cost: number;

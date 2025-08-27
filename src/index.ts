@@ -81,6 +81,7 @@ import {
   DefaultRPCRes,
   TokenDetailWithPriceCurve,
   GiftEligibilityItem,
+  PerpTopToken,
 } from './types';
 
 interface OpenApiStore {
@@ -2560,6 +2561,28 @@ export class OpenApiService {
     rabby_fee: number;
   }): Promise<{ success: boolean }> => {
     const { data } = await this.request.post('/v1/bridge/history', params);
+    return data;
+  };
+
+  /**
+   * no id just no check address
+   */
+  getPerpPermission = async (params: {
+    id?: string;
+  }): Promise<{
+    has_permission: boolean;
+  }> => {
+    const { data } = await this.request.get(
+      '/v1/user/has_hyperliquid_permission',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  getPerpTopTokenList = async (): Promise<PerpTopToken[]> => {
+    const { data } = await this.request.get('/v1/token/hyperliquid_top');
     return data;
   };
 
