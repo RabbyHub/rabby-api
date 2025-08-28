@@ -3123,6 +3123,7 @@ export class OpenApiService {
 
   searchTokensV2 = async (params: {
     q: string;
+    chain_id?: string;
   }): Promise<TokenItemWithEntity[]> => {
     const { data } = await this.request.get('/v2/token/search', {
       params,
