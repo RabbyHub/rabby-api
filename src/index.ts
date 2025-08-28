@@ -82,6 +82,8 @@ import {
   TokenDetailWithPriceCurve,
   GiftEligibilityItem,
   PerpTopToken,
+  KlineDataItem,
+  TokenMarketInfo,
 } from './types';
 
 interface OpenApiStore {
@@ -3376,6 +3378,25 @@ export class OpenApiService {
       params: {
         uuids: uuids.join(','),
       },
+    });
+    return data;
+  };
+  getTokenKlineData = async (params: {
+    chain_id: string;
+    token_id: string;
+    interval: string;
+  }): Promise<{ data_list: KlineDataItem[] }> => {
+    const { data } = await this.request.get('/v1/token/market/kline', {
+      params,
+    });
+    return data;
+  };
+  getTokenMarketInfo = async (params: {
+    chain_id: string;
+    token_id: string;
+  }): Promise<TokenMarketInfo> => {
+    const { data } = await this.request.get('/v1/token/market/info', {
+      params,
     });
     return data;
   };

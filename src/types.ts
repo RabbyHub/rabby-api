@@ -1828,3 +1828,34 @@ export type GiftEligibilityItem = {
   has_eligibility: boolean;
   can_claimed_usd_value: number;
 };
+
+export type KlineDataItem = [
+  time_at: number,
+  open: number,
+  high: number,
+  low: number,
+  close: number,
+  volume_amount: number,
+  volume_usd_value: number
+];
+
+export type TokenMarketInfo = {
+  id: string;
+  chain: string;
+  price: number;
+  price_24h_change: number;
+  support_market_data: boolean;
+
+  market: {
+    market_cap_usd_value: number | null;
+    total_supply: number | null;
+    volume_amount_24h: number | null;
+    volume_usd_value_24h: number | null;
+    txns_24h: number | null;
+    holder_count: number | null;
+    max_supply: number | null;
+  };
+  name: string;
+  symbol: string;
+  logo_url: string;
+};
