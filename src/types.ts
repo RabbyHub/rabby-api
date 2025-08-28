@@ -1828,3 +1828,14 @@ export type GiftEligibilityItem = {
   has_eligibility: boolean;
   can_claimed_usd_value: number;
 };
+
+export type UserFeedbackItem = {
+  id: string;
+  title: string;
+  content: string;
+  image_url_list: string[];
+  status: 'pending' | 'complete' | 'closed';
+  create_at: number;
+  comment: string | null;
+  comment_at: number | null;
+};

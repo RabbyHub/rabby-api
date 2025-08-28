@@ -81,6 +81,7 @@ import {
   DefaultRPCRes,
   TokenDetailWithPriceCurve,
   GiftEligibilityItem,
+  UserFeedbackItem,
   PerpTopToken,
 } from './types';
 
@@ -3376,6 +3377,35 @@ export class OpenApiService {
       params: {
         uuids: uuids.join(','),
       },
+    });
+    return data;
+  };
+
+  postUserFeedback = async (data: {
+    title: string;
+    image_url_list: string[];
+    content: string;
+  }): Promise<UserFeedbackItem> => {
+    const { data: response } = await this.request.post(
+      '/v1/feedback/app',
+      data
+    );
+    return response;
+  };
+
+  getUserFeedback = async (id: string): Promise<UserFeedbackItem> => {
+    const { data } = await this.request.get('/v1/feedback/app', {
+      params: { id },
+    });
+    return data;
+  };
+
+  getUserFeedbackList = async (
+    id: string | string[]
+  ): Promise<UserFeedbackItem[]> => {
+    const ids = Array.isArray(id) ? id : [id];
+    const { data } = await this.request.post('/v1/feedback/app/list', {
+      ids,
     });
     return data;
   };
