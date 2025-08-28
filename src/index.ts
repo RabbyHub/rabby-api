@@ -82,6 +82,7 @@ import {
   TokenDetailWithPriceCurve,
   GiftEligibilityItem,
   UserFeedbackItem,
+  PerpTopToken,
 } from './types';
 
 interface OpenApiStore {
@@ -2540,8 +2541,27 @@ export class OpenApiService {
     user_addr: string;
     start: number;
     limit: number;
+    is_all?: boolean;
   }): Promise<{ history_list: BridgeHistory[]; total_cnt: number }> => {
     const { data } = await this.request.get('/v1/bridge/history_list', {
+      params,
+    });
+    return data;
+  };
+
+  buildBridgeTx = async (params: {
+    aggregator_id: string;
+    bridge_id: string;
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_raw_amount: string;
+    to_chain_id: string;
+    to_token_id: string;
+    slippage: string;
+    quote_key: string;
+  }): Promise<Tx> => {
+    const { data } = await this.request.get('/v2/bridge/build_tx', {
       params,
     });
     return data;
@@ -2561,6 +2581,28 @@ export class OpenApiService {
     rabby_fee: number;
   }): Promise<{ success: boolean }> => {
     const { data } = await this.request.post('/v1/bridge/history', params);
+    return data;
+  };
+
+  /**
+   * no id just no check address
+   */
+  getPerpPermission = async (params: {
+    id?: string;
+  }): Promise<{
+    has_permission: boolean;
+  }> => {
+    const { data } = await this.request.get(
+      '/v1/user/has_hyperliquid_permission',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  getPerpTopTokenList = async (): Promise<PerpTopToken[]> => {
+    const { data } = await this.request.get('/v1/token/hyperliquid_top');
     return data;
   };
 
@@ -3082,6 +3124,7 @@ export class OpenApiService {
 
   searchTokensV2 = async (params: {
     q: string;
+    chain_id?: string;
   }): Promise<TokenItemWithEntity[]> => {
     const { data } = await this.request.get('/v2/token/search', {
       params,
