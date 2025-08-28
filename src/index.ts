@@ -3385,6 +3385,7 @@ export class OpenApiService {
     title: string;
     image_url_list: string[];
     content: string;
+    extra?: UserFeedbackItem['extra'];
   }): Promise<UserFeedbackItem> => {
     const { data: response } = await this.request.post(
       '/v1/feedback/app',
