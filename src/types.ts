@@ -1838,4 +1838,5 @@ export type UserFeedbackItem = {
   create_at: number;
   comment: string | null;
   comment_at: number | null;
+  extra?: any | null;
 };
