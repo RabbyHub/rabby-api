@@ -1858,3 +1858,15 @@ export type TokenSupplyInfo = {
   circulating_supply: number | null;
   max_supply: number | null;
 };
+
+export type UserFeedbackItem = {
+  id: string;
+  title: string;
+  content: string;
+  image_url_list: string[];
+  status: 'pending' | 'complete' | 'closed';
+  create_at: number;
+  comment: string | null;
+  comment_at: number | null;
+  extra?: any | null;
+};
