@@ -84,6 +84,8 @@ import {
   PerpTopToken,
   KlineDataItem,
   TokenMarketInfo,
+  TokenHolderInfo,
+  TokenSupplyInfo,
 } from './types';
 
 interface OpenApiStore {
@@ -3396,6 +3398,24 @@ export class OpenApiService {
     token_id: string;
   }): Promise<TokenMarketInfo> => {
     const { data } = await this.request.get('/v1/token/market/info', {
+      params,
+    });
+    return data;
+  };
+  getTokenHolderInfo = async (params: {
+    chain_id: string;
+    token_id: string;
+  }): Promise<TokenHolderInfo> => {
+    const { data } = await this.request.get('/v1/token/market/info/holders', {
+      params,
+    });
+    return data;
+  };
+  getTokenSupplyInfo = async (params: {
+    chain_id: string;
+    token_id: string;
+  }): Promise<TokenSupplyInfo> => {
+    const { data } = await this.request.get('/v1/token/market/info/supply', {
       params,
     });
     return data;
