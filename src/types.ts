@@ -866,6 +866,7 @@ export interface WithdrawAction {
   contract_id: string;
   func: string;
   params: string[];
+  str_params: string[];
   need_approve: {
     token_id?: string;
     to?: string;
