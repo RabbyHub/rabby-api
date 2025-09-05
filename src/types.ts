@@ -859,8 +859,21 @@ export interface PortfolioItem {
   };
   pool: PoolItem;
   position_index: string;
+  withdraw_actions?: WithdrawAction[];
 }
 
+export interface WithdrawAction {
+  type: 'withdraw' | 'claim' | 'queue';
+  contract_id: string;
+  func: string;
+  params: string[];
+  str_params: string[];
+  need_approve: {
+    token_id?: string;
+    to?: string;
+    raw_amount?: string;
+  };
+}
 export interface Protocol {
   chain: string;
   dao_id: null | string;
