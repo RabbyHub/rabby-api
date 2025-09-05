@@ -83,6 +83,10 @@ import {
   GiftEligibilityItem,
   UserFeedbackItem,
   PerpTopToken,
+  KlineDataItem,
+  TokenMarketInfo,
+  TokenHolderInfo,
+  TokenSupplyInfo,
 } from './types';
 
 interface OpenApiStore {
@@ -3380,7 +3384,43 @@ export class OpenApiService {
     });
     return data;
   };
-
+  getTokenKlineData = async (params: {
+    chain_id: string;
+    token_id: string;
+    interval: string;
+  }): Promise<{ data_list: KlineDataItem[] }> => {
+    const { data } = await this.request.get('/v1/token/market/kline', {
+      params,
+    });
+    return data;
+  };
+  getTokenMarketInfo = async (params: {
+    chain_id: string;
+    token_id: string;
+  }): Promise<TokenMarketInfo> => {
+    const { data } = await this.request.get('/v1/token/market/info', {
+      params,
+    });
+    return data;
+  };
+  getTokenHolderInfo = async (params: {
+    chain_id: string;
+    token_id: string;
+  }): Promise<TokenHolderInfo> => {
+    const { data } = await this.request.get('/v1/token/market/info/holders', {
+      params,
+    });
+    return data;
+  };
+  getTokenSupplyInfo = async (params: {
+    chain_id: string;
+    token_id: string;
+  }): Promise<TokenSupplyInfo> => {
+    const { data } = await this.request.get('/v1/token/market/info/supply', {
+      params,
+    });
+    return data;
+  };
   postUserFeedback = async (data: {
     title: string;
     image_url_list: string[];
