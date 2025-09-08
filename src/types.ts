@@ -872,7 +872,7 @@ export interface WithdrawAction {
     token_id?: string;
     to?: string;
     raw_amount?: number;
-    str_params?: string;
+    str_raw_amount?: string;
   };
 }
 export interface Protocol {
