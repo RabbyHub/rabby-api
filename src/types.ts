@@ -866,12 +866,13 @@ export interface WithdrawAction {
   type: 'withdraw' | 'claim' | 'queue';
   contract_id: string;
   func: string;
-  params: string[];
-  str_params: string[];
+  params?: string[];
+  str_params?: string[];
   need_approve: {
     token_id?: string;
     to?: string;
-    raw_amount?: string;
+    raw_amount?: number;
+    str_raw_amount?: string;
   };
 }
 export interface Protocol {
