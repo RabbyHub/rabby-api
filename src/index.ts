@@ -87,6 +87,10 @@ import {
   TokenMarketInfo,
   TokenHolderInfo,
   TokenSupplyInfo,
+  MarketSummary,
+  MarketTradingHistoryItem,
+  TokenHolderSummary,
+  TokenHolderItem,
 } from './types';
 
 interface OpenApiStore {
@@ -3388,6 +3392,7 @@ export class OpenApiService {
     chain_id: string;
     token_id: string;
     interval: string;
+    after_time_at?: number;
   }): Promise<{ data_list: KlineDataItem[] }> => {
     const { data } = await this.request.get('/v1/token/market/kline', {
       params,
@@ -3447,6 +3452,72 @@ export class OpenApiService {
     const ids = Array.isArray(id) ? id : [id];
     const { data } = await this.request.post('/v1/feedback/app/list', {
       ids,
+    });
+    return data;
+  };
+
+  getMarketSummary = async ({
+    token_id,
+    chain_id,
+  }: {
+    token_id: string;
+    chain_id: string;
+  }): Promise<MarketSummary> => {
+    const { data } = await this.request.get('/v1/token/market/summary', {
+      params: {
+        token_id,
+        chain_id,
+      },
+    });
+    return data;
+  };
+
+  getMarketTradingHistory = async (params: {
+    token_id: string;
+    chain_id: string;
+    action: 'buy' | 'sell';
+    after_time_at?: number;
+    limit?: number; // default 20 max 20
+    cursor?: string;
+  }): Promise<{
+    page: {
+      limit: number;
+      has_next: boolean;
+      next_cursor?: string;
+    };
+    data_list: MarketTradingHistoryItem[];
+  }> => {
+    const { data } = await this.request.get(
+      '/v1/token/market/trading_history/list',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  getTokenHolderSummary = async (params: {
+    token_id: string;
+    chain_id: string;
+  }): Promise<TokenHolderSummary> => {
+    const { data } = await this.request.get(
+      '/v1/token/market/holders/summary',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  // top 10 holders
+  getTokenHolderList = async (params: {
+    token_id: string;
+    chain_id: string;
+  }): Promise<{
+    data_list: TokenHolderItem[];
+  }> => {
+    const { data } = await this.request.get('/v1/token/market/holders/list', {
+      params,
     });
     return data;
   };
