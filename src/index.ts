@@ -87,6 +87,7 @@ import {
   TokenMarketInfo,
   TokenHolderInfo,
   TokenSupplyInfo,
+  CurrencyItem,
   PerpBridgeQuote,
 } from './types';
 
@@ -3488,6 +3489,11 @@ export class OpenApiService {
     const { data } = await this.request.post('/v1/feedback/app/list', {
       ids,
     });
+    return data;
+  };
+
+  getCurrencyList = async (): Promise<CurrencyItem[]> => {
+    const { data } = await this.request.get('/v1/currency/exchange_list');
     return data;
   };
 }

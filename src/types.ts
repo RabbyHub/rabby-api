@@ -1884,6 +1884,13 @@ export type UserFeedbackItem = {
   comment_at: number | null;
   extra?: any | null;
 };
+
+export type CurrencyItem = {
+  symbol: string;
+  code: string;
+  logo_url: string;
+  usd_rate: number;
+};
 export interface PerpBridgeQuote {
   tx: {
     chainId: number;
