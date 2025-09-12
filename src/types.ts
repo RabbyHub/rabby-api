@@ -1891,3 +1891,34 @@ export type CurrencyItem = {
   logo_url: string;
   usd_rate: number;
 };
+export interface PerpBridgeQuote {
+  tx: {
+    chainId: number;
+    data: string;
+    from: string;
+    gas: string;
+    gasPrice: string;
+    nonce: string;
+    to: string;
+    value: string;
+  };
+  bridge_id: string;
+  bridge: BridgeItem | null;
+  to_token_raw_amount: number;
+  to_token_raw_amount_hex_str: string;
+  to_token_amount: number;
+  approve_contract_id: string;
+  protocol_fee: {
+    raw_amount_hex_str: string;
+    usd_value: number;
+  };
+  rabby_fee: {
+    raw_amount_hex_str: string;
+    usd_value: number;
+  };
+  gas_fee: {
+    raw_amount_hex_str: string;
+    usd_value: number;
+  };
+  duration: number;
+}
