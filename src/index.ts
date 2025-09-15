@@ -91,6 +91,8 @@ import {
   MarketTradingHistoryItem,
   TokenHolderSummary,
   TokenHolderItem,
+  CurrencyItem,
+  PerpBridgeQuote,
 } from './types';
 
 interface OpenApiStore {
@@ -2614,6 +2616,45 @@ export class OpenApiService {
     return data;
   };
 
+  getPerpsBridgeIsSupportToken = async (params: {
+    token_id: string;
+    chain_id: string;
+  }): Promise<{
+    success: boolean;
+  }> => {
+    const { data } = await this.request.get(
+      '/v2/bridge/hyperliquid/support_token',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  getPerpBridgeQuote = async (params: {
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_raw_amount: string;
+  }): Promise<PerpBridgeQuote> => {
+    const { data } = await this.request.get('/v2/bridge/hyperliquid/quote', {
+      params,
+    });
+    return data;
+  };
+
+  postPerpBridgeHistory = async (params: {
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_amount: number;
+    to_token_amount: number;
+    tx_id: string;
+    tx: Tx;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post('/v2/bridge/hyperliquid', params);
+    return data;
+  };
+
   getSupportedDEXList = async (): Promise<{ dex_list: string[] }> => {
     const { data } = await this.request.get('/v1/wallet/supported_dex_list');
     return data;
@@ -3453,6 +3494,11 @@ export class OpenApiService {
     const { data } = await this.request.post('/v1/feedback/app/list', {
       ids,
     });
+    return data;
+  };
+
+  getCurrencyList = async (): Promise<CurrencyItem[]> => {
+    const { data } = await this.request.get('/v1/currency/exchange_list');
     return data;
   };
 
