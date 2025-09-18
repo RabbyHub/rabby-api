@@ -3521,7 +3521,7 @@ export class OpenApiService {
   getMarketTradingHistory = async (params: {
     token_id: string;
     chain_id: string;
-    action: 'buy' | 'sell';
+    action?: 'buy' | 'sell';
     after_time_at?: number;
     limit?: number; // default 20 max 20
     cursor?: string;
