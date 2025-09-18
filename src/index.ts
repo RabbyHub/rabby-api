@@ -3526,7 +3526,7 @@ export class OpenApiService {
     limit?: number; // default 20 max 20
     cursor?: string;
   }): Promise<{
-    page: {
+    pagination: {
       limit: number;
       has_next: boolean;
       next_cursor?: string;
