@@ -1934,10 +1934,12 @@ export type MarketSummaryItem = {
     buy?: {
       count?: number;
       volume_amount?: number;
+      volume_usd_value?: number;
     };
     sell?: {
       count?: number;
       volume_amount?: number;
+      volume_usd_value?: number;
     };
     totals?: {
       trading_count?: number;
