@@ -209,6 +209,7 @@ export interface TokenEntityDetail {
   coingecko_id: string;
   bridge_ids: string[];
   origin_token?: TokenItem;
+  tag_ids?: string[];
   listed_sites: {
     name: string;
     url: string;
