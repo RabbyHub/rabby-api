@@ -209,6 +209,7 @@ export interface TokenEntityDetail {
   coingecko_id: string;
   bridge_ids: string[];
   origin_token?: TokenItem;
+  tag_ids?: string[];
   listed_sites: {
     name: string;
     url: string;
@@ -1922,3 +1923,57 @@ export interface PerpBridgeQuote {
   };
   duration: number;
 }
+
+export type MarketSummaryItem = {
+  price?: {
+    open?: number;
+    close?: number;
+    change?: number;
+  };
+  summary: {
+    buy?: {
+      count?: number;
+      volume_amount?: number;
+      volume_usd_value?: number;
+    };
+    sell?: {
+      count?: number;
+      volume_amount?: number;
+      volume_usd_value?: number;
+    };
+    totals?: {
+      trading_count?: number;
+      volume_amount?: number;
+      volume_usd_value?: number;
+      addresses?: number;
+    };
+  };
+};
+export type MarketSummary = {
+  '5m'?: MarketSummaryItem | null;
+  '1h'?: MarketSummaryItem | null;
+  '6h'?: MarketSummaryItem | null;
+  '24h'?: MarketSummaryItem | null;
+};
+
+export type MarketTradingHistoryItem = {
+  id: string;
+  time_at?: number;
+  action?: 'buy' | 'sell';
+  price?: number;
+  amount?: number;
+  usd_value?: number;
+  tx_id?: string;
+  user_addr?: string;
+};
+
+export type TokenHolderSummary = {
+  ratio_top10?: number;
+  ratio_top100?: number;
+};
+
+export type TokenHolderItem = {
+  user_addr?: string;
+  amount?: number;
+  ratio?: number;
+};
