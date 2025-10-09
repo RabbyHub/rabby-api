@@ -3599,7 +3599,7 @@ export class OpenApiService {
     data_list: LiquidityPoolHistoryItem[];
   }> => {
     const { data } = await this.request.get(
-      '/v1/token/market/liquidity_pool/list',
+      '/v1/token/market/liquidity_pool/history/list',
       {
         params,
       }

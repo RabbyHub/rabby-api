@@ -2000,6 +2000,7 @@ export type LiquidityPoolHistoryItem = {
   id: string;
   tx_id: string;
   time_at: number;
+  usd_value: number;
   action: 'add' | 'remove';
   tokens: {
     id: string;
