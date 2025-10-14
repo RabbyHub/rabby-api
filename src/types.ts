@@ -1977,3 +1977,36 @@ export type TokenHolderItem = {
   amount?: number;
   ratio?: number;
 };
+
+export type LiquidityPoolItem = {
+  id: string;
+  tokens: {
+    id: string;
+    amount: number;
+    symbol: string;
+    price: number;
+    usd_value: number;
+  }[];
+  project: {
+    id: string;
+    name: string;
+    logo_url: string;
+  };
+  pool_id: string;
+  usd_value: number;
+};
+
+export type LiquidityPoolHistoryItem = {
+  id: string;
+  tx_id: string;
+  time_at: number;
+  usd_value: number;
+  action: 'add' | 'remove';
+  tokens: {
+    id: string;
+    amount: number;
+    symbol: string;
+    price: number;
+    usd_value: number;
+  }[];
+};

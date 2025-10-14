@@ -93,6 +93,8 @@ import {
   TokenHolderItem,
   CurrencyItem,
   PerpBridgeQuote,
+  LiquidityPoolItem,
+  LiquidityPoolHistoryItem,
 } from './types';
 
 interface OpenApiStore {
@@ -3565,6 +3567,43 @@ export class OpenApiService {
     const { data } = await this.request.get('/v1/token/market/holders/list', {
       params,
     });
+    return data;
+  };
+
+  // top 5
+  getLiquidityPoolList = async (params: {
+    token_id: string;
+    chain_id: string;
+  }): Promise<LiquidityPoolItem[]> => {
+    const { data } = await this.request.get(
+      '/v1/token/market/liquidity_pool/list',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  getLiquidityPoolHistoryList = async (params: {
+    token_id: string;
+    chain_id: string;
+    action?: 'add' | 'remove';
+    limit?: number; // default 20 max 20
+    cursor?: string;
+  }): Promise<{
+    pagination: {
+      limit: number;
+      has_next: boolean;
+      next_cursor?: string;
+    };
+    data_list: LiquidityPoolHistoryItem[];
+  }> => {
+    const { data } = await this.request.get(
+      '/v1/token/market/liquidity_pool/history/list',
+      {
+        params,
+      }
+    );
     return data;
   };
 }
