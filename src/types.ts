@@ -840,6 +840,9 @@ export interface PortfolioItemDetail {
   usd_value?: number;
   daily_unlock_amount: number;
   pnl_usd_value: number;
+  amount?: number;
+  price?: number;
+  name?: string;
 }
 
 export interface PortfolioItem {
