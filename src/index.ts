@@ -355,6 +355,17 @@ export class OpenApiService {
     return data;
   };
 
+  get24hTotalBalance = async (
+    address: string
+  ): Promise<{ total_usd_value: number }> => {
+    const { data } = await this.request.get('/v1/user/total_balance_24h', {
+      params: {
+        id: address,
+      },
+    });
+    return data;
+  };
+
   getPendingCount = async (
     address: string
   ): Promise<{ total_count: number; chains: ChainWithPendingCount[] }> => {
