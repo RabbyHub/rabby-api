@@ -730,6 +730,19 @@ export class OpenApiService {
     return data;
   };
 
+  hasNewTxFrom = async (params: {
+    address: string;
+    startTime: number;
+  }): Promise<{ has_new_tx: boolean }> => {
+    const { data } = await this.request.get('/v1/user/has_new_tx', {
+      params: {
+        id: params.address,
+        start_time: params.startTime,
+      },
+    });
+    return data;
+  };
+
   listTxHisotry = async (params: {
     id?: string;
     chain_id?: string;
