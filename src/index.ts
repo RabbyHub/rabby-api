@@ -355,6 +355,17 @@ export class OpenApiService {
     return data;
   };
 
+  get24hTotalBalance = async (
+    address: string
+  ): Promise<{ total_usd_value: number }> => {
+    const { data } = await this.request.get('/v1/user/total_balance_24h', {
+      params: {
+        id: address,
+      },
+    });
+    return data;
+  };
+
   getPendingCount = async (
     address: string
   ): Promise<{ total_count: number; chains: ChainWithPendingCount[] }> => {
@@ -715,6 +726,19 @@ export class OpenApiService {
   }): Promise<Collection[]> => {
     const { data } = await this.request.get('/v1/nft/collections', {
       params,
+    });
+    return data;
+  };
+
+  hasNewTxFrom = async (params: {
+    address: string;
+    startTime: number;
+  }): Promise<{ has_new_tx: boolean }> => {
+    const { data } = await this.request.get('/v1/user/has_new_tx', {
+      params: {
+        id: params.address,
+        start_time: params.startTime,
+      },
     });
     return data;
   };
