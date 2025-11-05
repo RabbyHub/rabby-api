@@ -14,6 +14,8 @@ describe('rabby-api', () => {
     service = new OpenApiService({
       store: {
         host: INITIAL_OPENAPI_URL,
+        apiKey: null,
+        apiTime: null,
       },
       plugin: WebSignApiPlugin,
     });
