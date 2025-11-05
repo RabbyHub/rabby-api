@@ -100,6 +100,8 @@ import {
 interface OpenApiStore {
   host: string;
   testnetHost?: string;
+  apiKey: string | null;
+  apiTime: number | null;
 }
 
 interface Options {
@@ -167,6 +169,22 @@ export class OpenApiService {
     this.initSync();
   };
 
+  setAPIKey = async (apiKey: string) => {
+    this.store.apiKey = apiKey;
+    await this.init();
+  };
+
+  setAPITime = async (apiTime: number) => {
+    this.store.apiTime = apiTime;
+    await this.init();
+  };
+
+  removeAPIKey = async () => {
+    this.store.apiKey = null;
+    this.store.apiTime = null;
+    await this.init();
+  };
+
   getHost = () => {
     return this.store.host;
   };
@@ -198,14 +216,18 @@ export class OpenApiService {
 
   initSync(options?: InitOptions) {
     this.#plugin.onInitiate?.({ ...options });
-
+    const headers: Record<string, string | number> = {
+      'X-Client': this.#clientName,
+      'X-Version': this.#clientVersion,
+    };
+    if (this.store.apiKey && this.store.apiTime) {
+      headers['X-API-Key'] = this.store.apiKey;
+      headers['X-API-Time'] = this.store.apiTime;
+    }
     const request = axios.create({
       baseURL: this.store.host,
       adapter: this.#adapter,
-      headers: {
-        'X-Client': this.#clientName,
-        'X-Version': this.#clientVersion,
-      },
+      headers,
     });
 
     // sign after rateLimit, timestamp is the latest
@@ -222,6 +244,10 @@ export class OpenApiService {
     this.request = rateLimit(request, { maxRPS });
 
     this.request.interceptors.response.use((response) => {
+      const newAPIKey = response.headers?.['x-set-api-key'];
+      if (newAPIKey) {
+        this.setAPIKey(newAPIKey);
+      }
       const code = response.data?.err_code || response.data?.error_code;
       const msg = response.data?.err_msg || response.data?.error_msg;
 
