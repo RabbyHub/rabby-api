@@ -2098,6 +2098,7 @@ export class OpenApiService {
 
   getHotDapps = async (params?: {
     limit: number;
+    order_by: string;
   }): Promise<BasicDappInfo[]> => {
     const { data } = await this.request.get('/v1/dapp/hot_list', { params });
     return data;
