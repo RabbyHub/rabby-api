@@ -2034,240 +2034,263 @@ export type NFTTradingConfig = Record<
   }
 >;
 
-// 在 BaseNFT 接口中新增字段
-interface BaseNFT {
-  id: string;
-  contract_id: string;
-  inner_id: string;
-  chain: string;
-  symbol: string;
-  name: string;
-  description: string;
-  content_type: string;
-  content: string;
-  thumbnail_url: string;
-  total_supply: number;
-  attributes: NFTAttribute[];
-  detail_url: string;
-  collection_id: string;
-  pay_token: null;
-  is_core: boolean;
-  collection: NFTCollection;
-  credit_score: number;
-  collection_name: string;
-}
-
-interface LastSale {
-  event_type: 'sale' | string;
-  event_timestamp: number;
-  transaction: string;
-  payment: Payment;
-  seller: string;
-  buyer: string;
-  quantity: number;
-}
-
-// 支付信息类型
-interface Payment {
-  quantity: string;
-  decimals: number;
-  symbol: string;
-  token_id: string;
-  price: number;
-}
-
-// 稀有度信息类型
-interface Rarity {
-  strategy_id: 'openrarity' | string;
-  strategy_version: string;
-  rank: number;
-}
-
-// 其他现有类型保持不变...
-interface NFTAttribute {
-  trait_type: string;
-  value: string | number;
-}
-
-interface OpenSeaFloorPrice {
-  price: number;
-  token: Token;
-}
-
-interface Token {
-  id: string;
-  symbol: string;
-  decimals: number;
-  price: number;
-}
-
-// OpenSea 订单相关类型（Seaport 协议）
-interface ListingOrder {
-  created_date: string;
-  closing_date: string;
-  listing_time: number;
-  expiration_time: number;
-  order_hash: string;
-  protocol_data: SeaportProtocolData;
-  protocol_address: string;
-  current_price: string;
-  maker: User;
-  taker: null;
-  maker_fees: any[];
-  taker_fees: any[];
-  side: 'ask' | 'bid';
-  order_type: 'basic' | string;
-  cancelled: boolean;
-  finalized: boolean;
-  marked_invalid: boolean;
-  remaining_quantity: number;
-  maker_asset_bundle: AssetBundle;
-  taker_asset_bundle: AssetBundle;
-}
-
-interface BestOfferOrder {
-  order_hash: string;
-  chain: string;
-  protocol_data: SeaportProtocolData;
-  protocol_address: string;
-  remaining_quantity: number;
-  criteria: OfferCriteria;
-  price: Price;
-  status: 'ACTIVE' | string;
-}
-
-interface SeaportProtocolData {
-  parameters: SeaportParameters;
-  signature: null;
-}
-
-interface SeaportParameters {
-  offerer: string;
-  offer: SeaportItem[];
-  consideration: SeaportConsiderationItem[];
-  startTime: string;
-  endTime: string;
-  orderType: number;
-  zone: string;
-  zoneHash: string;
-  salt: string;
-  conduitKey: string;
-  totalOriginalConsiderationItems: number;
-  counter: number;
-}
-
-interface SeaportItem {
-  itemType: number;
-  token: string;
-  identifierOrCriteria: string;
-  startAmount: string;
-  endAmount: string;
-}
-
-interface SeaportConsiderationItem extends SeaportItem {
-  recipient: string;
-}
-
-// 资产包和资产类型
-interface AssetBundle {
-  assets: Asset[];
-  maker: null;
-  asset_contract: null;
-  slug: null;
-  name: null;
-  description: null;
-  external_link: null;
-  permalink: null;
-  seaport_sell_orders: null;
-}
-
-interface Asset {
-  id: null;
-  token_id: string;
-  num_sales: null;
-  background_color: null;
-  image_url: string | null;
-  image_preview_url: null;
-  image_thumbnail_url: null;
-  image_original_url: null;
-  animation_url: null;
-  animation_original_url: null;
-  name: string;
-  description: string | null;
-  external_link: null;
-  asset_contract: AssetContract;
-  permalink: string | null;
-  collection: CollectionDetail | null;
-  decimals: number | null;
-  token_metadata: null;
-  is_nsfw: boolean | null;
-  owner: User | null;
-}
-
-interface AssetContract {
-  address: string;
-  chain_identifier: string;
-  schema_name: 'ERC721' | 'ERC1155' | 'NATIVE' | string;
-  asset_contract_type: 'non-fungible' | 'semi-fungible' | 'unknown';
-}
-
-interface CollectionDetail {
-  collection: string;
-  name: string;
-  description: string;
-  image_url: string;
-  banner_image_url: string;
-  owner: string;
-  safelist_status: 'not_requested' | 'verified' | string;
-  category: string;
-  is_disabled: boolean;
-  is_nsfw: boolean;
-  trait_offers_enabled: boolean;
-  collection_offers_enabled: boolean;
-  opensea_url: string;
-  project_url: string;
-  wiki_url: string;
-  discord_url: string;
-  telegram_url: string;
-  twitter_username: string;
-  instagram_username: string;
-  contracts: Contract[];
-}
-
-interface Contract {
-  address: string;
-  chain: string;
-}
-
-interface User {
-  address: string;
-  profile_img_url: null;
-  config: null;
-}
-
-interface OfferCriteria {
-  collection: {
-    slug: string;
-  };
-  contract: {
-    address: string;
-  };
-  trait: null;
-  traits: null;
-  encoded_token_ids: string;
-}
-
-interface Price {
-  currency: string;
-  decimals: number;
-  value: string;
-}
-
 export interface NFTDetail extends NFTItem {
-  listing_order: ListingOrder | null;
-  best_offer_order: BestOfferOrder | null;
-  rarity: Rarity | null;
-  last_sale?: LastSale | null;
+  listing_order: {
+    created_date: string;
+    closing_date: string;
+    listing_time: number;
+    expiration_time: number;
+    order_hash: string;
+    protocol_data: {
+      parameters: {
+        offerer: string;
+        offer: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+        }>;
+        consideration: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+          recipient: string;
+        }>;
+        startTime: string;
+        endTime: string;
+        orderType: number;
+        zone: string;
+        zoneHash: string;
+        salt: string;
+        conduitKey: string;
+        totalOriginalConsiderationItems: number;
+        counter: number;
+      };
+      signature: null;
+    };
+    protocol_address: string;
+    current_price: string;
+    maker: {
+      address: string;
+      profile_img_url: null;
+      config: null;
+    };
+    taker: null;
+    maker_fees: any[];
+    taker_fees: any[];
+    side: 'ask' | 'bid';
+    order_type: 'basic' | string;
+    cancelled: boolean;
+    finalized: boolean;
+    marked_invalid: boolean;
+    remaining_quantity: number;
+    maker_asset_bundle: {
+      assets: Array<{
+        id: null;
+        token_id: string;
+        num_sales: null;
+        background_color: null;
+        image_url: string | null;
+        image_preview_url: null;
+        image_thumbnail_url: null;
+        image_original_url: null;
+        animation_url: null;
+        animation_original_url: null;
+        name: string;
+        description: string | null;
+        external_link: null;
+        asset_contract: {
+          address: string;
+          chain_identifier: string;
+          schema_name: 'ERC721' | 'ERC1155' | 'NATIVE' | string;
+          asset_contract_type: 'non-fungible' | 'semi-fungible' | 'unknown';
+        };
+        permalink: string | null;
+        collection: {
+          collection: string;
+          name: string;
+          description: string;
+          image_url: string;
+          banner_image_url: string;
+          owner: string;
+          safelist_status: 'not_requested' | 'verified' | string;
+          category: string;
+          is_disabled: boolean;
+          is_nsfw: boolean;
+          trait_offers_enabled: boolean;
+          collection_offers_enabled: boolean;
+          opensea_url: string;
+          project_url: string;
+          wiki_url: string;
+          discord_url: string;
+          telegram_url: string;
+          twitter_username: string;
+          instagram_username: string;
+          contracts: Array<{
+            address: string;
+            chain: string;
+          }>;
+        } | null;
+        decimals: number | null;
+        token_metadata: null;
+        is_nsfw: boolean | null;
+        owner: {
+          address: string;
+          profile_img_url: null;
+          config: null;
+        } | null;
+      }>;
+      maker: null;
+      asset_contract: null;
+      slug: null;
+      name: null;
+      description: null;
+      external_link: null;
+      permalink: null;
+      seaport_sell_orders: null;
+    };
+    taker_asset_bundle: {
+      assets: Array<{
+        id: null;
+        token_id: string;
+        num_sales: null;
+        background_color: null;
+        image_url: string | null;
+        image_preview_url: null;
+        image_thumbnail_url: null;
+        image_original_url: null;
+        animation_url: null;
+        animation_original_url: null;
+        name: string;
+        description: string | null;
+        external_link: null;
+        asset_contract: {
+          address: string;
+          chain_identifier: string;
+          schema_name: 'ERC721' | 'ERC1155' | 'NATIVE' | string;
+          asset_contract_type: 'non-fungible' | 'semi-fungible' | 'unknown';
+        };
+        permalink: string | null;
+        collection: {
+          collection: string;
+          name: string;
+          description: string;
+          image_url: string;
+          banner_image_url: string;
+          owner: string;
+          safelist_status: 'not_requested' | 'verified' | string;
+          category: string;
+          is_disabled: boolean;
+          is_nsfw: boolean;
+          trait_offers_enabled: boolean;
+          collection_offers_enabled: boolean;
+          opensea_url: string;
+          project_url: string;
+          wiki_url: string;
+          discord_url: string;
+          telegram_url: string;
+          twitter_username: string;
+          instagram_username: string;
+          contracts: Array<{
+            address: string;
+            chain: string;
+          }>;
+        } | null;
+        decimals: number | null;
+        token_metadata: null;
+        is_nsfw: boolean | null;
+        owner: {
+          address: string;
+          profile_img_url: null;
+          config: null;
+        } | null;
+      }>;
+      maker: null;
+      asset_contract: null;
+      slug: null;
+      name: null;
+      description: null;
+      external_link: null;
+      permalink: null;
+      seaport_sell_orders: null;
+    };
+  } | null;
+  best_offer_order: {
+    order_hash: string;
+    chain: string;
+    protocol_data: {
+      parameters: {
+        offerer: string;
+        offer: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+        }>;
+        consideration: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+          recipient: string;
+        }>;
+        startTime: string;
+        endTime: string;
+        orderType: number;
+        zone: string;
+        zoneHash: string;
+        salt: string;
+        conduitKey: string;
+        totalOriginalConsiderationItems: number;
+        counter: number;
+      };
+      signature: null;
+    };
+    protocol_address: string;
+    remaining_quantity: number;
+    criteria: {
+      collection: {
+        slug: string;
+      };
+      contract: {
+        address: string;
+      };
+      trait: null;
+      traits: null;
+      encoded_token_ids: string;
+    };
+    price: {
+      currency: string;
+      decimals: number;
+      value: string;
+    };
+    status: 'ACTIVE' | string;
+  } | null;
+  rarity: {
+    strategy_id: 'openrarity' | string;
+    strategy_version: string;
+    rank: number;
+  } | null;
+  last_sale?: {
+    event_type: 'sale' | string;
+    event_timestamp: number;
+    transaction: string;
+    payment: {
+      quantity: string;
+      decimals: number;
+      symbol: string;
+      token_id: string;
+      price: number;
+    };
+    seller: string;
+    buyer: string;
+    quantity: number;
+  } | null;
 }
 
 export interface PrepareListingNFTResponse {
@@ -2602,6 +2625,164 @@ export interface PrepareAcceptNFTOfferResponse {
         };
         signature: string;
       }>;
+    };
+  };
+}
+
+export interface CreateListingNFTOfferResponse {
+  order: {
+    created_date: string;
+    closing_date: string;
+    listing_time: number;
+    expiration_time: number;
+    order_hash: string;
+    protocol_data: {
+      parameters: {
+        offerer: string;
+        offer: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+        }>;
+        consideration: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+          recipient: string;
+        }>;
+        startTime: string;
+        endTime: string;
+        orderType: number;
+        zone: string;
+        zoneHash: string;
+        salt: string;
+        conduitKey: string;
+        totalOriginalConsiderationItems: number;
+        counter: number;
+      };
+      signature: null;
+    };
+    protocol_address: string;
+    current_price: string;
+    maker: {
+      address: string;
+      profile_img_url: null;
+      config: null;
+    };
+    taker: null;
+    maker_fees: any[];
+    taker_fees: any[];
+    side: 'ask' | 'bid';
+    order_type: 'basic' | string;
+    cancelled: boolean;
+    finalized: boolean;
+    marked_invalid: boolean;
+    remaining_quantity: number;
+    maker_asset_bundle: {
+      assets: Array<{
+        id: null;
+        token_id: string;
+        num_sales: null;
+        background_color: null;
+        image_url: string | null;
+        image_preview_url: null;
+        image_thumbnail_url: null;
+        image_original_url: null;
+        animation_url: null;
+        animation_original_url: null;
+        name: string;
+        description: string | null;
+        external_link: null;
+        asset_contract: {
+          address: string;
+          chain_identifier: string;
+          schema_name: 'ERC721' | 'ERC1155' | 'NATIVE' | string;
+          asset_contract_type: 'non-fungible' | 'semi-fungible' | 'unknown';
+        };
+        permalink: string | null;
+        collection: {
+          collection: string;
+          name: string;
+          description: string;
+          image_url: string;
+          banner_image_url: string;
+          owner: string;
+          safelist_status: 'not_requested' | 'verified' | string;
+          category: string;
+          is_disabled: boolean;
+          is_nsfw: boolean;
+          trait_offers_enabled: boolean;
+          collection_offers_enabled: boolean;
+          opensea_url: string;
+          project_url: string;
+          wiki_url: string;
+          discord_url: string;
+          telegram_url: string;
+          twitter_username: string;
+          instagram_username: string;
+          contracts: Array<{
+            address: string;
+            chain: string;
+          }>;
+        } | null;
+        decimals: number | null;
+        token_metadata: null;
+        is_nsfw: boolean | null;
+        owner: {
+          address: string;
+          profile_img_url: null;
+          config: null;
+        } | null;
+      }>;
+      maker: null;
+      asset_contract: null;
+      slug: null;
+      name: null;
+      description: null;
+      external_link: null;
+      permalink: null;
+      seaport_sell_orders: null;
+    };
+    taker_asset_bundle: {
+      assets: Array<{
+        id: null;
+        token_id: string;
+        num_sales: null;
+        background_color: null;
+        image_url: null;
+        image_preview_url: null;
+        image_thumbnail_url: null;
+        image_original_url: null;
+        animation_url: null;
+        animation_original_url: null;
+        name: string;
+        description: null;
+        external_link: null;
+        asset_contract: {
+          address: string;
+          chain_identifier: string;
+          schema_name: 'NATIVE' | string;
+          asset_contract_type: 'unknown';
+        };
+        permalink: null;
+        collection: null;
+        decimals: number;
+        token_metadata: null;
+        is_nsfw: null;
+        owner: null;
+      }>;
+      maker: null;
+      asset_contract: null;
+      slug: null;
+      name: null;
+      description: null;
+      external_link: null;
+      permalink: null;
+      seaport_sell_orders: null;
     };
   };
 }

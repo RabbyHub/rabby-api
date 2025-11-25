@@ -99,6 +99,7 @@ import {
   NFTTradingConfig,
   PrepareAcceptNFTOfferResponse,
   PrepareListingNFTResponse,
+  CreateListingNFTOfferResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -3680,6 +3681,7 @@ export class OpenApiService {
   getNFTCollectionFees = async (params: {
     chain_id: string;
     collection_id: string;
+    inner_id: string;
   }): Promise<{
     marketplace_fees: {
       recipient: string;
@@ -3725,12 +3727,12 @@ export class OpenApiService {
     return data;
   };
 
-  // todo ts type
   createListingNFT = async (postData: {
     chain_id: string;
-    order: any;
+    order: PrepareListingNFTResponse['data']['post']['body']['order'];
     signature: string;
-  }): Promise<any> => {
+    protocol_address?: string;
+  }): Promise<CreateListingNFTOfferResponse> => {
     const { data } = await this.request.post(
       '/v1/nft/order/listing/post',
       postData
