@@ -454,6 +454,8 @@ export interface Collection {
     token: { id: string; symbol: string; decimals: number; price: number };
   };
   is_tradable?: boolean;
+  is_erc721?: boolean;
+  is_erc1155?: boolean;
 }
 
 export interface CollectionList {

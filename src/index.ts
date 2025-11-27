@@ -3747,6 +3747,7 @@ export class OpenApiService {
     collection_id: string;
     inner_id: string;
     quantity?: number;
+    include_optional_creator_fees?: boolean;
   }): Promise<PrepareAcceptNFTOfferResponse> => {
     const { data } = await this.request.post(
       '/v1/nft/order/offer/accept/prepare',
