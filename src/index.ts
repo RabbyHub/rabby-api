@@ -100,6 +100,7 @@ import {
   PrepareAcceptNFTOfferResponse,
   PrepareListingNFTResponse,
   CreateListingNFTOfferResponse,
+  NFTListingResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -3678,7 +3679,21 @@ export class OpenApiService {
     return data;
   };
 
-  getNFTCollectionFees = async (params: {
+  getNFTListingOrders = async (params: {
+    maker: string;
+    chain_id: string;
+    collection_id: string;
+    inner_id: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<NFTListingResponse> => {
+    const { data } = await this.request.get('/v1/nft/order/listing', {
+      params,
+    });
+    return data;
+  };
+
+  getNFTFees = async (params: {
     chain_id: string;
     collection_id: string;
     inner_id: string;
