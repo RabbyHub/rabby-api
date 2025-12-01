@@ -1,4 +1,4 @@
-import axios, { AxiosAdapter, AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import { ethErrors } from 'eth-rpc-errors';
 import { genSignParams, sleep } from './utils';
@@ -107,7 +107,7 @@ interface OpenApiStore {
 interface Options {
   store: OpenApiStore | Promise<OpenApiStore>;
   plugin: RabbyApiPlugin;
-  adapter?: AxiosAdapter;
+  adapter?: AxiosRequestConfig['adapter'];
 
   clientName?: string;
   clientVersion?: string;
@@ -130,7 +130,7 @@ export class OpenApiService {
 
   request!: RateLimitedAxiosInstance;
 
-  #adapter?: AxiosAdapter;
+  #adapter?: AxiosRequestConfig['adapter'];
   #plugin: RabbyApiPlugin;
 
   #clientName: string;

@@ -1,6 +1,6 @@
 import { isNil, keyBy, omitBy } from 'lodash';
 import { CHAINS } from '@debank/common';
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, GenericAbortSignal } from 'axios';
 import { decode } from 'qss';
 
 const chainsDict = keyBy(CHAINS, 'serverId');
@@ -50,7 +50,7 @@ export function genSignParams(config: AxiosRequestConfig) {
   };
 }
 
-export function sleep(ms = 0, signal?: AbortController['signal']) {
+export function sleep(ms = 0, signal?: GenericAbortSignal) {
   if (signal?.aborted || ms < 0) {
     return Promise.reject(new DOMException('Aborted', 'AbortError'));
   }
@@ -59,15 +59,15 @@ export function sleep(ms = 0, signal?: AbortController['signal']) {
     const abortHandler = () => {
       clearTimeout(timer);
       reject(new DOMException('Aborted', 'AbortError'));
-      signal?.removeEventListener('abort', abortHandler);
+      signal?.removeEventListener?.('abort', abortHandler);
     };
 
-    signal?.addEventListener('abort', abortHandler);
+    signal?.addEventListener?.('abort', abortHandler);
 
     const timer = setTimeout(() => {
       resolve();
 
-      signal?.removeEventListener('abort', abortHandler);
+      signal?.removeEventListener?.('abort', abortHandler);
     }, ms);
   });
 }
