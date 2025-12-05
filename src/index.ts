@@ -3771,4 +3771,15 @@ export class OpenApiService {
     );
     return data;
   };
+
+  submitAcceptNFTOfferTx = async (postData: {
+    tx_id: string;
+    data: Tx;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post(
+      '/v1/nft/order/offer/accept/tx',
+      postData
+    );
+    return data;
+  };
 }
