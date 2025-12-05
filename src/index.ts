@@ -95,6 +95,12 @@ import {
   PerpBridgeQuote,
   LiquidityPoolItem,
   LiquidityPoolHistoryItem,
+  NFTDetail,
+  NFTTradingConfig,
+  PrepareAcceptNFTOfferResponse,
+  PrepareListingNFTResponse,
+  CreateListingNFTOfferResponse,
+  NFTListingResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -3654,6 +3660,125 @@ export class OpenApiService {
       {
         params,
       }
+    );
+    return data;
+  };
+
+  getNFTTradingConfig = async (): Promise<NFTTradingConfig> => {
+    const { data } = await this.request.get('/v1/nft/trading_config');
+    return data;
+  };
+
+  getNFTDetail = async (params: {
+    chain_id: string;
+    id: string;
+    user_addr: string;
+  }): Promise<NFTDetail> => {
+    const { data } = await this.request.get('/v1/nft', {
+      params,
+    });
+    return data;
+  };
+
+  getNFTListingOrders = async (params: {
+    maker: string;
+    chain_id: string;
+    collection_id: string;
+    inner_id: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<NFTListingResponse> => {
+    const { data } = await this.request.get('/v1/nft/order/listing', {
+      params,
+    });
+    return data;
+  };
+
+  getNFTFees = async (params: {
+    chain_id: string;
+    collection_id: string;
+    inner_id: string;
+  }): Promise<{
+    marketplace_fees: {
+      recipient: string;
+      fee: number;
+      required: boolean;
+    }[];
+    custom_royalties: {
+      recipient: string;
+      fee: number;
+      required: boolean;
+    }[];
+  }> => {
+    const { data } = await this.request.get('/v1/nft/fee', {
+      params,
+    });
+    return data;
+  };
+
+  prepareListingNFT = async (postData: {
+    maker: string;
+    chain_id: string;
+    collection_id: string;
+    inner_id: string;
+    wei_price: string;
+    quantity?: number;
+    marketplace_fees: {
+      recipient: string;
+      fee: number;
+    }[];
+    custom_royalties: {
+      recipient: string;
+      fee: number;
+    }[];
+    listing_time_at?: number;
+    expiration_time_at?: number;
+    currency: string;
+    salt?: string;
+  }): Promise<PrepareListingNFTResponse> => {
+    const { data } = await this.request.post(
+      '/v1/nft/order/listing/prepare',
+      postData
+    );
+    return data;
+  };
+
+  createListingNFT = async (postData: {
+    chain_id: string;
+    order: PrepareListingNFTResponse['data']['post']['body']['order'];
+    signature: string;
+    protocol_address?: string;
+  }): Promise<CreateListingNFTOfferResponse> => {
+    const { data } = await this.request.post(
+      '/v1/nft/order/listing/post',
+      postData
+    );
+    return data;
+  };
+
+  prepareAcceptNFTOffer = async (postData: {
+    chain_id: string;
+    order_hash: string;
+    fulfiller: string;
+    collection_id: string;
+    inner_id: string;
+    quantity?: number;
+    include_optional_creator_fees?: boolean;
+  }): Promise<PrepareAcceptNFTOfferResponse> => {
+    const { data } = await this.request.post(
+      '/v1/nft/order/offer/accept/prepare',
+      postData
+    );
+    return data;
+  };
+
+  submitAcceptNFTOfferTx = async (postData: {
+    tx_id: string;
+    data: Tx;
+  }): Promise<{ success: boolean }> => {
+    const { data } = await this.request.post(
+      '/v1/nft/order/offer/accept/tx',
+      postData
     );
     return data;
   };

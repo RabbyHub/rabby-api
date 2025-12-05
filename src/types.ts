@@ -449,6 +449,13 @@ export interface Collection {
   create_at: number;
   floor_price: number;
   is_scam: boolean;
+  opensea_floor_price?: {
+    price: number;
+    token: { id: string; symbol: string; decimals: number; price: number };
+  };
+  is_tradable?: boolean;
+  is_erc721?: boolean;
+  is_erc1155?: boolean;
 }
 
 export interface CollectionList {
@@ -466,6 +473,8 @@ export interface CollectionList {
   floor_price: number;
   nft_list: NFTItem[];
   native_token: TokenItem;
+  is_hidden?: boolean;
+  is_tradable?: boolean;
 }
 
 export interface TxDisplayItem extends TxHistoryItem {
@@ -2013,3 +2022,774 @@ export type LiquidityPoolHistoryItem = {
     usd_value: number;
   }[];
 };
+
+export type NFTTradingConfig = Record<
+  string,
+  {
+    currency: string[];
+    seaport_v16_address: string;
+    opensea_chain_id: string;
+    opensea_fee_recipient: string;
+    opensea_conduit_address: string;
+    listing_currency: { symbol: string; token_id: string };
+    offer_currency: { symbol: string; token_id: string };
+  }
+>;
+
+export interface NFTDetail extends NFTItem {
+  best_offer_order: {
+    order_hash: string;
+    chain: string;
+    protocol_data: {
+      parameters: {
+        offerer: string;
+        offer: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+        }>;
+        consideration: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+          recipient: string;
+        }>;
+        startTime: string;
+        endTime: string;
+        orderType: number;
+        zone: string;
+        zoneHash: string;
+        salt: string;
+        conduitKey: string;
+        totalOriginalConsiderationItems: number;
+        counter: number;
+      };
+      signature: null;
+    };
+    protocol_address: string;
+    remaining_quantity: number;
+    criteria: {
+      collection: {
+        slug: string;
+      };
+      contract: {
+        address: string;
+      };
+      trait: null;
+      traits: null;
+      encoded_token_ids: string;
+    };
+    price: {
+      currency: string;
+      decimals: number;
+      value: string;
+    };
+    status: 'ACTIVE' | string;
+  } | null;
+  rarity: {
+    strategy_id: 'openrarity' | string;
+    strategy_version: string;
+    rank: number;
+  } | null;
+  last_sale?: {
+    event_type: 'sale' | string;
+    event_timestamp: number;
+    transaction: string;
+    payment: {
+      quantity: string;
+      decimals: number;
+      symbol: string;
+      token_id: string;
+      price: number;
+    };
+    seller: string;
+    buyer: string;
+    quantity: number;
+  } | null;
+}
+
+export interface NFTListingOrder {
+  created_date: string;
+  closing_date: string;
+  listing_time: number;
+  expiration_time: number;
+  order_hash: string;
+  protocol_data: {
+    parameters: {
+      offerer: string;
+      offer: Array<{
+        itemType: number;
+        token: string;
+        identifierOrCriteria: string;
+        startAmount: string;
+        endAmount: string;
+      }>;
+      consideration: Array<{
+        itemType: number;
+        token: string;
+        identifierOrCriteria: string;
+        startAmount: string;
+        endAmount: string;
+        recipient: string;
+      }>;
+      startTime: string;
+      endTime: string;
+      orderType: number;
+      zone: string;
+      zoneHash: string;
+      salt: string;
+      conduitKey: string;
+      totalOriginalConsiderationItems: number;
+      counter: number;
+    };
+    signature: null;
+  };
+  protocol_address: string;
+  current_price: string;
+  maker: {
+    address: string;
+    profile_img_url: null;
+    config: null;
+  };
+  taker: null;
+  maker_fees: any[];
+  taker_fees: any[];
+  side: 'ask' | 'bid';
+  order_type: 'basic' | string;
+  cancelled: boolean;
+  finalized: boolean;
+  marked_invalid: boolean;
+  remaining_quantity: number;
+  maker_asset_bundle: {
+    assets: Array<{
+      id: null;
+      token_id: string;
+      num_sales: null;
+      background_color: null;
+      image_url: string | null;
+      image_preview_url: null;
+      image_thumbnail_url: null;
+      image_original_url: null;
+      animation_url: null;
+      animation_original_url: null;
+      name: string;
+      description: string | null;
+      external_link: null;
+      asset_contract: {
+        address: string;
+        chain_identifier: string;
+        schema_name: 'ERC721' | 'ERC1155' | 'NATIVE' | string;
+        asset_contract_type: 'non-fungible' | 'semi-fungible' | 'unknown';
+      };
+      permalink: string | null;
+      collection: {
+        collection: string;
+        name: string;
+        description: string;
+        image_url: string;
+        banner_image_url: string;
+        owner: string;
+        safelist_status: 'not_requested' | 'verified' | string;
+        category: string;
+        is_disabled: boolean;
+        is_nsfw: boolean;
+        trait_offers_enabled: boolean;
+        collection_offers_enabled: boolean;
+        opensea_url: string;
+        project_url: string;
+        wiki_url: string;
+        discord_url: string;
+        telegram_url: string;
+        twitter_username: string;
+        instagram_username: string;
+        contracts: Array<{
+          address: string;
+          chain: string;
+        }>;
+      } | null;
+      decimals: number | null;
+      token_metadata: null;
+      is_nsfw: boolean | null;
+      owner: {
+        address: string;
+        profile_img_url: null;
+        config: null;
+      } | null;
+    }>;
+    maker: null;
+    asset_contract: null;
+    slug: null;
+    name: null;
+    description: null;
+    external_link: null;
+    permalink: null;
+    seaport_sell_orders: null;
+  };
+  taker_asset_bundle: {
+    assets: Array<{
+      id: null;
+      token_id: string;
+      num_sales: null;
+      background_color: null;
+      image_url: string | null;
+      image_preview_url: null;
+      image_thumbnail_url: null;
+      image_original_url: null;
+      animation_url: null;
+      animation_original_url: null;
+      name: string;
+      description: string | null;
+      external_link: null;
+      asset_contract: {
+        address: string;
+        chain_identifier: string;
+        schema_name: 'ERC721' | 'ERC1155' | 'NATIVE' | string;
+        asset_contract_type: 'non-fungible' | 'semi-fungible' | 'unknown';
+      };
+      permalink: string | null;
+      collection: {
+        collection: string;
+        name: string;
+        description: string;
+        image_url: string;
+        banner_image_url: string;
+        owner: string;
+        safelist_status: 'not_requested' | 'verified' | string;
+        category: string;
+        is_disabled: boolean;
+        is_nsfw: boolean;
+        trait_offers_enabled: boolean;
+        collection_offers_enabled: boolean;
+        opensea_url: string;
+        project_url: string;
+        wiki_url: string;
+        discord_url: string;
+        telegram_url: string;
+        twitter_username: string;
+        instagram_username: string;
+        contracts: Array<{
+          address: string;
+          chain: string;
+        }>;
+      } | null;
+      decimals: number | null;
+      token_metadata: null;
+      is_nsfw: boolean | null;
+      owner: {
+        address: string;
+        profile_img_url: null;
+        config: null;
+      } | null;
+    }>;
+    maker: null;
+    asset_contract: null;
+    slug: null;
+    name: null;
+    description: null;
+    external_link: null;
+    permalink: null;
+    seaport_sell_orders: null;
+  };
+}
+export interface NFTListingResponse {
+  orders: NFTListingOrder[];
+  next: string | null;
+}
+
+export interface PrepareListingNFTResponse {
+  data: {
+    sign: {
+      signatureKind: string;
+      domain: {
+        name: string;
+        version: string;
+        chainId: number;
+        verifyingContract: string;
+      };
+      types: {
+        EIP712Domain: Array<{
+          name: string;
+          type: string;
+        }>;
+        OrderComponents: Array<{
+          name: string;
+          type: string;
+        }>;
+        OfferItem: Array<{
+          name: string;
+          type: string;
+        }>;
+        ConsiderationItem: Array<{
+          name: string;
+          type: string;
+        }>;
+      };
+      value: {
+        offerer: string;
+        zone: string;
+        offer: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+        }>;
+        consideration: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+          recipient: string;
+        }>;
+        orderType: number;
+        startTime: string;
+        endTime: string;
+        zoneHash: string;
+        salt: string;
+        conduitKey: string;
+        counter: string;
+      };
+      primaryType: string;
+    };
+    post: {
+      endpoint: string;
+      method: string;
+      body: {
+        order: {
+          kind: string;
+          data: {
+            offerer: string;
+            zone: string;
+            offer: Array<{
+              itemType: number;
+              token: string;
+              identifierOrCriteria: string;
+              startAmount: string;
+              endAmount: string;
+            }>;
+            consideration: Array<{
+              itemType: number;
+              token: string;
+              identifierOrCriteria: string;
+              startAmount: string;
+              endAmount: string;
+              recipient: string;
+            }>;
+            orderType: number;
+            startTime: string;
+            endTime: string;
+            zoneHash: string;
+            salt: string;
+            conduitKey: string;
+            counter: string;
+          };
+        };
+      };
+    };
+  };
+}
+
+export interface PrepareAcceptNFTOfferResponse {
+  data: {
+    protocol: string;
+    fulfillment_data: {
+      transaction: {
+        function: string;
+        chain: number;
+        to: string;
+        value: number;
+        input_data:
+          | {
+              // For fulfillAdvancedOrder
+              advancedOrder: {
+                parameters: {
+                  offerer: string;
+                  zone: string;
+                  zoneHash: string;
+                  startTime: string;
+                  endTime: string;
+                  orderType: number;
+                  salt: string;
+                  conduitKey: string;
+                  totalOriginalConsiderationItems: number;
+                  offer: Array<{
+                    itemType: number;
+                    token: string;
+                    identifierOrCriteria: string;
+                    startAmount: string;
+                    endAmount: string;
+                  }>;
+                  consideration: Array<{
+                    itemType: number;
+                    token: string;
+                    identifierOrCriteria: string;
+                    startAmount: string;
+                    endAmount: string;
+                    recipient: string;
+                  }>;
+                  counter: number;
+                };
+                numerator: string;
+                denominator: string;
+                signature: string;
+                extraData: string;
+              };
+              criteriaResolvers?: Array<{
+                orderIndex: number;
+                side: number;
+                index: number;
+                identifier: string;
+                criteriaProof: string[];
+              }>;
+              fulfillerConduitKey?: string;
+              recipient: string;
+            }
+          | {
+              // For fulfillBasicOrder
+              basicOrderParameters: {
+                considerationToken: string;
+                considerationIdentifier: string;
+                considerationAmount: string;
+                offerer: string;
+                zone: string;
+                offerToken: string;
+                offerIdentifier: string;
+                offerAmount: string;
+                basicOrderType: number;
+                startTime: string;
+                endTime: string;
+                zoneHash: string;
+                salt: string;
+                offererConduitKey: string;
+                fulfillerConduitKey: string;
+                totalOriginalAdditionalRecipients: number;
+                additionalRecipients: Array<{
+                  amount: string;
+                  recipient: string;
+                }>;
+                signature: string;
+              };
+            }
+          | {
+              // For fulfillOrder
+              order: {
+                parameters: {
+                  offerer: string;
+                  zone: string;
+                  zoneHash: string;
+                  startTime: string;
+                  endTime: string;
+                  orderType: number;
+                  salt: string;
+                  conduitKey: string;
+                  totalOriginalConsiderationItems: number;
+                  offer: Array<{
+                    itemType: number;
+                    token: string;
+                    identifierOrCriteria: string;
+                    startAmount: string;
+                    endAmount: string;
+                  }>;
+                  consideration: Array<{
+                    itemType: number;
+                    token: string;
+                    identifierOrCriteria: string;
+                    startAmount: string;
+                    endAmount: string;
+                    recipient: string;
+                  }>;
+                  counter: number;
+                };
+                signature: string;
+              };
+              fulfillerConduitKey?: string;
+              recipient: string;
+            }
+          | {
+              // Legacy: for backward compatibility
+              orders: Array<
+                | {
+                    parameters: {
+                      offerer: string;
+                      zone: string;
+                      zoneHash: string;
+                      startTime: string;
+                      endTime: string;
+                      orderType: number;
+                      salt: string;
+                      conduitKey: string;
+                      totalOriginalConsiderationItems: number;
+                      offer: Array<{
+                        itemType: number;
+                        token: string;
+                        identifierOrCriteria: string;
+                        startAmount: string;
+                        endAmount: string;
+                      }>;
+                      consideration: Array<{
+                        itemType: number;
+                        token: string;
+                        identifierOrCriteria: string;
+                        startAmount: string;
+                        endAmount: string;
+                        recipient: string;
+                      }>;
+                      counter: number;
+                    };
+                    signature: string;
+                  }
+                | {
+                    parameters: {
+                      offerer: string;
+                      zone: string;
+                      zoneHash: string;
+                      startTime: string;
+                      endTime: string;
+                      orderType: number;
+                      salt: string;
+                      conduitKey: string;
+                      totalOriginalConsiderationItems: number;
+                      offer: Array<{
+                        itemType: number;
+                        token: string;
+                        identifierOrCriteria: string;
+                        startAmount: string;
+                        endAmount: string;
+                      }>;
+                      consideration: Array<{
+                        itemType: number;
+                        token: string;
+                        identifierOrCriteria: string;
+                        startAmount: string;
+                        endAmount: string;
+                        recipient: string;
+                      }>;
+                      counter: number;
+                    };
+                    numerator: string;
+                    denominator: string;
+                    signature: string;
+                    extraData: string;
+                  }
+                | {
+                    considerationToken: string;
+                    considerationIdentifier: string;
+                    considerationAmount: string;
+                    offerer: string;
+                    zone: string;
+                    offerToken: string;
+                    offerIdentifier: string;
+                    offerAmount: string;
+                    basicOrderType: number;
+                    startTime: string;
+                    endTime: string;
+                    zoneHash: string;
+                    salt: string;
+                    offererConduitKey: string;
+                    fulfillerConduitKey: string;
+                    totalOriginalAdditionalRecipients: number;
+                    additionalRecipients: Array<{
+                      amount: string;
+                      recipient: string;
+                    }>;
+                    signature: string;
+                  }
+              >;
+            };
+      };
+      orders: Array<{
+        parameters: {
+          offerer: string;
+          zone: string;
+          zoneHash: string;
+          startTime: string;
+          endTime: string;
+          orderType: number;
+          salt: string;
+          conduitKey: string;
+          totalOriginalConsiderationItems: number;
+          offer: Array<{
+            itemType: number;
+            token: string;
+            identifierOrCriteria: string;
+            startAmount: string;
+            endAmount: string;
+          }>;
+          consideration: Array<{
+            itemType: number;
+            token: string;
+            identifierOrCriteria: string;
+            startAmount: string;
+            endAmount: string;
+            recipient: string;
+          }>;
+          counter: number;
+        };
+        signature: string;
+      }>;
+    };
+  };
+}
+
+export interface CreateListingNFTOfferResponse {
+  order: {
+    created_date: string;
+    closing_date: string;
+    listing_time: number;
+    expiration_time: number;
+    order_hash: string;
+    protocol_data: {
+      parameters: {
+        offerer: string;
+        offer: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+        }>;
+        consideration: Array<{
+          itemType: number;
+          token: string;
+          identifierOrCriteria: string;
+          startAmount: string;
+          endAmount: string;
+          recipient: string;
+        }>;
+        startTime: string;
+        endTime: string;
+        orderType: number;
+        zone: string;
+        zoneHash: string;
+        salt: string;
+        conduitKey: string;
+        totalOriginalConsiderationItems: number;
+        counter: number;
+      };
+      signature: null;
+    };
+    protocol_address: string;
+    current_price: string;
+    maker: {
+      address: string;
+      profile_img_url: null;
+      config: null;
+    };
+    taker: null;
+    maker_fees: any[];
+    taker_fees: any[];
+    side: 'ask' | 'bid';
+    order_type: 'basic' | string;
+    cancelled: boolean;
+    finalized: boolean;
+    marked_invalid: boolean;
+    remaining_quantity: number;
+    maker_asset_bundle: {
+      assets: Array<{
+        id: null;
+        token_id: string;
+        num_sales: null;
+        background_color: null;
+        image_url: string | null;
+        image_preview_url: null;
+        image_thumbnail_url: null;
+        image_original_url: null;
+        animation_url: null;
+        animation_original_url: null;
+        name: string;
+        description: string | null;
+        external_link: null;
+        asset_contract: {
+          address: string;
+          chain_identifier: string;
+          schema_name: 'ERC721' | 'ERC1155' | 'NATIVE' | string;
+          asset_contract_type: 'non-fungible' | 'semi-fungible' | 'unknown';
+        };
+        permalink: string | null;
+        collection: {
+          collection: string;
+          name: string;
+          description: string;
+          image_url: string;
+          banner_image_url: string;
+          owner: string;
+          safelist_status: 'not_requested' | 'verified' | string;
+          category: string;
+          is_disabled: boolean;
+          is_nsfw: boolean;
+          trait_offers_enabled: boolean;
+          collection_offers_enabled: boolean;
+          opensea_url: string;
+          project_url: string;
+          wiki_url: string;
+          discord_url: string;
+          telegram_url: string;
+          twitter_username: string;
+          instagram_username: string;
+          contracts: Array<{
+            address: string;
+            chain: string;
+          }>;
+        } | null;
+        decimals: number | null;
+        token_metadata: null;
+        is_nsfw: boolean | null;
+        owner: {
+          address: string;
+          profile_img_url: null;
+          config: null;
+        } | null;
+      }>;
+      maker: null;
+      asset_contract: null;
+      slug: null;
+      name: null;
+      description: null;
+      external_link: null;
+      permalink: null;
+      seaport_sell_orders: null;
+    };
+    taker_asset_bundle: {
+      assets: Array<{
+        id: null;
+        token_id: string;
+        num_sales: null;
+        background_color: null;
+        image_url: null;
+        image_preview_url: null;
+        image_thumbnail_url: null;
+        image_original_url: null;
+        animation_url: null;
+        animation_original_url: null;
+        name: string;
+        description: null;
+        external_link: null;
+        asset_contract: {
+          address: string;
+          chain_identifier: string;
+          schema_name: 'NATIVE' | string;
+          asset_contract_type: 'unknown';
+        };
+        permalink: null;
+        collection: null;
+        decimals: number;
+        token_metadata: null;
+        is_nsfw: null;
+        owner: null;
+      }>;
+      maker: null;
+      asset_contract: null;
+      slug: null;
+      name: null;
+      description: null;
+      external_link: null;
+      permalink: null;
+      seaport_sell_orders: null;
+    };
+  };
+}
