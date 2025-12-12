@@ -3782,4 +3782,21 @@ export class OpenApiService {
     );
     return data;
   };
+
+  checkTokenDepositForbidden = async (params: {
+    chain_id: string;
+    id: string;
+    user_addr: string;
+    to_addr: string;
+  }): Promise<{
+    msg: string;
+  }> => {
+    const { data } = await this.request.get(
+      '/v1/engine/token/deposit_forbidden',
+      {
+        params,
+      }
+    );
+    return data;
+  };
 }
