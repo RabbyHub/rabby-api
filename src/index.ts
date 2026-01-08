@@ -904,14 +904,18 @@ export class OpenApiService {
   };
 
   getSwapTokenList = async (id: string, chainId?: string) => {
+    const params: { id: string; is_all: boolean; chain_id?: string } = {
+      id,
+      is_all: false,
+    };
+
+    if (chainId) {
+      params.chain_id = chainId;
+    }
     const { data } = await this.request.get<TokenItem[]>(
       '/v1/wallet/swap_token_list',
       {
-        params: {
-          id,
-          chain_id: chainId,
-          is_all: false,
-        },
+        params,
       }
     );
     return data;
