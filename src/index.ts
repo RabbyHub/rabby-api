@@ -3799,4 +3799,18 @@ export class OpenApiService {
     );
     return data;
   };
+
+  getPolyMarketPermission = async (params: {
+    id?: string;
+  }): Promise<{
+    has_permission: boolean;
+  }> => {
+    const { data } = await this.request.get(
+      'v1/user/has_polymarket_permission',
+      {
+        params,
+      }
+    );
+    return data;
+  };
 }
