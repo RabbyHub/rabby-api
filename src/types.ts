@@ -232,9 +232,9 @@ export interface TokenItem {
   decimals: number;
   display_symbol: string | null;
   id: string;
-  is_core: boolean;
+  is_core: boolean | null;
   credit_score?: number;
-  is_verified: boolean;
+  is_verified: boolean | null;
   is_wallet: boolean;
   is_scam?: boolean;
   is_infinity?: boolean;
