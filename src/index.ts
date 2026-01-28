@@ -3818,7 +3818,7 @@ export class OpenApiService {
     return data;
   };
 
-  getDappPermisson = async (params: {
+  getDappPermission = async (params: {
     id?: string;
     dapp: string;
   }): Promise<{
