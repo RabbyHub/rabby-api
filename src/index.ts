@@ -3817,4 +3817,16 @@ export class OpenApiService {
     );
     return data;
   };
+
+  getDappPermisson = async (params: {
+    id?: string;
+    dapp: string;
+  }): Promise<{
+    has_permission: boolean;
+  }> => {
+    const { data } = await this.request.get('v1/user/has_dapp_permission', {
+      params,
+    });
+    return data;
+  };
 }
