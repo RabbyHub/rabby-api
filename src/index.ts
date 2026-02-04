@@ -2674,8 +2674,16 @@ export class OpenApiService {
     return data;
   };
 
-  getPerpTopTokenList = async (): Promise<PerpTopToken[]> => {
-    const { data } = await this.request.get('/v1/token/hyperliquid_top');
+  /**
+   * @param params.dex_id - The ID of the DEX to get the top tokens for. If not provided, hyperliquid default DEXs will be included. if all is provided, all DEXs will be included.  and xyz is xyz dex tokens
+   * @returns A list of top tokens for the given DEX.
+   */
+  getPerpTopTokenList = async (params: {
+    dex_id?: string;
+  }): Promise<PerpTopToken[]> => {
+    const { data } = await this.request.get('/v1/token/hyperliquid_top', {
+      params,
+    });
     return data;
   };
 
