@@ -1704,6 +1704,7 @@ export interface PerpTopToken {
   name: string;
   full_logo_url: string | null;
   daily_volume: number;
+  dex_id: string;
 }
 
 export interface GasAccountCheckResult {
