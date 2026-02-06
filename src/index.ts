@@ -101,6 +101,7 @@ import {
   PrepareListingNFTResponse,
   CreateListingNFTOfferResponse,
   NFTListingResponse,
+  MemeListResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -3833,6 +3834,18 @@ export class OpenApiService {
     has_permission: boolean;
   }> => {
     const { data } = await this.request.get('v1/user/has_dapp_permission', {
+      params,
+    });
+    return data;
+  };
+
+  getMemeList = async (params: {
+    order_by: 'fdv' | 'volume_24h' | 'price_change_24h';
+    order?: 'asc' | 'desc';
+    limit: number; // default 50 max 100
+    cursor: string;
+  }): Promise<MemeListResponse> => {
+    const { data } = await this.request.get('/v1/token/meme_list', {
       params,
     });
     return data;

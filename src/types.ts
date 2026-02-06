@@ -2795,3 +2795,26 @@ export interface CreateListingNFTOfferResponse {
     };
   };
 }
+
+export interface MemeItem {
+  id: string;
+  chain: string;
+  symbol: string;
+  name: string;
+  logo_url: string;
+  is_verified: boolean;
+  is_core: boolean;
+  credit_score: number;
+  price: number;
+  price_24h_change: number;
+  volume_24h: number;
+  fdv: number;
+}
+export interface MemeListResponse {
+  data_list: MemeItem[];
+  pagination: {
+    limit: number;
+    has_next: boolean;
+    next_cursor: string;
+  };
+}
