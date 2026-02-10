@@ -3840,10 +3840,10 @@ export class OpenApiService {
   };
 
   getMemeList = async (params: {
-    order_by: 'fdv' | 'volume_24h' | 'price_change_24h';
+    order_by?: 'fdv' | 'volume_24h' | 'price_change_24h';
     order?: 'asc' | 'desc';
-    limit: number; // default 50 max 100
-    cursor: string;
+    limit?: number; // default 50 max 100
+    cursor?: string;
   }): Promise<MemeListResponse> => {
     const { data } = await this.request.get('/v1/token/meme_list', {
       params,
