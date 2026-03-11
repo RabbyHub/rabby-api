@@ -2818,3 +2818,48 @@ export interface MemeListResponse {
     next_cursor: string;
   };
 }
+
+export interface TokenMarketCategoryItem {
+  id: string;
+  name: string;
+  sort_fields: string[];
+  default_sort_by: string;
+  display_order: number;
+}
+
+export interface TokenMarketCategoryListResponse {
+  categories: TokenMarketCategoryItem[];
+}
+
+export interface TokenMarketTokenRelatedItem {
+  id: string;
+  name: string;
+  logo: string;
+}
+
+export interface TokenMarketTokenItem {
+  id: string;
+  chain: string;
+  name: string;
+  symbol: string;
+  display_symbol: string;
+  logo_url: string;
+  is_verified: boolean;
+  is_core: boolean;
+  credit_score: number;
+  price: number;
+  price_24h_change: number;
+  volume_24h: number;
+  fdv: number;
+  launchpad: TokenMarketTokenRelatedItem | null;
+  asset: TokenMarketTokenRelatedItem | null;
+}
+
+export interface TokenMarketTokenListResponse {
+  data_list: TokenMarketTokenItem[];
+  pagination: {
+    limit: number;
+    has_next: boolean;
+    next_cursor: string;
+  };
+}

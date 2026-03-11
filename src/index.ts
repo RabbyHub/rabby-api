@@ -102,6 +102,8 @@ import {
   CreateListingNFTOfferResponse,
   NFTListingResponse,
   MemeListResponse,
+  TokenMarketCategoryListResponse,
+  TokenMarketTokenListResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -3677,6 +3679,12 @@ export class OpenApiService {
     return data;
   };
 
+  getTokenMarketCategoryList =
+    async (): Promise<TokenMarketCategoryListResponse> => {
+      const { data } = await this.request.get('/v1/token/market/category_list');
+      return data;
+    };
+
   getNFTTradingConfig = async (): Promise<NFTTradingConfig> => {
     const { data } = await this.request.get('/v1/nft/trading_config');
     return data;
@@ -3846,6 +3854,20 @@ export class OpenApiService {
     cursor?: string;
   }): Promise<MemeListResponse> => {
     const { data } = await this.request.get('/v1/token/meme_list', {
+      params,
+    });
+    return data;
+  };
+
+  getTokenMarketTokenList = async (params: {
+    category_id: string;
+    order_by?: string;
+    order?: 'asc' | 'desc';
+    limit?: number; // default 50 max 100
+    cursor?: string;
+    version?: string; // ignore
+  }): Promise<TokenMarketTokenListResponse> => {
+    const { data } = await this.request.get('/v1/token/market/token_list', {
       params,
     });
     return data;
