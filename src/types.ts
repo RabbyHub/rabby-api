@@ -254,6 +254,9 @@ export interface TokenItem {
   cex_ids?: string[];
   fdv?: number | null;
   support_market_data?: boolean;
+  launchpad?: TokenMarketTokenRelatedItem | null;
+  asset?: TokenMarketTokenRelatedItem | null;
+  market_status?: string;
 }
 
 export interface TokenItemWithEntity extends TokenItem {
