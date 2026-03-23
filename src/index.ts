@@ -48,6 +48,7 @@ import {
   SwapTradeList,
   TokenApproval,
   TokenItem,
+  TokenPriceListResponse,
   TotalBalanceResponse,
   Tx,
   TxAllHistoryResult,
@@ -821,6 +822,13 @@ export class OpenApiService {
       },
     });
 
+    return data;
+  };
+
+  getTokenPriceList = async (params: {
+    uuids: string[];
+  }): Promise<TokenPriceListResponse> => {
+    const { data } = await this.request.post('/v1/token/price_list', params);
     return data;
   };
 

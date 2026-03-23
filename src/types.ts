@@ -260,6 +260,14 @@ export interface TokenItemWithEntity extends TokenItem {
   identity?: TokenEntityDetail;
 }
 
+export interface TokenPriceListItem {
+  price: number;
+  price_24h_change?: number | null;
+  price_update_at?: number | null;
+}
+
+export type TokenPriceListResponse = Record<string, TokenPriceListItem>;
+
 export interface TransferingNFTItem {
   chain: string;
   collection: {
