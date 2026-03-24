@@ -67,6 +67,10 @@ import {
   BuyHistoryList,
   BuyPaymentMethod,
   GasAccountInfo,
+  GasAccountBridgeSupportTokenList,
+  GasAccountBridgeQuote,
+  GasAccountBridgeCreateResponse,
+  GasAccountRechargeStatus,
   TokenEntityDetail,
   TokenItemWithEntity,
   ProjectItem,
@@ -2925,6 +2929,60 @@ export class OpenApiService {
       params: {
         id,
       },
+    });
+    return data;
+  };
+
+  getGasAccountBridgeSupportTokenList =
+    async (): Promise<GasAccountBridgeSupportTokenList> => {
+      const { data } = await this.request.get(
+        '/v1/gas_account/bridge/support_token'
+      );
+      return data;
+    };
+
+  getGasAccountBridgeQuote = async (params: {
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_raw_amount: string | number;
+    slippage?: number;
+  }): Promise<GasAccountBridgeQuote> => {
+    const { data } = await this.request.get('/v1/gas_account/bridge/quote', {
+      params,
+    });
+    return data;
+  };
+
+  createGasAccountBridgeRecharge = async (p: {
+    sig: string;
+    gas_account_id: string;
+    user_addr: string;
+    from_chain_id: string;
+    from_token_id: string;
+    from_token_amount: number;
+    from_usd_value: number;
+    tx_id: string;
+  }): Promise<GasAccountBridgeCreateResponse> => {
+    const { sig, ...params } = p;
+    const { data } = await this.request.post(
+      '/v1/gas_account/bridge/create',
+      params,
+      {
+        headers: {
+          sig,
+        },
+      }
+    );
+    return data;
+  };
+
+  getGasAccountBridgeStatus = async (params: {
+    from_chain_id: string;
+    tx_id: string;
+  }): Promise<GasAccountRechargeStatus> => {
+    const { data } = await this.request.get('/v1/gas_account/bridge/status', {
+      params,
     });
     return data;
   };

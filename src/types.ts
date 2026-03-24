@@ -1938,6 +1938,76 @@ export interface PerpBridgeQuote {
   duration: number;
 }
 
+export interface GasAccountBridgeToken {
+  chain_id: string;
+  token_id: string;
+}
+
+export interface GasAccountBridgeSupportTokenList {
+  wallet_tokens: GasAccountBridgeToken[];
+  hyperliquid_tokens: GasAccountBridgeToken[];
+}
+
+export interface GasAccountBridgeFee {
+  raw_amount_hex_str: string;
+  usd_value: number;
+}
+
+export interface GasAccountBridgeInfo {
+  logo_url: string;
+}
+
+export interface GasAccountBridgeQuote {
+  bridge_id: string;
+  bridge: GasAccountBridgeInfo;
+  to_token_raw_amount: number;
+  to_token_raw_amount_hex_str: string;
+  to_token_amount: number;
+  approve_contract_id: string;
+  protocol_fee: GasAccountBridgeFee;
+  rabby_fee: GasAccountBridgeFee;
+  gas_fee: GasAccountBridgeFee;
+  duration: number;
+  tx: Tx;
+}
+
+export interface GasAccountBridgeCreateResponse {
+  success: boolean;
+  id: string;
+}
+
+interface GasAccountRechargeStatusBase {
+  type: 'bridge' | 'wallet';
+  status: 'pending' | 'success' | 'failed';
+  chain_id: string;
+  tx_id: string;
+  user_addr: string;
+  gas_account_id: string;
+  amount: number;
+  create_at: number;
+  failed_reason: string | null;
+}
+
+export interface GasAccountBridgeRechargeStatus
+  extends GasAccountRechargeStatusBase {
+  type: 'bridge';
+  from_token_id: string;
+  from_token_amount: number;
+  to_tx_id?: string | null;
+  to_token_amount?: number | null;
+  is_system_prepaid?: boolean | null;
+  finished_at?: number | null;
+}
+
+export interface GasAccountWalletRechargeStatus
+  extends GasAccountRechargeStatusBase {
+  type: 'wallet';
+}
+
+export type GasAccountRechargeStatus =
+  | GasAccountBridgeRechargeStatus
+  | GasAccountWalletRechargeStatus;
+
 export type MarketSummaryItem = {
   price?: {
     open?: number;
