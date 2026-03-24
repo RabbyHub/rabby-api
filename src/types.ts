@@ -2851,6 +2851,7 @@ export interface TokenMarketTokenItem {
   price_24h_change: number;
   volume_24h: number;
   fdv: number;
+  identity?: TokenEntityDetail;
   launchpad: TokenMarketTokenRelatedItem | null;
   asset: TokenMarketTokenRelatedItem | null;
 }
