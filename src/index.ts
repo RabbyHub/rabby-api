@@ -134,6 +134,32 @@ type ApiOptions<V extends VersionPrefix | void = VersionPrefix> = {
   restfulPrefix?: V;
 };
 
+type GnosisRequestOptions = {
+  txServiceUrl: string;
+};
+
+type GnosisSafeRequestOptions = GnosisRequestOptions & {
+  safeAddress: string;
+};
+
+type GnosisPostTransactionOptions = GnosisSafeRequestOptions & {
+  data: Record<string, any>;
+};
+
+type GnosisConfirmTransactionOptions = GnosisRequestOptions & {
+  safeTransactionHash: string;
+  data: Record<string, any>;
+};
+
+type GnosisSafeTxGasOptions = GnosisSafeRequestOptions & {
+  safeTxData: {
+    to: string;
+    value?: string;
+    data?: string | null;
+    operation?: number;
+  };
+};
+
 export class OpenApiService {
   store!: OpenApiStore;
 
@@ -280,6 +306,74 @@ export class OpenApiService {
     });
     this._mountMethods();
   }
+
+  getSafePendingTransactions = async ({
+    txServiceUrl,
+    safeAddress,
+    nonce,
+  }: GnosisSafeRequestOptions & {
+    nonce: number;
+  }): Promise<{ results: any[] }> => {
+    const { data } = await this.request.get(
+      `${txServiceUrl}/v1/safes/${safeAddress}/multisig-transactions/`,
+      {
+        params: {
+          executed: false,
+          nonce__gte: nonce,
+        },
+      }
+    );
+    return data;
+  };
+
+  postSafeTransactions = async ({
+    txServiceUrl,
+    safeAddress,
+    data,
+  }: GnosisPostTransactionOptions): Promise<void> => {
+    await this.request.post(
+      `${txServiceUrl}/v1/safes/${safeAddress}/multisig-transactions/`,
+      data
+    );
+  };
+
+  getSafeInfo = async ({
+    txServiceUrl,
+    safeAddress,
+  }: GnosisSafeRequestOptions): Promise<any> => {
+    const { data } = await this.request.get(
+      `${txServiceUrl}/v1/safes/${safeAddress}/`
+    );
+    return data;
+  };
+
+  confirmSafeTransaction = async ({
+    txServiceUrl,
+    safeTransactionHash,
+    data,
+  }: GnosisConfirmTransactionOptions): Promise<void> => {
+    await this.request.post(
+      `${txServiceUrl}/v1/multisig-transactions/${safeTransactionHash}/confirmations/`,
+      data
+    );
+  };
+
+  getSafeTxGas = async ({
+    txServiceUrl,
+    safeAddress,
+    safeTxData,
+  }: GnosisSafeTxGasOptions): Promise<string | undefined> => {
+    const { data } = await this.request.post(
+      `${txServiceUrl}/v1/safes/${safeAddress}/multisig-transactions/estimations/`,
+      {
+        to: safeTxData.to,
+        value: safeTxData.value || '0',
+        data: safeTxData.data,
+        operation: safeTxData.operation,
+      }
+    );
+    return data?.safeTxGas;
+  };
 
   asyncJob = <T = any>(
     url: string,
