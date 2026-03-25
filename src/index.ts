@@ -160,6 +160,18 @@ type GnosisSafeTxGasOptions = GnosisSafeRequestOptions & {
   };
 };
 
+type GnosisGetSafeMessagesOptions = GnosisSafeRequestOptions & {
+  options?: Record<string, any>;
+};
+
+type GnosisAddSafeMessageOptions = GnosisSafeRequestOptions & {
+  data: {
+    message: string | Record<string, any>;
+    signature: string;
+    safeAppId?: number;
+  };
+};
+
 export class OpenApiService {
   store!: OpenApiStore;
 
@@ -373,6 +385,31 @@ export class OpenApiService {
       }
     );
     return data?.safeTxGas;
+  };
+
+  getSafeMessages = async ({
+    txServiceUrl,
+    safeAddress,
+    options,
+  }: GnosisGetSafeMessagesOptions): Promise<{ results: any[] }> => {
+    const { data } = await this.request.get(
+      `${txServiceUrl}/v1/safes/${safeAddress}/messages/`,
+      {
+        params: options,
+      }
+    );
+    return data;
+  };
+
+  addSafeMessage = async ({
+    txServiceUrl,
+    safeAddress,
+    data,
+  }: GnosisAddSafeMessageOptions): Promise<void> => {
+    await this.request.post(
+      `${txServiceUrl}/v1/safes/${safeAddress}/messages/`,
+      data
+    );
   };
 
   asyncJob = <T = any>(
