@@ -172,6 +172,15 @@ type GnosisAddSafeMessageOptions = GnosisSafeRequestOptions & {
   };
 };
 
+type GnosisGetSafeMessageOptions = GnosisRequestOptions & {
+  messageHash: string;
+};
+
+type GnosisAddSafeMessageSignatureOptions = GnosisRequestOptions & {
+  messageHash: string;
+  signature: string;
+};
+
 export class OpenApiService {
   store!: OpenApiStore;
 
@@ -409,6 +418,29 @@ export class OpenApiService {
     await this.request.post(
       `${txServiceUrl}/v1/safes/${safeAddress}/messages/`,
       data
+    );
+  };
+
+  getSafeMessage = async ({
+    txServiceUrl,
+    messageHash,
+  }: GnosisGetSafeMessageOptions): Promise<any> => {
+    const { data } = await this.request.get(
+      `${txServiceUrl}/v1/messages/${messageHash}/`
+    );
+    return data;
+  };
+
+  addSafeMessageSignature = async ({
+    txServiceUrl,
+    messageHash,
+    signature,
+  }: GnosisAddSafeMessageSignatureOptions): Promise<void> => {
+    await this.request.post(
+      `${txServiceUrl}/v1/messages/${messageHash}/signatures/`,
+      {
+        signature,
+      }
     );
   };
 
