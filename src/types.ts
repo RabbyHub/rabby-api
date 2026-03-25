@@ -1976,37 +1976,10 @@ export interface GasAccountBridgeCreateResponse {
   id: string;
 }
 
-interface GasAccountRechargeStatusBase {
-  type: 'bridge' | 'wallet';
+export type GasAccountRechargeStatus = {
   status: 'pending' | 'success' | 'failed';
-  chain_id: string;
-  tx_id: string;
-  user_addr: string;
-  gas_account_id: string;
-  amount: number;
-  create_at: number;
-  failed_reason: string | null;
-}
-
-export interface GasAccountBridgeRechargeStatus
-  extends GasAccountRechargeStatusBase {
-  type: 'bridge';
-  from_token_id: string;
-  from_token_amount: number;
-  to_tx_id?: string | null;
-  to_token_amount?: number | null;
-  is_system_prepaid?: boolean | null;
-  finished_at?: number | null;
-}
-
-export interface GasAccountWalletRechargeStatus
-  extends GasAccountRechargeStatusBase {
-  type: 'wallet';
-}
-
-export type GasAccountRechargeStatus =
-  | GasAccountBridgeRechargeStatus
-  | GasAccountWalletRechargeStatus;
+  type: 'bridge|wallet|iap';
+};
 
 export type MarketSummaryItem = {
   price?: {

@@ -2977,11 +2977,19 @@ export class OpenApiService {
     return data;
   };
 
-  getGasAccountBridgeStatus = async (params: {
-    from_chain_id: string;
-    tx_id: string;
-  }): Promise<GasAccountRechargeStatus> => {
-    const { data } = await this.request.get('/v1/gas_account/bridge/status', {
+  getGasAccountBridgeStatus = async (
+    params:
+      | {
+          from_chain_id: string;
+          tx_id: string;
+        }
+      | {
+          transaction_id: string;
+          product_id: string;
+          device_type: 'android' | 'ios';
+        }
+  ): Promise<GasAccountRechargeStatus> => {
+    const { data } = await this.request.get('/v1/gas_account/recharge/status', {
       params,
     });
     return data;
