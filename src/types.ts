@@ -1949,6 +1949,49 @@ export interface PerpBridgeQuote {
   duration: number;
 }
 
+export interface GasAccountBridgeToken {
+  chain_id: string;
+  token_id: string;
+}
+
+export interface GasAccountBridgeSupportTokenList {
+  wallet_tokens: GasAccountBridgeToken[];
+  hyperliquid_tokens: GasAccountBridgeToken[];
+}
+
+export interface GasAccountBridgeFee {
+  raw_amount_hex_str: string;
+  usd_value: number;
+}
+
+export interface GasAccountBridgeInfo {
+  logo_url: string;
+}
+
+export interface GasAccountBridgeQuote {
+  bridge_id: string;
+  bridge: GasAccountBridgeInfo;
+  to_token_raw_amount: number;
+  to_token_raw_amount_hex_str: string;
+  to_token_amount: number;
+  approve_contract_id: string;
+  protocol_fee: GasAccountBridgeFee;
+  rabby_fee: GasAccountBridgeFee;
+  gas_fee: GasAccountBridgeFee;
+  duration: number;
+  tx: Tx;
+}
+
+export interface GasAccountBridgeCreateResponse {
+  success: boolean;
+  id: string;
+}
+
+export type GasAccountRechargeStatus = {
+  status: 'pending' | 'success' | 'failed';
+  type: 'bridge|wallet|iap';
+};
+
 export type MarketSummaryItem = {
   price?: {
     open?: number;
