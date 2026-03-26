@@ -134,6 +134,53 @@ type ApiOptions<V extends VersionPrefix | void = VersionPrefix> = {
   restfulPrefix?: V;
 };
 
+type GnosisRequestOptions = {
+  txServiceUrl: string;
+};
+
+type GnosisSafeRequestOptions = GnosisRequestOptions & {
+  safeAddress: string;
+};
+
+type GnosisPostTransactionOptions = GnosisSafeRequestOptions & {
+  data: Record<string, any>;
+};
+
+type GnosisConfirmTransactionOptions = GnosisRequestOptions & {
+  safeTransactionHash: string;
+  data: Record<string, any>;
+};
+
+type GnosisSafeTxGasOptions = GnosisSafeRequestOptions & {
+  safeTxData: {
+    to: string;
+    value?: string;
+    data?: string | null;
+    operation?: number;
+  };
+};
+
+type GnosisGetSafeMessagesOptions = GnosisSafeRequestOptions & {
+  options?: Record<string, any>;
+};
+
+type GnosisAddSafeMessageOptions = GnosisSafeRequestOptions & {
+  data: {
+    message: string | Record<string, any>;
+    signature: string;
+    safeAppId?: number;
+  };
+};
+
+type GnosisGetSafeMessageOptions = GnosisRequestOptions & {
+  messageHash: string;
+};
+
+type GnosisAddSafeMessageSignatureOptions = GnosisRequestOptions & {
+  messageHash: string;
+  signature: string;
+};
+
 export class OpenApiService {
   store!: OpenApiStore;
 
@@ -280,6 +327,122 @@ export class OpenApiService {
     });
     this._mountMethods();
   }
+
+  getSafePendingTransactions = async ({
+    txServiceUrl,
+    safeAddress,
+    nonce,
+  }: GnosisSafeRequestOptions & {
+    nonce: number;
+  }): Promise<{ results: any[] }> => {
+    const { data } = await this.request.get(
+      `${txServiceUrl}/v1/safes/${safeAddress}/multisig-transactions/`,
+      {
+        params: {
+          executed: false,
+          nonce__gte: nonce,
+        },
+      }
+    );
+    return data;
+  };
+
+  postSafeTransactions = async ({
+    txServiceUrl,
+    safeAddress,
+    data,
+  }: GnosisPostTransactionOptions): Promise<void> => {
+    await this.request.post(
+      `${txServiceUrl}/v1/safes/${safeAddress}/multisig-transactions/`,
+      data
+    );
+  };
+
+  getSafeInfo = async ({
+    txServiceUrl,
+    safeAddress,
+  }: GnosisSafeRequestOptions): Promise<any> => {
+    const { data } = await this.request.get(
+      `${txServiceUrl}/v1/safes/${safeAddress}/`
+    );
+    return data;
+  };
+
+  confirmSafeTransaction = async ({
+    txServiceUrl,
+    safeTransactionHash,
+    data,
+  }: GnosisConfirmTransactionOptions): Promise<void> => {
+    await this.request.post(
+      `${txServiceUrl}/v1/multisig-transactions/${safeTransactionHash}/confirmations/`,
+      data
+    );
+  };
+
+  getSafeTxGas = async ({
+    txServiceUrl,
+    safeAddress,
+    safeTxData,
+  }: GnosisSafeTxGasOptions): Promise<string | undefined> => {
+    const { data } = await this.request.post(
+      `${txServiceUrl}/v1/safes/${safeAddress}/multisig-transactions/estimations/`,
+      {
+        to: safeTxData.to,
+        value: safeTxData.value || '0',
+        data: safeTxData.data,
+        operation: safeTxData.operation,
+      }
+    );
+    return data?.safeTxGas;
+  };
+
+  getSafeMessages = async ({
+    txServiceUrl,
+    safeAddress,
+    options,
+  }: GnosisGetSafeMessagesOptions): Promise<{ results: any[] }> => {
+    const { data } = await this.request.get(
+      `${txServiceUrl}/v1/safes/${safeAddress}/messages/`,
+      {
+        params: options,
+      }
+    );
+    return data;
+  };
+
+  addSafeMessage = async ({
+    txServiceUrl,
+    safeAddress,
+    data,
+  }: GnosisAddSafeMessageOptions): Promise<void> => {
+    await this.request.post(
+      `${txServiceUrl}/v1/safes/${safeAddress}/messages/`,
+      data
+    );
+  };
+
+  getSafeMessage = async ({
+    txServiceUrl,
+    messageHash,
+  }: GnosisGetSafeMessageOptions): Promise<any> => {
+    const { data } = await this.request.get(
+      `${txServiceUrl}/v1/messages/${messageHash}/`
+    );
+    return data;
+  };
+
+  addSafeMessageSignature = async ({
+    txServiceUrl,
+    messageHash,
+    signature,
+  }: GnosisAddSafeMessageSignatureOptions): Promise<void> => {
+    await this.request.post(
+      `${txServiceUrl}/v1/messages/${messageHash}/signatures/`,
+      {
+        signature,
+      }
+    );
+  };
 
   asyncJob = <T = any>(
     url: string,
