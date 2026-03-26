@@ -254,11 +254,22 @@ export interface TokenItem {
   cex_ids?: string[];
   fdv?: number | null;
   support_market_data?: boolean;
+  launchpad?: TokenMarketTokenRelatedItem | null;
+  asset?: TokenMarketTokenRelatedItem | null;
+  market_status?: string;
 }
 
 export interface TokenItemWithEntity extends TokenItem {
   identity?: TokenEntityDetail;
 }
+
+export interface TokenPriceListItem {
+  price: number;
+  price_24h_change?: number | null;
+  price_update_at?: number | null;
+}
+
+export type TokenPriceListResponse = Record<string, TokenPriceListItem>;
 
 export interface TransferingNFTItem {
   chain: string;
@@ -2851,6 +2862,7 @@ export interface TokenMarketTokenItem {
   price_24h_change: number;
   volume_24h: number;
   fdv: number;
+  identity?: TokenEntityDetail;
   launchpad: TokenMarketTokenRelatedItem | null;
   asset: TokenMarketTokenRelatedItem | null;
 }
