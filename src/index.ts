@@ -3160,9 +3160,10 @@ export class OpenApiService {
           device_type: 'android' | 'ios';
         }
   ): Promise<GasAccountRechargeStatus> => {
-    const { data } = await this.request.get('/v1/gas_account/recharge/status', {
-      params,
-    });
+    const { data } = await this.request.post(
+      '/v1/gas_account/recharge/status',
+      params
+    );
     return data;
   };
 
