@@ -3134,6 +3134,7 @@ export class OpenApiService {
     from_token_amount: number;
     from_usd_value: number;
     tx_id: string;
+    scene: 'in_tx_flow' | 'recharge';
   }): Promise<GasAccountBridgeCreateResponse> => {
     const { sig, ...params } = p;
     const { data } = await this.request.post(
@@ -3160,9 +3161,10 @@ export class OpenApiService {
           device_type: 'android' | 'ios';
         }
   ): Promise<GasAccountRechargeStatus> => {
-    const { data } = await this.request.get('/v1/gas_account/recharge/status', {
-      params,
-    });
+    const { data } = await this.request.post(
+      '/v1/gas_account/recharge/status',
+      params
+    );
     return data;
   };
 
