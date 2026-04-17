@@ -1718,6 +1718,19 @@ export interface PerpTopToken {
   dex_id: string;
 }
 
+export interface PerpTopTokenV3 {
+  id: string;
+  token_id: number;
+  name: string;
+  full_logo_url?: string;
+  daily_volume: number;
+  dex_id?: string;
+  category?: string;
+  display_name?: string;
+  brief?: string;
+  description?: string;
+}
+
 export interface GasAccountCheckResult {
   gas_account_cost: {
     total_cost: number;
