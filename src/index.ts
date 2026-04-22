@@ -110,6 +110,7 @@ import {
   TokenMarketCategoryListResponse,
   TokenMarketTokenListResponse,
   PerpTopTokenV3,
+  PerpTopTokenCategory,
 } from './types';
 
 interface OpenApiStore {
@@ -2868,10 +2869,12 @@ export class OpenApiService {
 
   /**
    * @param params.dex_id - The ID of the DEX to get the top tokens for. If not provided, hyperliquid default DEXs will be included. if all is provided, all DEXs will be included.  and xyz is xyz dex tokens
+   * @param params.lang - The translations in item.category
    * @returns A list of top tokens for the given DEX.
    */
   getPerpTopTokenListV3 = async (params: {
     dex_id?: string;
+    lang?: string;
   }): Promise<PerpTopTokenV3[]> => {
     const { data } = await this.request.get('/v1/token/hyperliquid_top_v3', {
       params,
@@ -2885,6 +2888,18 @@ export class OpenApiService {
   }): Promise<PerpTopTokenV3> => {
     const { data } = await this.request.get(
       '/v1/token/hyperliquid_token_detail_v3',
+      {
+        params,
+      }
+    );
+    return data;
+  };
+
+  getPerpTokenCategories = async (params: {
+    lang?: string;
+  }): Promise<PerpTopTokenCategory[]> => {
+    const { data } = await this.request.get(
+      '/v1/token/hyperliquid_categories_v3',
       {
         params,
       }
