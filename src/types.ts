@@ -1939,6 +1939,7 @@ export type CurrencyItem = {
   code: string;
   logo_url: string;
   usd_rate: number;
+  is_prefix: boolean;
 };
 export interface PerpBridgeQuote {
   tx: {
