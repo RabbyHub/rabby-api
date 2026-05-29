@@ -87,6 +87,68 @@ describe('rabby-api', () => {
       'x-api-ver': expect.any(String),
     });
   });
+
+  it('staking APIs', async () => {
+    const catchFn = jest.fn();
+
+    await service.init(MOCK_HF);
+
+    service
+      .getStakingPoolList({
+        q: 'eth',
+        chain_id: 'eth',
+        protocol_id: 'lido',
+        user_addr: '0x',
+        holding_only: true,
+        start: 0,
+        limit: 20,
+        order_by: 'tvl',
+        order: 'desc',
+      })
+      .catch(catchFn);
+    service.getStakingFilterList({ user_addr: '0x' }).catch(catchFn);
+    service
+      .getStakingPool({ pool_id: 'eth_lido', user_addr: '0x' })
+      .catch(catchFn);
+    service
+      .getStakingPoolCurve({ pool_id: 'eth_lido', metric: 'apr' })
+      .catch(catchFn);
+
+    expect(mockAxios.get).toHaveBeenNthCalledWith(1, '/v1/staking/pool_list', {
+      params: {
+        q: 'eth',
+        chain_id: 'eth',
+        protocol_id: 'lido',
+        user_addr: '0x',
+        holding_only: true,
+        start: 0,
+        limit: 20,
+        order_by: 'tvl',
+        order: 'desc',
+      },
+    });
+    expect(mockAxios.get).toHaveBeenNthCalledWith(
+      2,
+      '/v1/staking/filter_list',
+      {
+        params: {
+          user_addr: '0x',
+        },
+      }
+    );
+    expect(mockAxios.get).toHaveBeenNthCalledWith(3, '/v1/staking/pool', {
+      params: {
+        pool_id: 'eth_lido',
+        user_addr: '0x',
+      },
+    });
+    expect(mockAxios.get).toHaveBeenNthCalledWith(4, '/v1/staking/pool_curve', {
+      params: {
+        pool_id: 'eth_lido',
+        metric: 'apr',
+      },
+    });
+  });
 });
 
 describe('utils', () => {
