@@ -111,6 +111,14 @@ import {
   TokenMarketTokenListResponse,
   PerpTopTokenV3,
   PerpTopTokenCategory,
+  StakingFilterListParams,
+  StakingFilterListResponse,
+  StakingPoolCurveParams,
+  StakingPoolCurveResponse,
+  StakingPoolListParams,
+  StakingPoolListResponse,
+  StakingPoolParams,
+  StakingPoolResponse,
 } from './types';
 
 interface OpenApiStore {
@@ -2720,6 +2728,42 @@ export class OpenApiService {
       },
     });
 
+    return data;
+  };
+
+  getStakingPoolList = async (
+    params: StakingPoolListParams
+  ): Promise<StakingPoolListResponse> => {
+    const { data } = await this.request.get('/v1/staking/pool_list', {
+      params,
+    });
+    return data;
+  };
+
+  getStakingFilterList = async (
+    params: StakingFilterListParams = {}
+  ): Promise<StakingFilterListResponse> => {
+    const { data } = await this.request.get('/v1/staking/filter_list', {
+      params,
+    });
+    return data;
+  };
+
+  getStakingPool = async (
+    params: StakingPoolParams
+  ): Promise<StakingPoolResponse> => {
+    const { data } = await this.request.get('/v1/staking/pool', {
+      params,
+    });
+    return data;
+  };
+
+  getStakingPoolCurve = async (
+    params: StakingPoolCurveParams
+  ): Promise<StakingPoolCurveResponse> => {
+    const { data } = await this.request.get('/v1/staking/pool_curve', {
+      params,
+    });
     return data;
   };
 
