@@ -1934,6 +1934,94 @@ export type UserFeedbackItem = {
   extra?: any | null;
 };
 
+export type ClientFeedbackSource =
+  | 'app-ios'
+  | 'app-android'
+  | 'app'
+  | 'extension'
+  | 'desktop'
+  | '';
+
+export type ClientFeedbackStatus = 'pending' | 'replied' | 'closed';
+
+export type ClientFeedbackSender = 'user' | 'ops';
+
+export type ClientFeedbackExtra = Record<string, any>;
+
+export interface ClientFeedbackConversation {
+  id: string;
+  source: ClientFeedbackSource;
+  status: ClientFeedbackStatus;
+  last_message_at: number;
+  client_read_at: number | null;
+  comment_user_id: number | null;
+  create_at: number;
+  extra: ClientFeedbackExtra;
+}
+
+export interface ClientFeedbackMessage {
+  id: string;
+  conversation_id: string;
+  sender: ClientFeedbackSender;
+  ops_user_id: number | null;
+  content: string;
+  image_url_list: string[];
+  video_url_list: string[];
+  source: ClientFeedbackSource;
+  create_at: number;
+}
+
+export interface PostClientFeedbackMessageParams {
+  device_id: string;
+  content?: string;
+  image_url_list?: string[];
+  video_url_list?: string[];
+  extra?: ClientFeedbackExtra;
+}
+
+export interface PostClientFeedbackMessageResponse {
+  conversation: ClientFeedbackConversation;
+  message: ClientFeedbackMessage;
+}
+
+export interface GetClientFeedbackMessagesParams {
+  device_id: string;
+  start?: number;
+  limit?: number;
+}
+
+export interface GetClientFeedbackMessagesResponse {
+  conversation: ClientFeedbackConversation | null;
+  messages: ClientFeedbackMessage[];
+  total_count: number;
+}
+
+export interface GetClientFeedbackUnreadParams {
+  device_id: string;
+}
+
+export interface GetClientFeedbackUnreadResponse {
+  unread_count: number;
+  status: ClientFeedbackStatus | null;
+}
+
+export type UploadClientFeedbackParams =
+  | FormData
+  | {
+      file: Blob;
+      filename?: string;
+    };
+
+export type UploadClientFeedbackResponse =
+  | {
+      image_url: string;
+      video_url?: never;
+    }
+  | {
+      image_url?: never;
+      video_url: string;
+    };
+
 export type CurrencyItem = {
   symbol: string;
   code: string;

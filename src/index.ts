@@ -87,6 +87,14 @@ import {
   TokenDetailWithPriceCurve,
   GiftEligibilityItem,
   UserFeedbackItem,
+  GetClientFeedbackMessagesParams,
+  GetClientFeedbackMessagesResponse,
+  GetClientFeedbackUnreadParams,
+  GetClientFeedbackUnreadResponse,
+  PostClientFeedbackMessageParams,
+  PostClientFeedbackMessageResponse,
+  UploadClientFeedbackParams,
+  UploadClientFeedbackResponse,
   PerpTopToken,
   KlineDataItem,
   TokenMarketInfo,
@@ -3527,6 +3535,61 @@ export class OpenApiService {
     return this.submitFeedback({
       text,
     });
+  };
+
+  postClientFeedbackMessage = async (
+    data: PostClientFeedbackMessageParams
+  ): Promise<PostClientFeedbackMessageResponse> => {
+    const { data: response } = await this.request.post(
+      '/v1/client_feedback/message',
+      data
+    );
+    return response;
+  };
+
+  getClientFeedbackMessages = async (
+    params: GetClientFeedbackMessagesParams
+  ): Promise<GetClientFeedbackMessagesResponse> => {
+    const { data } = await this.request.get('/v1/client_feedback/messages', {
+      params,
+    });
+    return data;
+  };
+
+  getClientFeedbackUnread = async (
+    params: GetClientFeedbackUnreadParams
+  ): Promise<GetClientFeedbackUnreadResponse> => {
+    const { data } = await this.request.get('/v1/client_feedback/unread', {
+      params,
+    });
+    return data;
+  };
+
+  uploadClientFeedback = async (
+    params: UploadClientFeedbackParams
+  ): Promise<UploadClientFeedbackResponse> => {
+    const isFormData =
+      typeof FormData !== 'undefined' && params instanceof FormData;
+    const formData = isFormData ? params : new FormData();
+
+    if (!isFormData) {
+      const { file, filename } = params as Exclude<
+        UploadClientFeedbackParams,
+        FormData
+      >;
+
+      if (filename) {
+        formData.append('file', file, filename);
+      } else {
+        formData.append('file', file);
+      }
+    }
+
+    const { data } = await this.request.post(
+      '/v1/client_feedback/upload',
+      formData
+    );
+    return data;
   };
 
   /**
