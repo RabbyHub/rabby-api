@@ -2005,12 +2005,7 @@ export interface GetClientFeedbackUnreadResponse {
   status: ClientFeedbackStatus | null;
 }
 
-export type UploadClientFeedbackParams =
-  | FormData
-  | {
-      file: Blob;
-      filename?: string;
-    };
+export type UploadClientFeedbackParams = FormData;
 
 export type UploadClientFeedbackResponse =
   | {

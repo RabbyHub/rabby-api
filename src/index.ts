@@ -3566,29 +3566,21 @@ export class OpenApiService {
   };
 
   uploadClientFeedback = async (
-    params: UploadClientFeedbackParams
+    formData: UploadClientFeedbackParams,
+    isRN = false
   ): Promise<UploadClientFeedbackResponse> => {
-    const isFormData =
-      typeof FormData !== 'undefined' && params instanceof FormData;
-    const formData = isFormData ? params : new FormData();
+    const config: AxiosRequestConfig | undefined = isRN
+      ? {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          transformRequest: (data: any) => data,
+        }
+      : undefined;
 
-    if (!isFormData) {
-      const { file, filename } = params as Exclude<
-        UploadClientFeedbackParams,
-        FormData
-      >;
-
-      if (filename) {
-        formData.append('file', file, filename);
-      } else {
-        formData.append('file', file);
-      }
-    }
-
-    const { data } = await this.request.post(
-      '/v1/client_feedback/upload',
-      formData
-    );
+    const { data } = config
+      ? await this.request.post('/v1/client_feedback/upload', formData, config)
+      : await this.request.post('/v1/client_feedback/upload', formData);
     return data;
   };
 

@@ -112,12 +112,10 @@ describe('rabby-api', () => {
     service.getClientFeedbackUnread({ device_id: 'dev-123' }).catch(catchFn);
 
     const file = new Blob(['image'], { type: 'image/png' });
-    service
-      .uploadClientFeedback({
-        file,
-        filename: 'feedback.png',
-      })
-      .catch(catchFn);
+    const formData = new FormData();
+    formData.append('file', file, 'feedback.png');
+    service.uploadClientFeedback(formData).catch(catchFn);
+    service.uploadClientFeedback(formData, true).catch(catchFn);
 
     expect(mockAxios.post).toHaveBeenNthCalledWith(
       1,
@@ -146,8 +144,18 @@ describe('rabby-api', () => {
     );
 
     const uploadCall = (mockAxios.post as jest.Mock).mock.calls[1];
-    expect(uploadCall[0]).toBe('/v1/client_feedback/upload');
-    expect(uploadCall[1]).toBeInstanceOf(FormData);
+    expect(uploadCall).toEqual(['/v1/client_feedback/upload', formData]);
+
+    const rnUploadCall = (mockAxios.post as jest.Mock).mock.calls[2];
+    expect(rnUploadCall[0]).toBe('/v1/client_feedback/upload');
+    expect(rnUploadCall[1]).toBe(formData);
+    expect(rnUploadCall[2]).toMatchObject({
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      transformRequest: expect.any(Function),
+    });
+    expect(rnUploadCall[2].transformRequest('data')).toBe('data');
   });
 
   it('staking APIs', async () => {
