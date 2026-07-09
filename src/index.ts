@@ -87,6 +87,14 @@ import {
   TokenDetailWithPriceCurve,
   GiftEligibilityItem,
   UserFeedbackItem,
+  GetClientFeedbackMessagesParams,
+  GetClientFeedbackMessagesResponse,
+  GetClientFeedbackUnreadParams,
+  GetClientFeedbackUnreadResponse,
+  PostClientFeedbackMessageParams,
+  PostClientFeedbackMessageResponse,
+  UploadClientFeedbackParams,
+  UploadClientFeedbackResponse,
   PerpTopToken,
   KlineDataItem,
   TokenMarketInfo,
@@ -3527,6 +3535,53 @@ export class OpenApiService {
     return this.submitFeedback({
       text,
     });
+  };
+
+  postClientFeedbackMessage = async (
+    data: PostClientFeedbackMessageParams
+  ): Promise<PostClientFeedbackMessageResponse> => {
+    const { data: response } = await this.request.post(
+      '/v1/client_feedback/message',
+      data
+    );
+    return response;
+  };
+
+  getClientFeedbackMessages = async (
+    params: GetClientFeedbackMessagesParams
+  ): Promise<GetClientFeedbackMessagesResponse> => {
+    const { data } = await this.request.get('/v1/client_feedback/messages', {
+      params,
+    });
+    return data;
+  };
+
+  getClientFeedbackUnread = async (
+    params: GetClientFeedbackUnreadParams
+  ): Promise<GetClientFeedbackUnreadResponse> => {
+    const { data } = await this.request.get('/v1/client_feedback/unread', {
+      params,
+    });
+    return data;
+  };
+
+  uploadClientFeedback = async (
+    formData: UploadClientFeedbackParams,
+    isRN = false
+  ): Promise<UploadClientFeedbackResponse> => {
+    const config: AxiosRequestConfig | undefined = isRN
+      ? {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          transformRequest: (data: any) => data,
+        }
+      : undefined;
+
+    const { data } = config
+      ? await this.request.post('/v1/client_feedback/upload', formData, config)
+      : await this.request.post('/v1/client_feedback/upload', formData);
+    return data;
   };
 
   /**

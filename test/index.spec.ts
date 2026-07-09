@@ -88,6 +88,76 @@ describe('rabby-api', () => {
     });
   });
 
+  it('client feedback APIs', async () => {
+    const catchFn = jest.fn();
+
+    await service.init(MOCK_HF);
+
+    const messageData = {
+      device_id: 'dev-123',
+      content: 'transfer failed',
+      image_url_list: ['https://static.debank.com/image/feedback/a.png'],
+      extra: {
+        version: '1.0.0',
+      },
+    };
+    service.postClientFeedbackMessage(messageData).catch(catchFn);
+    service
+      .getClientFeedbackMessages({
+        device_id: 'dev-123',
+        start: 0,
+        limit: 20,
+      })
+      .catch(catchFn);
+    service.getClientFeedbackUnread({ device_id: 'dev-123' }).catch(catchFn);
+
+    const file = new Blob(['image'], { type: 'image/png' });
+    const formData = new FormData();
+    formData.append('file', file, 'feedback.png');
+    service.uploadClientFeedback(formData).catch(catchFn);
+    service.uploadClientFeedback(formData, true).catch(catchFn);
+
+    expect(mockAxios.post).toHaveBeenNthCalledWith(
+      1,
+      '/v1/client_feedback/message',
+      messageData
+    );
+    expect(mockAxios.get).toHaveBeenNthCalledWith(
+      1,
+      '/v1/client_feedback/messages',
+      {
+        params: {
+          device_id: 'dev-123',
+          start: 0,
+          limit: 20,
+        },
+      }
+    );
+    expect(mockAxios.get).toHaveBeenNthCalledWith(
+      2,
+      '/v1/client_feedback/unread',
+      {
+        params: {
+          device_id: 'dev-123',
+        },
+      }
+    );
+
+    const uploadCall = (mockAxios.post as jest.Mock).mock.calls[1];
+    expect(uploadCall).toEqual(['/v1/client_feedback/upload', formData]);
+
+    const rnUploadCall = (mockAxios.post as jest.Mock).mock.calls[2];
+    expect(rnUploadCall[0]).toBe('/v1/client_feedback/upload');
+    expect(rnUploadCall[1]).toBe(formData);
+    expect(rnUploadCall[2]).toMatchObject({
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      transformRequest: expect.any(Function),
+    });
+    expect(rnUploadCall[2].transformRequest('data')).toBe('data');
+  });
+
   it('staking APIs', async () => {
     const catchFn = jest.fn();
 
