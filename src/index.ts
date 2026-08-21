@@ -1076,6 +1076,7 @@ export class OpenApiService {
     receive_token_id: string;
     slippage?: string | number;
     fee?: boolean;
+    fee_rate?: number;
   }) => {
     const { data } = await this.request.get<{
       receive_token_raw_amount: number;
@@ -1407,6 +1408,7 @@ export class OpenApiService {
       slippage: number;
     };
     dex_id: string;
+    fee_rate?: number;
     tx_id: string;
     tx: Tx;
   }) => {
@@ -2128,7 +2130,7 @@ export class OpenApiService {
       origin?: string;
       log_id: string;
     };
-    mev_share_model: 'user' | 'rabby';
+    mev_share_model?: 'user' | 'rabby' | '';
     sig?: string;
   }): Promise<{
     tx_id?: string;
@@ -2819,6 +2821,7 @@ export class OpenApiService {
     from_token_raw_amount: string;
     to_chain_id: string;
     to_token_id: string;
+    fee_rate?: number;
   }): Promise<Omit<BridgeQuote, 'tx'>[]> => {
     const { data } = await this.request.get('/v2/bridge/quote_list', {
       params,
@@ -2884,6 +2887,7 @@ export class OpenApiService {
     tx_id: string;
     tx: Tx;
     rabby_fee: number;
+    fee_rate?: number;
   }): Promise<{ success: boolean }> => {
     const { data } = await this.request.post('/v1/bridge/history', params);
     return data;
@@ -3468,6 +3472,7 @@ export class OpenApiService {
     to_chain_id: string;
     to_token_id: string;
     slippage: string;
+    fee_rate?: number;
   }): Promise<Omit<BridgeQuote, 'tx'>[]> => {
     const { data } = await this.request.get('/v2/bridge/quote_list', {
       params,
