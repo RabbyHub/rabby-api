@@ -2888,6 +2888,7 @@ export class OpenApiService {
     tx: Tx;
     rabby_fee: number;
     fee_rate?: number;
+    duration?: number;
   }): Promise<{ success: boolean }> => {
     const { data } = await this.request.post('/v1/bridge/history', params);
     return data;
