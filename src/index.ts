@@ -2821,6 +2821,7 @@ export class OpenApiService {
     from_token_raw_amount: string;
     to_chain_id: string;
     to_token_id: string;
+    slippage?: string;
     fee_rate?: number;
   }): Promise<Omit<BridgeQuote, 'tx'>[]> => {
     const { data } = await this.request.get('/v2/bridge/quote_list', {
