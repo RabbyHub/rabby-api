@@ -26,6 +26,38 @@ describe('rabby-api', () => {
     mockAxios.reset();
   });
 
+  it.each([
+    {
+      version: { id: '0.94.7', level: 2, changelog: '1. 修复xxx' },
+      latest_version: { id: '0.94.10', level: 1, changelog: '1. 支持yyy' },
+    },
+    {
+      version: null,
+      latest_version: { id: '0.94.10', level: 1, changelog: '' },
+    },
+    { version: null, latest_version: null },
+  ])(
+    'getVersionInfo returns the response including nullable versions',
+    async (data) => {
+      const get = jest.fn().mockResolvedValue({ data });
+      service.request = { get } as any;
+      await expect(
+        service.getVersionInfo({ version_id: '0.94.7' })
+      ).resolves.toEqual(data);
+      expect(get).toHaveBeenCalledWith('/v1/wallet/version_info', {
+        params: { version_id: '0.94.7' },
+      });
+    }
+  );
+
+  it('getVersionInfo propagates request errors', async () => {
+    const error = new Error('invalid version_id format');
+    service.request = { get: jest.fn().mockRejectedValue(error) } as any;
+    await expect(
+      service.getVersionInfo({ version_id: 'invalid' })
+    ).rejects.toThrow(error);
+  });
+
   it('init', async () => {
     await service.init(MOCK_HF);
     expect(service.ethRpc).toBeDefined();

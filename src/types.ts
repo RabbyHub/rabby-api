@@ -1,5 +1,16 @@
 import { CHAINS_ENUM } from '@debank/common';
 
+export interface WalletVersionInfo {
+  id: string;
+  level: number;
+  changelog: string;
+}
+
+export interface WalletVersionInfoResponse {
+  version: WalletVersionInfo | null;
+  latest_version: WalletVersionInfo | null;
+}
+
 export interface Chain {
   id: number;
   name: string;

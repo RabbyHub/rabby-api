@@ -8,6 +8,7 @@ import { ASYNC_JOB_RETRY_DELAY, ASYNC_JOB_TIMEOUT } from './const';
 import { InitOptions, RabbyApiPlugin } from './plugins/intf';
 import {
   AddrDescResponse,
+  WalletVersionInfoResponse,
   BridgeAggregator,
   ApprovalStatus,
   AssetItem,
@@ -1236,6 +1237,16 @@ export class OpenApiService {
 
   getLatestVersion = async (): Promise<{ version_tag: string }> => {
     const { data } = await this.request.get('/v1/wallet/version');
+    return data;
+  };
+
+  getVersionInfo = async (params: {
+    version_id: string;
+  }): Promise<WalletVersionInfoResponse> => {
+    const { data } = await this.request.get<WalletVersionInfoResponse>(
+      '/v1/wallet/version_info',
+      { params }
+    );
     return data;
   };
 
