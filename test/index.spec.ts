@@ -1,6 +1,7 @@
 import mockAxios from 'jest-mock-axios';
 
 import { OpenApiService } from '../src';
+import type { WalletVersionInfoResponse } from '../src/types';
 import { genSignParams, INITIAL_OPENAPI_URL } from '../src/utils';
 import { SIGN_HDS } from '../src/const';
 import { WebSignApiPlugin } from '../src/plugins/web-sign';
@@ -26,18 +27,33 @@ describe('rabby-api', () => {
     mockAxios.reset();
   });
 
-  it.each([
+  it.each<WalletVersionInfoResponse>([
     {
-      version: { id: '0.94.7', level: 2, changelog: '1. 修复xxx' },
-      latest_version: { id: '0.94.10', level: 1, changelog: '1. 支持yyy' },
+      version: {
+        id: '0.94.7',
+        level: 2,
+        changelog: '- Fixed bugs',
+        changelog_cn: '- 修复问题',
+      },
+      latest_version: {
+        id: '0.94.10',
+        level: 1,
+        changelog: '- Added new features',
+        changelog_cn: '- 支持新功能',
+      },
     },
     {
       version: null,
-      latest_version: { id: '0.94.10', level: 1, changelog: '' },
+      latest_version: {
+        id: '0.94.10',
+        level: 1,
+        changelog: '',
+        changelog_cn: '',
+      },
     },
     { version: null, latest_version: null },
   ])(
-    'getVersionInfo returns the response including nullable versions',
+    'getVersionInfo preserves Chinese changelogs and nullable versions',
     async (data) => {
       const get = jest.fn().mockResolvedValue({ data });
       service.request = { get } as any;

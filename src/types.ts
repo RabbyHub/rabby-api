@@ -4,6 +4,7 @@ export interface WalletVersionInfo {
   id: string;
   level: number;
   changelog: string;
+  changelog_cn: string;
 }
 
 export interface WalletVersionInfoResponse {
