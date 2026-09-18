@@ -1,6 +1,7 @@
 import mockAxios from 'jest-mock-axios';
 
 import { OpenApiService } from '../src';
+import type { WalletVersionInfoResponse } from '../src/types';
 import { genSignParams, INITIAL_OPENAPI_URL } from '../src/utils';
 import { SIGN_HDS } from '../src/const';
 import { WebSignApiPlugin } from '../src/plugins/web-sign';
@@ -24,6 +25,53 @@ describe('rabby-api', () => {
   afterEach(() => {
     jest.clearAllMocks();
     mockAxios.reset();
+  });
+
+  it.each<WalletVersionInfoResponse>([
+    {
+      version: {
+        id: '0.94.7',
+        level: 2,
+        changelog: '- Fixed bugs',
+        changelog_cn: '- 修复问题',
+      },
+      latest_version: {
+        id: '0.94.10',
+        level: 1,
+        changelog: '- Added new features',
+        changelog_cn: '- 支持新功能',
+      },
+    },
+    {
+      version: null,
+      latest_version: {
+        id: '0.94.10',
+        level: 1,
+        changelog: '',
+        changelog_cn: '',
+      },
+    },
+    { version: null, latest_version: null },
+  ])(
+    'getVersionInfo preserves Chinese changelogs and nullable versions',
+    async (data) => {
+      const get = jest.fn().mockResolvedValue({ data });
+      service.request = { get } as any;
+      await expect(
+        service.getVersionInfo({ version_id: '0.94.7' })
+      ).resolves.toEqual(data);
+      expect(get).toHaveBeenCalledWith('/v1/wallet/version_info', {
+        params: { version_id: '0.94.7' },
+      });
+    }
+  );
+
+  it('getVersionInfo propagates request errors', async () => {
+    const error = new Error('invalid version_id format');
+    service.request = { get: jest.fn().mockRejectedValue(error) } as any;
+    await expect(
+      service.getVersionInfo({ version_id: 'invalid' })
+    ).rejects.toThrow(error);
   });
 
   it('init', async () => {
