@@ -965,6 +965,17 @@ export class OpenApiService {
     return data;
   };
 
+  getTxCount = async (params: {
+    id: string;
+    from_ts: number;
+    to_ts: number;
+  }): Promise<{ tx_count: number; has_more: boolean }> => {
+    const { data } = await this.request.get('/v1/user/tx_count', {
+      params,
+    });
+    return data;
+  };
+
   listTxHisotry = async (params: {
     id?: string;
     chain_id?: string;
