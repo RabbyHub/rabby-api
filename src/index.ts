@@ -976,7 +976,7 @@ export class OpenApiService {
     return data;
   };
 
-  listTxHisotry = async (params: {
+  listTxHistory = async (params: {
     id?: string;
     chain_id?: string;
     token_id?: string;
@@ -989,6 +989,11 @@ export class OpenApiService {
     });
     return data;
   };
+
+  /**
+   * @deprecated Use `listTxHistory` instead.
+   */
+  listTxHisotry = this.listTxHistory;
 
   getAllTxHistory = async (
     params: {
