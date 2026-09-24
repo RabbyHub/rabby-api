@@ -1683,7 +1683,7 @@ export interface BridgeHistory {
     tx_id: string;
     chain_id: string;
     status: 'pending' | 'success' | 'failed';
-    time_at: number;
+    time_at?: number;
   };
   to_tx: {
     tx_id?: string;
