@@ -965,7 +965,18 @@ export class OpenApiService {
     return data;
   };
 
-  listTxHisotry = async (params: {
+  getTxCount = async (params: {
+    id: string;
+    from_ts: number;
+    to_ts: number;
+  }): Promise<{ tx_count: number; has_more: boolean }> => {
+    const { data } = await this.request.get('/v1/user/tx_count', {
+      params,
+    });
+    return data;
+  };
+
+  listTxHistory = async (params: {
     id?: string;
     chain_id?: string;
     token_id?: string;
@@ -978,6 +989,11 @@ export class OpenApiService {
     });
     return data;
   };
+
+  /**
+   * @deprecated Use `listTxHistory` instead.
+   */
+  listTxHisotry = this.listTxHistory;
 
   getAllTxHistory = async (
     params: {
