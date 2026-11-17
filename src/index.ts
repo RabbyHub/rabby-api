@@ -2923,7 +2923,7 @@ export class OpenApiService {
     to_token_id: string;
     slippage: string;
     quote_key: string;
-  }): Promise<Tx> => {
+  }): Promise<Tx & { order_data?: Record<string, unknown> }> => {
     const { data } = await this.request.get('/v2/bridge/build_tx', {
       params,
     });
