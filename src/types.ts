@@ -1886,6 +1886,21 @@ export interface AppChainListResponse {
     update_at: number;
   }[];
 }
+
+/** `/v1/user/total_balance_24h/batch` 单个地址结果。失败时只有 error_code=1，没有 total_usd_value。 */
+export interface TotalBalance24hBatchItem {
+  id: string;
+  error_code: number;
+  total_usd_value?: number;
+}
+
+/** `/v1/user/complex_app_list/batch` 单个地址结果。失败时只有 error_code=1。 */
+export interface AppChainListBatchItem {
+  id: string;
+  error_code: number;
+  apps?: AppChainItem[];
+  error_apps?: AppChainListResponse['error_apps'];
+}
 export type DefaultRPCRes = {
   message: string;
   status: string;

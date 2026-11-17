@@ -80,6 +80,8 @@ import {
   CopyTradeRecentBuyListResponse,
   CopyTradePnlListResponse,
   AppChainListResponse,
+  AppChainListBatchItem,
+  TotalBalance24hBatchItem,
   CopyTradeTokenListV2Response,
   CopyTradeRecentBuyListV2Response,
   CopyTradeTokenItemV2,
@@ -585,6 +587,21 @@ export class OpenApiService {
         id: address,
       },
     });
+    return data;
+  };
+
+  // ids: up to 10 addresses. Single-address failure returns error_code=1 and does not fail the batch.
+  get24hTotalBalanceBatch = async (
+    ids: string[]
+  ): Promise<TotalBalance24hBatchItem[]> => {
+    const { data } = await this.request.get(
+      '/v1/user/total_balance_24h/batch',
+      {
+        params: {
+          ids: ids.join(','),
+        },
+      }
+    );
     return data;
   };
 
@@ -3900,6 +3917,17 @@ export class OpenApiService {
   getAppChainList = async (id: string): Promise<AppChainListResponse> => {
     const { data } = await this.request.get('/v1/user/complex_app_list', {
       params: { id },
+    });
+    return data;
+  };
+  // ids: up to 10 addresses. Single-address failure returns error_code=1 and does not fail the batch.
+  getAppChainListBatch = async (
+    ids: string[]
+  ): Promise<AppChainListBatchItem[]> => {
+    const { data } = await this.request.get('/v1/user/complex_app_list/batch', {
+      params: {
+        ids: ids.join(','),
+      },
     });
     return data;
   };
