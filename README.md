@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-npm install @rabby-wallet/rabby-api @debank/common
+npm install @rabby-wallet/rabby-api
 ```
 
 ## Usage
