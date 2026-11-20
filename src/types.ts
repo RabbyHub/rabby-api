@@ -1,5 +1,3 @@
-import { CHAINS_ENUM } from '@debank/common';
-
 export interface WalletVersionInfo {
   id: string;
   level: number;
@@ -17,7 +15,7 @@ export interface Chain {
   name: string;
   hex: string;
   logo: string;
-  enum: CHAINS_ENUM;
+  enum: string;
   serverId: string;
   network: string;
   nativeTokenSymbol: string;
