@@ -58,6 +58,7 @@ import {
   TxRequest,
   UsedChain,
   BridgeTokenPair,
+  BridgeTx,
   BridgeQuote,
   BridgeHistory,
   ContractInfo,
@@ -2906,7 +2907,7 @@ export class OpenApiService {
     to_token_id: string;
     slippage: string;
     quote_key: string;
-  }): Promise<Tx> => {
+  }): Promise<BridgeTx> => {
     const { data } = await this.request.get('/v2/bridge/build_tx', {
       params,
     });

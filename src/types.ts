@@ -1628,6 +1628,63 @@ export interface BridgeTokenPair {
   from_token_usd_value: number;
 }
 
+type RelayOrderInteger = string | number;
+
+/** Fields RabbyBridge reads to reconstruct the Relay order hash. */
+export interface RelayOrderData {
+  [key: string]: unknown;
+  version: string;
+  solverChainId: string;
+  solver: string;
+  salt: RelayOrderInteger;
+  inputs: {
+    [key: string]: unknown;
+    payment: {
+      [key: string]: unknown;
+      chainId: string;
+      currency: string;
+      amount: RelayOrderInteger;
+      weight: RelayOrderInteger;
+    };
+    refunds: {
+      [key: string]: unknown;
+      chainId: string;
+      recipient: string;
+      currency: string;
+      minimumAmount: RelayOrderInteger;
+      deadline: RelayOrderInteger;
+      extraData: string;
+    }[];
+  }[];
+  output: {
+    [key: string]: unknown;
+    chainId: string;
+    payments: {
+      [key: string]: unknown;
+      recipient: string;
+      currency: string;
+      minimumAmount: RelayOrderInteger;
+      expectedAmount: RelayOrderInteger;
+    }[];
+    deadline: RelayOrderInteger;
+    calls: string[];
+    extraData: string;
+  };
+  fees: {
+    [key: string]: unknown;
+    recipientChainId: string;
+    recipient: string;
+    currencyChainId: string;
+    currency: string;
+    amount: RelayOrderInteger;
+  }[];
+}
+
+export interface BridgeTx extends Tx {
+  /** Relay's protocol.v2.orderData, when supplied with the transaction. */
+  order_data?: RelayOrderData;
+}
+
 export interface BridgeQuote {
   aggregator: Exclude<BridgeAggregator, 'bridge_list'>;
   bridge_id: string;
@@ -2049,6 +2106,7 @@ export interface PerpBridgeQuote {
     nonce: string;
     to: string;
     value: string;
+    order_data?: RelayOrderData;
   };
   bridge_id: string;
   bridge: BridgeItem | null;
@@ -2101,7 +2159,7 @@ export interface GasAccountBridgeQuote {
   rabby_fee: GasAccountBridgeFee;
   gas_fee: GasAccountBridgeFee;
   duration: number;
-  tx: Tx;
+  tx: BridgeTx;
 }
 
 export interface GasAccountBridgeCreateResponse {
